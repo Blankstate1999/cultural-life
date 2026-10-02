@@ -113,15 +113,14 @@
   .tv-filter{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
   .tv-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
   .show-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem;}
-  .show-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;}
-  .show-card:hover{box-shadow:0 4px 14px rgba(0,0,0,0.09);}
+  .show-grid{grid-template-columns:1fr!important;}
+  .show-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;}
+  .show-card:hover{box-shadow:0 3px 10px rgba(0,0,0,0.07);}
   .show-card.hidden{display:none;}
-  .show-poster{width:100%;aspect-ratio:2/3;background:#1c1a17;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#3a3530;overflow:hidden;}
-  .show-poster img{width:100%;height:100%;object-fit:cover;display:block;}
-  .show-info{padding:0.55rem 0.65rem 0.7rem;}
-  .show-title{font-size:0.78rem;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:2px;}
-  .show-creator{font-size:0.68rem;color:var(--muted);margin-bottom:2px;}
-  .show-meta{font-size:0.65rem;font-family:var(--font-mono);color:var(--muted);}
+  .show-info{flex:1;min-width:0;}
+  .show-title{font-size:0.88rem;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:2px;}
+  .show-creator{font-size:0.75rem;color:var(--muted);}
+  .show-meta{font-size:0.7rem;font-family:var(--font-mono);color:var(--muted);white-space:nowrap;flex-shrink:0;}
 
   /* Back to top */
   #back-top{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink);color:#E8E4DE;border:none;border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;}
@@ -533,7 +532,7 @@
   <div id="site-title">My Cultural Life</div>
   <button class="tab-btn active" data-tab="art">Art</button>
   <button class="tab-btn" data-tab="poems">Poems</button>
-  <button class="tab-btn" data-tab="films">Films</button>
+  <button class="tab-btn" data-tab="films">Film</button>
   <button class="tab-btn" data-tab="albums">Albums</button>
   <button class="tab-btn" data-tab="books">Books</button>
   <button class="tab-btn" data-tab="tv">TV</button>
@@ -3195,261 +3194,203 @@ I hear it in the deep heart’s core.</div>
     </div>
     <div class="show-grid" id="show-grid">
       <div class="show-card" data-country="usa" data-genre="drama" data-title="The Wire">
-        <div class="show-poster" id="poster-The-Wire">
-          <img src="" alt="The Wire" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The Wire</div>
           <div class="show-creator">David Simon</div>
           <div class="show-meta">HBO · 2002–2008</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Twin Peaks">
-        <div class="show-poster" id="poster-Twin-Peaks">
-          <img src="" alt="Twin Peaks" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Twin Peaks</div>
           <div class="show-creator">Lynch &amp; Frost</div>
           <div class="show-meta">ABC / Showtime · 1990–2017</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="The X-Files">
-        <div class="show-poster" id="poster-The-X-Files">
-          <img src="" alt="The X-Files" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The X-Files</div>
           <div class="show-creator">Chris Carter</div>
           <div class="show-meta">Fox · 1993–2018</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The Sopranos">
-        <div class="show-poster" id="poster-The-Sopranos">
-          <img src="" alt="The Sopranos" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The Sopranos</div>
           <div class="show-creator">David Chase</div>
           <div class="show-meta">HBO · 1999–2007</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Miami Vice">
-        <div class="show-poster" id="poster-Miami-Vice">
-          <img src="" alt="Miami Vice" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Miami Vice</div>
           <div class="show-creator">Anthony Yerkovich</div>
           <div class="show-meta">NBC · 1984–1990</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Game of Thrones">
-        <div class="show-poster" id="poster-Game-of-Thrones">
-          <img src="" alt="Game of Thrones" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Game of Thrones</div>
           <div class="show-creator">Benioff &amp; Weiss</div>
           <div class="show-meta">HBO · 2011–2019</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Breaking Bad">
-        <div class="show-poster" id="poster-Breaking-Bad">
-          <img src="" alt="Breaking Bad" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Breaking Bad</div>
           <div class="show-creator">Vince Gilligan</div>
           <div class="show-meta">AMC · 2008–2013</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="I May Destroy You">
-        <div class="show-poster" id="poster-I-May-Destroy-You">
-          <img src="" alt="I May Destroy You" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">I May Destroy You</div>
           <div class="show-creator">Michaela Coel</div>
           <div class="show-meta">BBC / HBO · 2020</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="ER">
-        <div class="show-poster" id="poster-ER">
-          <img src="" alt="ER" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">ER</div>
           <div class="show-creator">Michael Crichton</div>
           <div class="show-meta">NBC · 1994–2009</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Thick of It">
-        <div class="show-poster" id="poster-The-Thick-of-It">
-          <img src="" alt="The Thick of It" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The Thick of It</div>
           <div class="show-creator">Armando Iannucci</div>
           <div class="show-meta">BBC Two · 2005–2012</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Star Trek: The Next Generation">
-        <div class="show-poster" id="poster-Star-Trek--The-Next-">
-          <img src="" alt="Star Trek: The Next Generation" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Star Trek: The Next Generation</div>
           <div class="show-creator">Gene Roddenberry</div>
           <div class="show-meta">Syndicated · 1987–1994</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Office">
-        <div class="show-poster" id="poster-The-Office">
-          <img src="" alt="The Office" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The Office</div>
           <div class="show-creator">Gervais &amp; Merchant</div>
           <div class="show-meta">BBC Two · 2001–2003</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Cracker">
-        <div class="show-poster" id="poster-Cracker">
-          <img src="" alt="Cracker" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Cracker</div>
           <div class="show-creator">Jimmy McGovern</div>
           <div class="show-meta">ITV · 1993–2006</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Six Feet Under">
-        <div class="show-poster" id="poster-Six-Feet-Under">
-          <img src="" alt="Six Feet Under" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Six Feet Under</div>
           <div class="show-creator">Alan Ball</div>
           <div class="show-meta">HBO · 2001–2005</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Fleabag">
-        <div class="show-poster" id="poster-Fleabag">
-          <img src="" alt="Fleabag" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Fleabag</div>
           <div class="show-creator">Phoebe Waller-Bridge</div>
           <div class="show-meta">BBC Three · 2016–2019</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Deadwood">
-        <div class="show-poster" id="poster-Deadwood">
-          <img src="" alt="Deadwood" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Deadwood</div>
           <div class="show-creator">David Milch</div>
           <div class="show-meta">HBO · 2004–2006</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="animation" data-title="The Simpsons">
-        <div class="show-poster" id="poster-The-Simpsons">
-          <img src="" alt="The Simpsons" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The Simpsons</div>
           <div class="show-creator">Matt Groening</div>
           <div class="show-meta">Fox · 1989–</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Mad Men">
-        <div class="show-poster" id="poster-Mad-Men">
-          <img src="" alt="Mad Men" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Mad Men</div>
           <div class="show-creator">Matthew Weiner</div>
           <div class="show-meta">AMC · 2007–2015</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The West Wing">
-        <div class="show-poster" id="poster-The-West-Wing">
-          <img src="" alt="The West Wing" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The West Wing</div>
           <div class="show-creator">Aaron Sorkin</div>
           <div class="show-meta">NBC · 1999–2006</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Friends">
-        <div class="show-poster" id="poster-Friends">
-          <img src="" alt="Friends" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Friends</div>
           <div class="show-creator">Kauffman &amp; Crane</div>
           <div class="show-meta">NBC · 1994–2004</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Succession">
-        <div class="show-poster" id="poster-Succession">
-          <img src="" alt="Succession" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Succession</div>
           <div class="show-creator">Jesse Armstrong</div>
           <div class="show-meta">HBO · 2018–2023</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="True Detective">
-        <div class="show-poster" id="poster-True-Detective">
-          <img src="" alt="True Detective" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">True Detective</div>
           <div class="show-creator">Nic Pizzolatto</div>
           <div class="show-meta">HBO · 2014</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Brass Eye">
-        <div class="show-poster" id="poster-Brass-Eye">
-          <img src="" alt="Brass Eye" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Brass Eye</div>
           <div class="show-creator">Chris Morris</div>
           <div class="show-meta">Channel 4 · 1997–2001</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Day Today">
-        <div class="show-poster" id="poster-The-Day-Today">
-          <img src="" alt="The Day Today" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">The Day Today</div>
           <div class="show-creator">Morris &amp; Iannucci</div>
           <div class="show-meta">BBC Two · 1994</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="My So-Called Life">
-        <div class="show-poster" id="poster-My-So-Called-Life">
-          <img src="" alt="My So-Called Life" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">My So-Called Life</div>
           <div class="show-creator">Winnie Holzman</div>
           <div class="show-meta">ABC · 1994–1995</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="I&#x27;m Alan Partridge">
-        <div class="show-poster" id="poster-I-m-Alan-Partridge">
-          <img src="" alt="I&#x27;m Alan Partridge" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">I&#x27;m Alan Partridge</div>
           <div class="show-creator">Coogan &amp; Iannucci</div>
           <div class="show-meta">BBC Two · 1997–2002</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Columbo">
-        <div class="show-poster" id="poster-Columbo">
-          <img src="" alt="Columbo" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Columbo</div>
           <div class="show-creator">Levinson &amp; Link</div>
           <div class="show-meta">NBC · 1968–2003</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Late Night with David Letterman">
-        <div class="show-poster" id="poster-Late-Night-with-Davi">
-          <img src="" alt="Late Night with David Letterman" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Late Night with David Letterman</div>
           <div class="show-creator">David Letterman</div>
           <div class="show-meta">NBC · 1982–1993</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Battlestar Galactica">
-        <div class="show-poster" id="poster-Battlestar-Galactica">
-          <img src="" alt="Battlestar Galactica" style="display:none">▶
-        </div>
+        
         <div class="show-info">
           <div class="show-title">Battlestar Galactica</div>
           <div class="show-creator">Ronald D. Moore</div>
@@ -3481,8 +3422,7 @@ tabBtns.forEach(btn => {
     window.scrollTo(0, 0);
     if (target === 'albums' && !artLoaded) { artLoaded = true; loadAlbumArt(); }
     if (target === 'books'  && !coversLoaded) { coversLoaded = true; loadBookCovers(); }
-    if (target === 'tv'     && !postersLoaded) { postersLoaded = true; loadShowPosters(); }
-  });
+    });
 });
 
 // ── Poem toggle ────────────────────────────────────────────────
