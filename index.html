@@ -3549,7 +3549,7 @@ async function loadAlbumArt() {
   for (const card of cards) {
     const title = card.dataset.title, artist = card.dataset.artist;
     const artDiv = card.querySelector('.album-art'), img = artDiv?.querySelector('img');
-    if (!img || img.src) continue;
+    if (!img || img.getAttribute('src')) continue;
     try {
       const q = encodeURIComponent(artist + ' ' + title);
       const res = await fetch(`https://itunes.apple.com/search?term=${q}&entity=album&limit=3`);
@@ -3570,7 +3570,7 @@ async function loadBookCovers() {
   const entries = document.querySelectorAll('.book-entry[data-title]');
   for (const entry of entries) {
     const spine = entry.querySelector('.book-spine'), img = spine?.querySelector('img');
-    if (!img || img.src) continue;
+    if (!img || img.getAttribute('src')) continue;
     try {
       const q = encodeURIComponent(entry.dataset.title + ' ' + entry.dataset.author);
       const res = await fetch(`https://openlibrary.org/search.json?q=${q}&fields=cover_i&limit=3`);
@@ -3591,7 +3591,7 @@ async function loadShowPosters() {
   const cards = document.querySelectorAll('.show-card[data-title]');
   for (const card of cards) {
     const poster = card.querySelector('.show-poster'), img = poster?.querySelector('img');
-    if (!img || img.src) continue;
+    if (!img || img.getAttribute('src')) continue;
     try {
       const q = encodeURIComponent(card.dataset.title);
       const res = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${q}`);
