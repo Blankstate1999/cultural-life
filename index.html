@@ -99,7 +99,7 @@
   .book-filters{display:flex;gap:0.5rem 0.4rem;flex-wrap:wrap;margin-bottom:2rem;}
   .book-filter{font-size:0.75rem;padding:4px 12px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
   .book-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
-  .book-entry{display:grid;grid-template-columns:68px 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--rule);align-items:start;}
+  .book-entry{display:grid;grid-template-columns:1.5rem 68px 1fr;gap:0.75rem 1rem;padding:1rem 0;border-bottom:1px solid var(--rule);align-items:start;}
   .book-entry:last-child{border-bottom:none;}
   .book-spine{width:68px;aspect-ratio:2/3;border-radius:3px;background:#1c1a17;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#3a3530;overflow:hidden;flex-shrink:0;box-shadow:2px 2px 6px rgba(0,0,0,0.15);}
   .book-spine img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -114,10 +114,32 @@
   .tv-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
   .show-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem;}
   .show-grid{grid-template-columns:1fr!important;}
-  .show-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;}
+
+  /* Drag-and-drop ranks */
+  .album-card { position: relative; cursor: grab; }
+  .album-card:active { cursor: grabbing; }
+  .album-rank { position: absolute; top: 4px; left: 5px; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.7); z-index: 2; line-height: 1; }
+  .album-card.sortable-ghost { opacity: 0.3; }
+  .album-card.sortable-drag { box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: grabbing; }
+
+  .book-entry { cursor: grab; }
+  .book-entry:active { cursor: grabbing; }
+  .book-rank { font-family: var(--font-mono); font-size: 0.72rem; color: var(--rule); font-weight: 700; min-width: 1.5rem; flex-shrink: 0; text-align: right; padding-top: 2px; }
+  .book-entry.sortable-ghost { opacity: 0.3; }
+
+  .director-card { cursor: grab; }
+  .director-card:active { cursor: grabbing; }
+  .director-card.sortable-ghost { opacity: 0.3; }
+  .director-card.sortable-drag { box-shadow: 0 8px 24px rgba(0,0,0,0.15); cursor: grabbing; z-index: 10; }
+
+  .show-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;padding:0.75rem 1rem;display:flex;align-items:baseline;gap:0.75rem;cursor:grab;}
+  .show-card:active{cursor:grabbing;}
+  .show-card.sortable-ghost{opacity:0.35;background:var(--bg);}
+  .show-card.sortable-drag{box-shadow:0 8px 24px rgba(0,0,0,0.15);cursor:grabbing;}
+  .show-rank{font-family:var(--font-mono);font-size:0.75rem;color:var(--rule);min-width:1.5rem;flex-shrink:0;font-weight:600;text-align:right;}
   .show-card:hover{box-shadow:0 3px 10px rgba(0,0,0,0.07);}
   .show-card.hidden{display:none;}
-  .show-info{flex:1;min-width:0;}
+  .show-info{flex:1;min-width:0;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;}
   .show-title{font-size:0.88rem;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:2px;}
   .show-creator{font-size:0.75rem;color:var(--muted);}
   .show-meta{font-size:0.7rem;font-family:var(--font-mono);color:var(--muted);white-space:nowrap;flex-shrink:0;}
@@ -2558,6 +2580,7 @@ I hear it in the deep heart’s core.</div>
     </div>
     <div id="album-grid" class="album-grid">
         <div class="album-card" data-genre="Electronic" data-title="Discovery" data-artist="Daft Punk">
+          <div class="album-rank">1</div>
           <div class="album-art" id="art-Discovery">
             <img src="" alt="Discovery" style="display:none">
             ♪
@@ -2569,6 +2592,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Abbey Road" data-artist="The Beatles">
+          <div class="album-rank">2</div>
           <div class="album-art" id="art-Abbey-Road">
             <img src="" alt="Abbey Road" style="display:none">
             ♪
@@ -2580,6 +2604,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Jazz" data-title="Kind of Blue" data-artist="Miles Davis">
+          <div class="album-rank">3</div>
           <div class="album-art" id="art-Kind-of-Blue">
             <img src="" alt="Kind of Blue" style="display:none">
             ♪
@@ -2591,6 +2616,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Art Pop" data-title="Hounds of Love" data-artist="Kate Bush">
+          <div class="album-rank">4</div>
           <div class="album-art" id="art-Hounds-of-Love">
             <img src="" alt="Hounds of Love" style="display:none">
             ♪
@@ -2602,6 +2628,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Nevermind" data-artist="Nirvana">
+          <div class="album-rank">5</div>
           <div class="album-art" id="art-Nevermind">
             <img src="" alt="Nevermind" style="display:none">
             ♪
@@ -2613,6 +2640,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="The Dark Side of the Moon" data-artist="Pink Floyd">
+          <div class="album-rank">6</div>
           <div class="album-art" id="art-The-Dark-Side-of-the">
             <img src="" alt="The Dark Side of the Moon" style="display:none">
             ♪
@@ -2624,6 +2652,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Electronic" data-title="Kid A" data-artist="Radiohead">
+          <div class="album-rank">7</div>
           <div class="album-art" id="art-Kid-A">
             <img src="" alt="Kid A" style="display:none">
             ♪
@@ -2635,6 +2664,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Purple Rain" data-artist="Prince">
+          <div class="album-rank">8</div>
           <div class="album-art" id="art-Purple-Rain">
             <img src="" alt="Purple Rain" style="display:none">
             ♪
@@ -2646,6 +2676,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Is This It" data-artist="The Strokes">
+          <div class="album-rank">9</div>
           <div class="album-art" id="art-Is-This-It">
             <img src="" alt="Is This It" style="display:none">
             ♪
@@ -2657,6 +2688,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Jazz" data-title="A Love Supreme" data-artist="John Coltrane">
+          <div class="album-rank">10</div>
           <div class="album-art" id="art-A-Love-Supreme">
             <img src="" alt="A Love Supreme" style="display:none">
             ♪
@@ -2668,6 +2700,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Born This Way" data-artist="Lady Gaga">
+          <div class="album-rank">11</div>
           <div class="album-art" id="art-Born-This-Way">
             <img src="" alt="Born This Way" style="display:none">
             ♪
@@ -2679,6 +2712,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Alternative" data-title="Yoshimi Battles the Pink Robots" data-artist="The Flaming Lips">
+          <div class="album-rank">12</div>
           <div class="album-art" id="art-Yoshimi-Battles-the-">
             <img src="" alt="Yoshimi Battles the Pink Robots" style="display:none">
             ♪
@@ -2690,6 +2724,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Rumours" data-artist="Fleetwood Mac">
+          <div class="album-rank">13</div>
           <div class="album-art" id="art-Rumours">
             <img src="" alt="Rumours" style="display:none">
             ♪
@@ -2701,6 +2736,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="London Calling" data-artist="The Clash">
+          <div class="album-rank">14</div>
           <div class="album-art" id="art-London-Calling">
             <img src="" alt="London Calling" style="display:none">
             ♪
@@ -2712,6 +2748,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="The Velvet Underground &amp; Nico" data-artist="The Velvet Underground">
+          <div class="album-rank">15</div>
           <div class="album-art" id="art-The-Velvet-Undergrou">
             <img src="" alt="The Velvet Underground &amp; Nico" style="display:none">
             ♪
@@ -2723,6 +2760,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="OK Computer" data-artist="Radiohead">
+          <div class="album-rank">16</div>
           <div class="album-art" id="art-OK-Computer">
             <img src="" alt="OK Computer" style="display:none">
             ♪
@@ -2734,6 +2772,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Automatic for the People" data-artist="R.E.M.">
+          <div class="album-rank">17</div>
           <div class="album-art" id="art-Automatic-for-the-Pe">
             <img src="" alt="Automatic for the People" style="display:none">
             ♪
@@ -2745,6 +2784,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Jagged Little Pill" data-artist="Alanis Morissette">
+          <div class="album-rank">18</div>
           <div class="album-art" id="art-Jagged-Little-Pill">
             <img src="" alt="Jagged Little Pill" style="display:none">
             ♪
@@ -2756,6 +2796,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Lemonade" data-artist="Beyoncé">
+          <div class="album-rank">19</div>
           <div class="album-art" id="art-Lemonade">
             <img src="" alt="Lemonade" style="display:none">
             ♪
@@ -2767,6 +2808,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="The Immaculate Collection" data-artist="Madonna">
+          <div class="album-rank">20</div>
           <div class="album-art" id="art-The-Immaculate-Colle">
             <img src="" alt="The Immaculate Collection" style="display:none">
             ♪
@@ -2778,6 +2820,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Bad" data-artist="Michael Jackson">
+          <div class="album-rank">21</div>
           <div class="album-art" id="art-Bad">
             <img src="" alt="Bad" style="display:none">
             ♪
@@ -2789,6 +2832,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Art Pop" data-title="Debut" data-artist="Björk">
+          <div class="album-rank">22</div>
           <div class="album-art" id="art-Debut">
             <img src="" alt="Debut" style="display:none">
             ♪
@@ -2800,6 +2844,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Smash" data-artist="The Offspring">
+          <div class="album-rank">23</div>
           <div class="album-art" id="art-Smash">
             <img src="" alt="Smash" style="display:none">
             ♪
@@ -2811,6 +2856,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Art Pop" data-title="I Am a Bird Now" data-artist="Antony and the Johnsons">
+          <div class="album-rank">24</div>
           <div class="album-art" id="art-I-Am-a-Bird-Now">
             <img src="" alt="I Am a Bird Now" style="display:none">
             ♪
@@ -2822,6 +2868,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Dream Pop" data-title="Heaven or Las Vegas" data-artist="Cocteau Twins">
+          <div class="album-rank">25</div>
           <div class="album-art" id="art-Heaven-or-Las-Vegas">
             <img src="" alt="Heaven or Las Vegas" style="display:none">
             ♪
@@ -2833,6 +2880,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Born to Die" data-artist="Lana Del Rey">
+          <div class="album-rank">26</div>
           <div class="album-art" id="art-Born-to-Die">
             <img src="" alt="Born to Die" style="display:none">
             ♪
@@ -2844,6 +2892,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Elephant" data-artist="The White Stripes">
+          <div class="album-rank">27</div>
           <div class="album-art" id="art-Elephant">
             <img src="" alt="Elephant" style="display:none">
             ♪
@@ -2855,6 +2904,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="Getting Killed" data-artist="Geese">
+          <div class="album-rank">28</div>
           <div class="album-art" id="art-Getting-Killed">
             <img src="" alt="Getting Killed" style="display:none">
             ♪
@@ -2866,6 +2916,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Art Rock" data-title="Spirit of Eden" data-artist="Talk Talk">
+          <div class="album-rank">29</div>
           <div class="album-art" id="art-Spirit-of-Eden">
             <img src="" alt="Spirit of Eden" style="display:none">
             ♪
@@ -2877,6 +2928,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Art Rock" data-title="Let England Shake" data-artist="PJ Harvey">
+          <div class="album-rank">30</div>
           <div class="album-art" id="art-Let-England-Shake">
             <img src="" alt="Let England Shake" style="display:none">
             ♪
@@ -2888,6 +2940,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Rock" data-title="The Queen Is Dead" data-artist="The Smiths">
+          <div class="album-rank">31</div>
           <div class="album-art" id="art-The-Queen-Is-Dead">
             <img src="" alt="The Queen Is Dead" style="display:none">
             ♪
@@ -2899,6 +2952,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Electronic" data-title="Dummy" data-artist="Portishead">
+          <div class="album-rank">32</div>
           <div class="album-art" id="art-Dummy">
             <img src="" alt="Dummy" style="display:none">
             ♪
@@ -2910,6 +2964,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Electronic" data-title="Mezzanine" data-artist="Massive Attack">
+          <div class="album-rank">33</div>
           <div class="album-art" id="art-Mezzanine">
             <img src="" alt="Mezzanine" style="display:none">
             ♪
@@ -2921,6 +2976,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Post-Punk" data-title="Unknown Pleasures" data-artist="Joy Division">
+          <div class="album-rank">34</div>
           <div class="album-art" id="art-Unknown-Pleasures">
             <img src="" alt="Unknown Pleasures" style="display:none">
             ♪
@@ -2932,6 +2988,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Brat" data-artist="Charli XCX">
+          <div class="album-rank">35</div>
           <div class="album-art" id="art-Brat">
             <img src="" alt="Brat" style="display:none">
             ♪
@@ -2943,6 +3000,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Body Talk" data-artist="Robyn">
+          <div class="album-rank">36</div>
           <div class="album-art" id="art-Body-Talk">
             <img src="" alt="Body Talk" style="display:none">
             ♪
@@ -2954,6 +3012,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Folk" data-title="Folklore" data-artist="Taylor Swift">
+          <div class="album-rank">37</div>
           <div class="album-art" id="art-Folklore">
             <img src="" alt="Folklore" style="display:none">
             ♪
@@ -2965,6 +3024,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Actually" data-artist="Pet Shop Boys">
+          <div class="album-rank">38</div>
           <div class="album-art" id="art-Actually">
             <img src="" alt="Actually" style="display:none">
             ♪
@@ -2976,6 +3036,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Pop" data-title="Behaviour" data-artist="Pet Shop Boys">
+          <div class="album-rank">39</div>
           <div class="album-art" id="art-Behaviour">
             <img src="" alt="Behaviour" style="display:none">
             ♪
@@ -2987,6 +3048,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Folk" data-title="Illinois" data-artist="Sufjan Stevens">
+          <div class="album-rank">40</div>
           <div class="album-art" id="art-Illinois">
             <img src="" alt="Illinois" style="display:none">
             ♪
@@ -2998,6 +3060,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Art Rock" data-title="Blackstar" data-artist="David Bowie">
+          <div class="album-rank">41</div>
           <div class="album-art" id="art-Blackstar">
             <img src="" alt="Blackstar" style="display:none">
             ♪
@@ -3009,6 +3072,7 @@ I hear it in the deep heart’s core.</div>
           </div>
         </div>
         <div class="album-card" data-genre="Folk" data-title="Blue" data-artist="Joni Mitchell">
+          <div class="album-rank">42</div>
           <div class="album-art" id="art-Blue">
             <img src="" alt="Blue" style="display:none">
             ♪
@@ -3040,6 +3104,7 @@ I hear it in the deep heart’s core.</div>
     </div>
     <div id="books-list">
       <div class="book-entry" data-genre="fiction" data-title="A Month in the Country" data-author="J. L. Carr">
+        <div class="book-rank">1</div>
         <div class="book-spine" id="cover-A-Month-in-the-Count">
           <img src="" alt="A Month in the Country" style="display:none">📖
         </div>
@@ -3050,6 +3115,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="American Psycho" data-author="Bret Easton Ellis">
+        <div class="book-rank">2</div>
         <div class="book-spine" id="cover-American-Psycho">
           <img src="" alt="American Psycho" style="display:none">📖
         </div>
@@ -3060,6 +3126,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Secret History" data-author="Donna Tartt">
+        <div class="book-rank">3</div>
         <div class="book-spine" id="cover-The-Secret-History">
           <img src="" alt="The Secret History" style="display:none">📖
         </div>
@@ -3070,6 +3137,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="Beloved" data-author="Toni Morrison">
+        <div class="book-rank">4</div>
         <div class="book-spine" id="cover-Beloved">
           <img src="" alt="Beloved" style="display:none">📖
         </div>
@@ -3080,6 +3148,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="Misery" data-author="Stephen King">
+        <div class="book-rank">5</div>
         <div class="book-spine" id="cover-Misery">
           <img src="" alt="Misery" style="display:none">📖
         </div>
@@ -3090,6 +3159,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="Austerlitz" data-author="W. G. Sebald">
+        <div class="book-rank">6</div>
         <div class="book-spine" id="cover-Austerlitz">
           <img src="" alt="Austerlitz" style="display:none">📖
         </div>
@@ -3100,6 +3170,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="non-fiction" data-title="I Know Why the Caged Bird Sings" data-author="Maya Angelou">
+        <div class="book-rank">7</div>
         <div class="book-spine" id="cover-I-Know-Why-the-Caged">
           <img src="" alt="I Know Why the Caged Bird Sings" style="display:none">📖
         </div>
@@ -3110,6 +3181,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="His Dark Materials" data-author="Philip Pullman">
+        <div class="book-rank">8</div>
         <div class="book-spine" id="cover-His-Dark-Materials">
           <img src="" alt="His Dark Materials" style="display:none">📖
         </div>
@@ -3120,6 +3192,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="Nineteen Eighty-Four" data-author="George Orwell">
+        <div class="book-rank">9</div>
         <div class="book-spine" id="cover-Nineteen-Eighty-Four">
           <img src="" alt="Nineteen Eighty-Four" style="display:none">📖
         </div>
@@ -3130,6 +3203,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Hound of the Baskervilles" data-author="Arthur Conan Doyle">
+        <div class="book-rank">10</div>
         <div class="book-spine" id="cover-The-Hound-of-the-Bas">
           <img src="" alt="The Hound of the Baskervilles" style="display:none">📖
         </div>
@@ -3140,6 +3214,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Code of the Woosters" data-author="P. G. Wodehouse">
+        <div class="book-rank">11</div>
         <div class="book-spine" id="cover-Code-of-the-Wooster">
           <img src="" alt="The Code of the Woosters" style="display:none">📖
         </div>
@@ -3150,6 +3225,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="Crime and Punishment" data-author="Fyodor Dostoevsky">
+        <div class="book-rank">12</div>
         <div class="book-spine"><img src="" alt="Crime and Punishment" style="display:none">📖</div>
         <div class="book-info">
           <div class="book-title">Crime and Punishment</div>
@@ -3158,6 +3234,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Leopard" data-author="Giuseppe Tomasi di Lampedusa">
+        <div class="book-rank">13</div>
         <div class="book-spine"><img src="" alt="The Leopard" style="display:none">📖</div>
         <div class="book-info">
           <div class="book-title">The Leopard</div>
@@ -3166,6 +3243,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Handmaid&#x27;s Tale" data-author="Margaret Atwood">
+        <div class="book-rank">14</div>
         <div class="book-spine"><img src="" alt="The Handmaid&#x27;s Tale" style="display:none">📖</div>
         <div class="book-info">
           <div class="book-title">The Handmaid&#x27;s Tale</div>
@@ -3195,6 +3273,7 @@ I hear it in the deep heart’s core.</div>
     <div class="show-grid" id="show-grid">
       <div class="show-card" data-country="usa" data-genre="drama" data-title="The Wire">
         
+        <div class="show-rank">1</div>
         <div class="show-info">
           <div class="show-title">The Wire</div>
           <div class="show-creator">David Simon</div>
@@ -3202,6 +3281,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Twin Peaks">
         
+        <div class="show-rank">2</div>
         <div class="show-info">
           <div class="show-title">Twin Peaks</div>
           <div class="show-creator">Lynch &amp; Frost</div>
@@ -3209,6 +3289,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="The X-Files">
         
+        <div class="show-rank">3</div>
         <div class="show-info">
           <div class="show-title">The X-Files</div>
           <div class="show-creator">Chris Carter</div>
@@ -3216,6 +3297,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The Sopranos">
         
+        <div class="show-rank">4</div>
         <div class="show-info">
           <div class="show-title">The Sopranos</div>
           <div class="show-creator">David Chase</div>
@@ -3223,6 +3305,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Miami Vice">
         
+        <div class="show-rank">5</div>
         <div class="show-info">
           <div class="show-title">Miami Vice</div>
           <div class="show-creator">Anthony Yerkovich</div>
@@ -3230,6 +3313,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Game of Thrones">
         
+        <div class="show-rank">6</div>
         <div class="show-info">
           <div class="show-title">Game of Thrones</div>
           <div class="show-creator">Benioff &amp; Weiss</div>
@@ -3237,6 +3321,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Breaking Bad">
         
+        <div class="show-rank">7</div>
         <div class="show-info">
           <div class="show-title">Breaking Bad</div>
           <div class="show-creator">Vince Gilligan</div>
@@ -3244,6 +3329,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="I May Destroy You">
         
+        <div class="show-rank">8</div>
         <div class="show-info">
           <div class="show-title">I May Destroy You</div>
           <div class="show-creator">Michaela Coel</div>
@@ -3251,6 +3337,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="ER">
         
+        <div class="show-rank">9</div>
         <div class="show-info">
           <div class="show-title">ER</div>
           <div class="show-creator">Michael Crichton</div>
@@ -3258,6 +3345,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Thick of It">
         
+        <div class="show-rank">10</div>
         <div class="show-info">
           <div class="show-title">The Thick of It</div>
           <div class="show-creator">Armando Iannucci</div>
@@ -3265,6 +3353,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Star Trek: The Next Generation">
         
+        <div class="show-rank">11</div>
         <div class="show-info">
           <div class="show-title">Star Trek: The Next Generation</div>
           <div class="show-creator">Gene Roddenberry</div>
@@ -3272,6 +3361,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Office">
         
+        <div class="show-rank">12</div>
         <div class="show-info">
           <div class="show-title">The Office</div>
           <div class="show-creator">Gervais &amp; Merchant</div>
@@ -3279,6 +3369,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Cracker">
         
+        <div class="show-rank">13</div>
         <div class="show-info">
           <div class="show-title">Cracker</div>
           <div class="show-creator">Jimmy McGovern</div>
@@ -3286,6 +3377,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Six Feet Under">
         
+        <div class="show-rank">14</div>
         <div class="show-info">
           <div class="show-title">Six Feet Under</div>
           <div class="show-creator">Alan Ball</div>
@@ -3293,6 +3385,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Fleabag">
         
+        <div class="show-rank">15</div>
         <div class="show-info">
           <div class="show-title">Fleabag</div>
           <div class="show-creator">Phoebe Waller-Bridge</div>
@@ -3300,6 +3393,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Deadwood">
         
+        <div class="show-rank">16</div>
         <div class="show-info">
           <div class="show-title">Deadwood</div>
           <div class="show-creator">David Milch</div>
@@ -3307,6 +3401,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="animation" data-title="The Simpsons">
         
+        <div class="show-rank">17</div>
         <div class="show-info">
           <div class="show-title">The Simpsons</div>
           <div class="show-creator">Matt Groening</div>
@@ -3314,6 +3409,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Mad Men">
         
+        <div class="show-rank">18</div>
         <div class="show-info">
           <div class="show-title">Mad Men</div>
           <div class="show-creator">Matthew Weiner</div>
@@ -3321,6 +3417,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The West Wing">
         
+        <div class="show-rank">19</div>
         <div class="show-info">
           <div class="show-title">The West Wing</div>
           <div class="show-creator">Aaron Sorkin</div>
@@ -3328,6 +3425,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Friends">
         
+        <div class="show-rank">20</div>
         <div class="show-info">
           <div class="show-title">Friends</div>
           <div class="show-creator">Kauffman &amp; Crane</div>
@@ -3335,6 +3433,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Succession">
         
+        <div class="show-rank">21</div>
         <div class="show-info">
           <div class="show-title">Succession</div>
           <div class="show-creator">Jesse Armstrong</div>
@@ -3342,6 +3441,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="True Detective">
         
+        <div class="show-rank">22</div>
         <div class="show-info">
           <div class="show-title">True Detective</div>
           <div class="show-creator">Nic Pizzolatto</div>
@@ -3349,6 +3449,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Brass Eye">
         
+        <div class="show-rank">23</div>
         <div class="show-info">
           <div class="show-title">Brass Eye</div>
           <div class="show-creator">Chris Morris</div>
@@ -3356,6 +3457,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Day Today">
         
+        <div class="show-rank">24</div>
         <div class="show-info">
           <div class="show-title">The Day Today</div>
           <div class="show-creator">Morris &amp; Iannucci</div>
@@ -3363,6 +3465,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="My So-Called Life">
         
+        <div class="show-rank">25</div>
         <div class="show-info">
           <div class="show-title">My So-Called Life</div>
           <div class="show-creator">Winnie Holzman</div>
@@ -3370,6 +3473,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="I&#x27;m Alan Partridge">
         
+        <div class="show-rank">26</div>
         <div class="show-info">
           <div class="show-title">I&#x27;m Alan Partridge</div>
           <div class="show-creator">Coogan &amp; Iannucci</div>
@@ -3377,6 +3481,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Columbo">
         
+        <div class="show-rank">27</div>
         <div class="show-info">
           <div class="show-title">Columbo</div>
           <div class="show-creator">Levinson &amp; Link</div>
@@ -3384,6 +3489,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Late Night with David Letterman">
         
+        <div class="show-rank">28</div>
         <div class="show-info">
           <div class="show-title">Late Night with David Letterman</div>
           <div class="show-creator">David Letterman</div>
@@ -3391,6 +3497,7 @@ I hear it in the deep heart’s core.</div>
         </div>
       </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Battlestar Galactica">
         
+        <div class="show-rank">29</div>
         <div class="show-info">
           <div class="show-title">Battlestar Galactica</div>
           <div class="show-creator">Ronald D. Moore</div>
@@ -3467,6 +3574,54 @@ document.getElementById('book-filters').addEventListener('click', e => {
   document.querySelectorAll('.book-entry').forEach(el => {
     el.style.display = (genre === 'all' || el.dataset.genre === genre) ? '' : 'none';
   });
+});
+
+// ── TV sortable ───────────────────────────────────────────────
+function updateRanks() {
+  document.querySelectorAll('#show-grid .show-card').forEach((card, i) => {
+    const rank = card.querySelector('.show-rank');
+    if (rank) rank.textContent = i + 1;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('show-grid');
+  if (grid && window.Sortable) {
+    Sortable.create(grid, { animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag', onEnd: updateRanks });
+  }
+
+  // Albums
+  const albumGrid = document.getElementById('album-grid');
+  if (albumGrid && window.Sortable) {
+    Sortable.create(albumGrid, {
+      animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
+      onEnd: () => albumGrid.querySelectorAll('.album-rank').forEach((r, i) => r.textContent = i + 1)
+    });
+  }
+
+  // Books
+  const booksList = document.getElementById('books-list');
+  if (booksList && window.Sortable) {
+    Sortable.create(booksList, {
+      animation: 150, ghostClass: 'sortable-ghost',
+      onEnd: () => booksList.querySelectorAll('.book-rank').forEach((r, i) => r.textContent = i + 1)
+    });
+  }
+
+  // Directors ranked
+  const dirRanked = document.getElementById('directors-ranked');
+  if (dirRanked && window.Sortable) {
+    Sortable.create(dirRanked, {
+      animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
+      onEnd: () => dirRanked.querySelectorAll('.dir-rank-badge').forEach((r, i) => r.textContent = '#' + (i + 1))
+    });
+  }
+
+  // Directors essential
+  const dirEssential = document.getElementById('directors-essential');
+  if (dirEssential && window.Sortable) {
+    Sortable.create(dirEssential, { animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag' });
+  }
 });
 
 // ── TV filter ──────────────────────────────────────────────────
