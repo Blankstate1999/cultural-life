@@ -3584,45 +3584,33 @@ function updateRanks() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('show-grid');
-  if (grid && window.Sortable) {
-    Sortable.create(grid, { animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag', onEnd: updateRanks });
-  }
+// ── Sortable initialisation ───────────────────────────────────
+function initSortable() {
+  if (!window.Sortable) { setTimeout(initSortable, 100); return; }
 
-  // Albums
+  Sortable.create(document.getElementById('show-grid'), {
+    animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag', onEnd: updateRanks
+  });
   const albumGrid = document.getElementById('album-grid');
-  if (albumGrid && window.Sortable) {
-    Sortable.create(albumGrid, {
-      animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
-      onEnd: () => albumGrid.querySelectorAll('.album-rank').forEach((r, i) => r.textContent = i + 1)
-    });
-  }
-
-  // Books
+  Sortable.create(albumGrid, {
+    animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
+    onEnd: () => albumGrid.querySelectorAll('.album-rank').forEach((r, i) => r.textContent = i + 1)
+  });
   const booksList = document.getElementById('books-list');
-  if (booksList && window.Sortable) {
-    Sortable.create(booksList, {
-      animation: 150, ghostClass: 'sortable-ghost',
-      onEnd: () => booksList.querySelectorAll('.book-rank').forEach((r, i) => r.textContent = i + 1)
-    });
-  }
-
-  // Directors ranked
+  Sortable.create(booksList, {
+    animation: 150, ghostClass: 'sortable-ghost',
+    onEnd: () => booksList.querySelectorAll('.book-rank').forEach((r, i) => r.textContent = i + 1)
+  });
   const dirRanked = document.getElementById('directors-ranked');
-  if (dirRanked && window.Sortable) {
-    Sortable.create(dirRanked, {
-      animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
-      onEnd: () => dirRanked.querySelectorAll('.dir-rank-badge').forEach((r, i) => r.textContent = '#' + (i + 1))
-    });
-  }
-
-  // Directors essential
-  const dirEssential = document.getElementById('directors-essential');
-  if (dirEssential && window.Sortable) {
-    Sortable.create(dirEssential, { animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag' });
-  }
-});
+  Sortable.create(dirRanked, {
+    animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
+    onEnd: () => dirRanked.querySelectorAll('.dir-rank-badge').forEach((r, i) => r.textContent = '#' + (i + 1))
+  });
+  Sortable.create(document.getElementById('directors-essential'), {
+    animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag'
+  });
+}
+initSortable();
 
 // ── TV filter ──────────────────────────────────────────────────
 document.getElementById('tv-controls').addEventListener('click', e => {
