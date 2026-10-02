@@ -1,1 +1,3620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Cultural Life</title>
+<style>
 
+  :root {
+    --bg:#F9F7F4; --surface:#FFFFFF; --ink:#1C1915; --muted:#7A756E; --rule:#E2DDD7; --accent:#B5390A;
+    --painting:#C94040; --sculpture:#6B63C9; --architecture:#B07010; --other:#1A8F68;
+    --painting-bg:#FDF0F0; --sculpture-bg:#F0EFF9; --architecture-bg:#FBF4E6; --other-bg:#E8F6F1;
+    --nav-w:220px; --tab-h:50px;
+    --font-display:'Georgia','Times New Roman',serif;
+    --font-body:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --font-mono:'SFMono-Regular','Consolas',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6;}
+
+  /* Top nav */
+  #top-nav{position:fixed;top:0;left:0;right:0;height:var(--tab-h);background:var(--ink);display:flex;align-items:stretch;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);}
+  #site-title{font-family:var(--font-display);font-size:0.9rem;color:#C8C0B4;padding:0 1.25rem;display:flex;align-items:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.08);letter-spacing:0.01em;}
+  .tab-btn{background:none;border:none;color:#9E9890;font-family:var(--font-body);font-size:0.8rem;padding:0 1.1rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;letter-spacing:0.04em;text-transform:uppercase;}
+  .tab-btn:hover{color:#E8E4DE;}
+  .tab-btn.active{color:#F0EBE3;border-bottom-color:var(--accent);}
+
+  /* Tab panels */
+  .tab-panel{display:none;padding-top:var(--tab-h);min-height:100vh;}
+  .tab-panel.active{display:block;}
+
+  /* Art tab */
+  #art-main{flex:1;padding:2.5rem 2.5rem 4rem;max-width:900px;margin:0 auto;width:100%;}
+
+  /* Art controls */
+  #art-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.65rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:0.3rem 0.4rem;align-items:center;}
+  .art-filter,.art-era-btn{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;white-space:nowrap;}
+  .art-filter:hover,.art-era-btn:hover{color:var(--ink);}
+  .art-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
+  .art-era-btn{border-style:dashed;}
+
+  /* Shared content layout */
+  .content-wrap{max-width:860px;padding:3rem 2.5rem 5rem;margin:0 auto;}
+  .section-hero{padding-bottom:2rem;border-bottom:1px solid var(--rule);margin-bottom:2.5rem;}
+  .section-hero .eyebrow{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:0.6rem;}
+  .section-hero h2{font-family:var(--font-display);font-size:2.2rem;font-weight:normal;margin-bottom:0.5rem;}
+  .section-hero p{font-size:0.95rem;color:var(--muted);}
+
+  /* Poems */
+  #poem-index{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.6rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:0.3rem 0.5rem;}
+  .poem-index-link{font-size:0.7rem;color:var(--muted);text-decoration:none;padding:2px 6px;border-radius:3px;border:1px solid transparent;transition:all 0.12s;}
+  .poem-index-link:hover{color:var(--ink);border-color:var(--rule);background:var(--surface);}
+  .poem-card{border-bottom:1px solid var(--rule);}
+  .poem-card:last-child{border-bottom:none;}
+  .poem-toggle{width:100%;background:none;border:none;padding:0.9rem 0;cursor:pointer;display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;text-align:left;}
+  .poem-toggle:hover .poem-title{color:var(--accent);}
+  .poem-toggle .poem-title{font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:var(--ink);transition:color 0.12s;}
+  .poem-toggle .poem-author{font-size:0.8rem;color:var(--muted);}
+  .poem-toggle .poem-year{font-size:0.72rem;font-family:var(--font-mono);color:var(--muted);margin-left:auto;}
+  .poem-chevron{font-size:0.7rem;color:var(--muted);margin-left:0.5rem;transition:transform 0.2s;flex-shrink:0;}
+  .poem-card.open .poem-chevron{transform:rotate(180deg);}
+  .poem-body-wrap{display:none;padding-bottom:1.25rem;}
+  .poem-card.open .poem-body-wrap{display:block;}
+  .poem-body{font-family:var(--font-display);font-size:0.92rem;line-height:1.85;color:#2C2820;white-space:pre-wrap;}
+
+  /* Films */
+  #films-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.75rem 0;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .films-filter{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
+  .films-filter:hover{color:var(--ink);}
+  .films-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
+  .director-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:3rem;}
+  .director-card{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:0.4rem;transition:box-shadow 0.15s;position:relative;}
+  .director-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.07);}
+  .director-card.hidden{display:none;}
+  .dir-rank-badge{position:absolute;top:0.75rem;right:0.85rem;font-family:var(--font-mono);font-size:0.7rem;color:var(--rule);font-weight:700;}
+  .dir-header{display:flex;flex-direction:column;gap:1px;padding-right:2rem;}
+  .dir-name{font-family:var(--font-display);font-size:1rem;color:var(--ink);}
+  .dir-meta{font-size:0.7rem;color:var(--muted);font-family:var(--font-mono);}
+  .dir-films{display:flex;flex-direction:column;gap:1px;margin-top:0.2rem;border-top:1px solid var(--rule);padding-top:0.5rem;}
+  .dir-film{font-size:0.75rem;color:#4A4540;display:flex;justify-content:space-between;gap:0.5rem;}
+  .dir-film em{font-style:italic;}
+  .dir-year{font-family:var(--font-mono);font-size:0.68rem;color:var(--muted);flex-shrink:0;}
+  .dir-note{font-size:0.74rem;color:var(--muted);line-height:1.55;font-style:italic;border-top:1px solid var(--rule);padding-top:0.45rem;}
+  .films-section-head{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--accent);margin:0 0 0.75rem;}
+
+  /* Albums */
+  .album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem;}
+  .album-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;}
+  .album-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1);}
+  .album-art{width:100%;aspect-ratio:1;background:#1c1a17;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#3a3530;overflow:hidden;}
+  .album-art img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.3s;}
+  .album-info{padding:0.55rem 0.65rem 0.7rem;}
+  .album-name{font-size:0.78rem;font-weight:600;color:var(--ink);margin-bottom:2px;line-height:1.3;}
+  .album-artist{font-size:0.7rem;color:var(--muted);margin-bottom:2px;}
+  .album-year{font-size:0.65rem;font-family:var(--font-mono);color:var(--muted);}
+
+  /* Books */
+  .book-filters{display:flex;gap:0.5rem 0.4rem;flex-wrap:wrap;margin-bottom:2rem;}
+  .book-filter{font-size:0.75rem;padding:4px 12px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
+  .book-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
+  .book-entry{display:grid;grid-template-columns:68px 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--rule);align-items:start;}
+  .book-entry:last-child{border-bottom:none;}
+  .book-spine{width:68px;aspect-ratio:2/3;border-radius:3px;background:#1c1a17;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#3a3530;overflow:hidden;flex-shrink:0;box-shadow:2px 2px 6px rgba(0,0,0,0.15);}
+  .book-spine img{width:100%;height:100%;object-fit:cover;display:block;}
+  .book-title{font-family:var(--font-display);font-size:1rem;font-style:italic;color:var(--ink);line-height:1.3;margin-bottom:2px;}
+  .book-author{font-size:0.8rem;color:var(--muted);margin-bottom:0.35rem;}
+  .book-meta{display:flex;gap:0.5rem;flex-wrap:wrap;}
+  .book-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;padding:2px 7px;border-radius:3px;background:var(--bg);color:var(--muted);border:1px solid var(--rule);}
+
+  /* TV */
+  #tv-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.75rem 0;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .tv-filter{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
+  .tv-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
+  .show-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem;}
+  .show-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;}
+  .show-card:hover{box-shadow:0 4px 14px rgba(0,0,0,0.09);}
+  .show-card.hidden{display:none;}
+  .show-poster{width:100%;aspect-ratio:2/3;background:#1c1a17;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#3a3530;overflow:hidden;}
+  .show-poster img{width:100%;height:100%;object-fit:cover;display:block;}
+  .show-info{padding:0.55rem 0.65rem 0.7rem;}
+  .show-title{font-size:0.78rem;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:2px;}
+  .show-creator{font-size:0.68rem;color:var(--muted);margin-bottom:2px;}
+  .show-meta{font-size:0.65rem;font-family:var(--font-mono);color:var(--muted);}
+
+  /* Back to top */
+  #back-top{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink);color:#E8E4DE;border:none;border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;}
+  #back-top.visible{opacity:1;pointer-events:auto;}
+  #back-top:hover{background:var(--accent);}
+
+  @media(max-width:720px){
+    .content-wrap{padding:1.5rem 1.25rem 4rem;}
+    .album-grid,.show-grid{grid-template-columns:repeat(2,1fr);}
+    .director-grid{grid-template-columns:1fr;}
+  }
+
+
+  /* ── Tokens ─────────────────────────────────────────────── */
+  :root {
+    --bg:        #F9F7F4;
+    --surface:   #FFFFFF;
+    --ink:       #1C1915;
+    --muted:     #7A756E;
+    --rule:      #E2DDD7;
+    --accent:    #B5390A;        /* burnt sienna — the colour of old masters' grounds */
+
+    --painting:     #C94040;
+    --sculpture:    #6B63C9;
+    --architecture: #B07010;
+    --other:        #1A8F68;
+
+    --painting-bg:     #FDF0F0;
+    --sculpture-bg:    #F0EFF9;
+    --architecture-bg: #FBF4E6;
+    --other-bg:        #E8F6F1;
+
+    --nav-w:   220px;
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono:    'SFMono-Regular', 'Consolas', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar nav ─────────────────────────────────────────── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--nav-w);
+    height: 100vh;
+    background: var(--ink);
+    color: #E8E4DE;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 2rem;
+  }
+
+  #sidebar-head {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  #sidebar-head h1 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: normal;
+    line-height: 1.35;
+    color: #F0EBE3;
+    letter-spacing: 0.01em;
+  }
+
+  #sidebar-head p {
+    font-size: 0.72rem;
+    color: #9E9890;
+    margin-top: 0.35rem;
+  }
+
+  /* Filter pills */
+  #filters {
+    padding: 0.9rem 1rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  #filters p {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7A756E;
+    margin-bottom: 0.55rem;
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.75rem;
+    padding: 4px 8px 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: #C8C2BA;
+    width: 100%;
+    text-align: left;
+    transition: background 0.12s;
+    margin-bottom: 2px;
+  }
+  .pill:hover { background: rgba(255,255,255,0.07); }
+  .pill.active { background: rgba(255,255,255,0.11); color: #F0EBE3; }
+
+  .pill-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Era nav links */
+  #era-nav {
+    padding: 0.8rem 0 0;
+    flex: 1;
+  }
+
+  #era-nav p {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7A756E;
+    padding: 0 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .era-link {
+    display: block;
+    padding: 5px 1rem;
+    font-size: 0.72rem;
+    color: #A09890;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.12s;
+    line-height: 1.4;
+  }
+  .era-link:hover { color: #F0EBE3; border-left-color: rgba(255,255,255,0.2); }
+  .era-link.active { color: #F0EBE3; border-left-color: var(--accent); }
+
+  /* ── Main content ────────────────────────────────────────── */
+  #main {
+    margin-left: var(--nav-w);
+    flex: 1;
+    padding: 2.5rem 2.5rem 4rem 2.75rem;
+    max-width: 900px;
+  }
+
+  /* ── Hero ────────────────────────────────────────────────── */
+  #hero {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2.5rem;
+  }
+
+  #hero .eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  #hero h2 {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: normal;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  #hero .sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 520px;
+  }
+
+  /* Legend row */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Count badge */
+  #count-bar {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    height: 1.2rem;
+  }
+
+  /* ── Era sections ────────────────────────────────────────── */
+  .era-section { margin-bottom: 3rem; }
+
+  .era-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .era-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .era-count {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+
+  /* ── Entry cards ─────────────────────────────────────────── */
+  .entries { display: flex; flex-direction: column; gap: 0; }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 82px 12px 1fr;
+    gap: 0 10px;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+    transition: background 0.1s;
+  }
+  .entry:last-child { border-bottom: none; }
+  .entry.hidden { display: none; }
+
+  .entry-date {
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-align: right;
+    padding-top: 3px;
+    line-height: 1.4;
+  }
+
+  .entry-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .entry-body { min-width: 0; }
+
+  .entry-title {
+    font-family: var(--font-display);
+    font-size: 0.97rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 2px;
+  }
+
+  .entry-artist {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+
+  .lifespan {
+    font-size: 0.7rem;
+    color: #9E9890;
+    font-style: normal;
+  }
+  .entry-note {
+    font-size: 0.8rem;
+    color: #4A4540;
+    line-height: 1.6;
+  }
+
+  .cat-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* ── Back to top ─────────────────────────────────────────── */
+  #back-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--ink);
+    color: #E8E4DE;
+    border: none;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #back-top.visible { opacity: 1; pointer-events: auto; }
+  #back-top:hover { background: var(--accent); }
+
+  /* ── Empty state ─────────────────────────────────────────── */
+  #empty {
+    display: none;
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--muted);
+  }
+  #empty p { font-size: 0.9rem; }
+
+
+  /* Entry images */
+  .entry-img-wrap {
+    margin: 0.55rem 0 0.3rem;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .entry-img-wrap img {
+    display: block;
+    max-width: min(340px, 100%);
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    cursor: zoom-in;
+    transition: opacity 0.15s;
+  }
+  .entry-img-wrap img:hover { opacity: 0.85; }
+  .entry-img-caption {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 4px;
+  }
+
+  /* ── Print ───────────────────────────────────────────────── */
+  @media print {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 1cm; max-width: 100%; }
+    #back-top { display: none; }
+    .entry.hidden { display: none; }
+    .entry { page-break-inside: avoid; }
+    .era-section { page-break-inside: avoid; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 720px) {
+    :root { --nav-w: 0px; }
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 1.25rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav id="top-nav">
+  <div id="site-title">My Cultural Life</div>
+  <button class="tab-btn active" data-tab="art">Art</button>
+  <button class="tab-btn" data-tab="poems">Poems</button>
+  <button class="tab-btn" data-tab="films">Films</button>
+  <button class="tab-btn" data-tab="albums">Albums</button>
+  <button class="tab-btn" data-tab="books">Books</button>
+  <button class="tab-btn" data-tab="tv">TV</button>
+</nav>
+
+<div id="tab-art" class="tab-panel active">
+
+
+<!-- ── Sidebar ─────────────────────────────────────────────── -->
+
+
+<!-- ── Main ────────────────────────────────────────────────── -->
+<div id="art-main">
+  <div id="hero">
+    <p class="eyebrow">Personal selection</p>
+    <h2>Western Art</h2>
+    <p class="sub">Major artists, works, and monuments from antiquity to the present day.</p>
+  </div>
+  <div id="art-controls">
+    <button class="art-filter active" data-cat="all">All</button>
+    <button class="art-filter" data-cat="painting"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--painting);margin-right:4px;vertical-align:middle"></span>Painting</button>
+    <button class="art-filter" data-cat="sculpture"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sculpture);margin-right:4px;vertical-align:middle"></span>Sculpture</button>
+    <button class="art-filter" data-cat="architecture"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--architecture);margin-right:4px;vertical-align:middle"></span>Architecture</button>
+    <button class="art-filter" data-cat="other"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--other);margin-right:4px;vertical-align:middle"></span>Other</button>
+    <span style="color:var(--rule);padding:0 0.3rem">|</span>
+    <button class="art-era-btn" data-era="era-0">Ancient</button>
+    <button class="art-era-btn" data-era="era-1">Medieval</button>
+    <button class="art-era-btn" data-era="era-2">Renaissance</button>
+    <button class="art-era-btn" data-era="era-3">Baroque</button>
+    <button class="art-era-btn" data-era="era-4">18th C.</button>
+    <button class="art-era-btn" data-era="era-5">Romantic</button>
+    <button class="art-era-btn" data-era="era-6">Impressionism</button>
+    <button class="art-era-btn" data-era="era-7">Modernism</button>
+    <button class="art-era-btn" data-era="era-8">Post-war</button>
+  </div>
+  <div id="count-bar"></div>
+  <div id="empty"><p>No works match this filter.</p></div>
+  <div id="timeline"></div>
+</div>
+
+<button id="back-top" aria-label="Back to top" title="Back to top">↑</button>
+
+<script src="art-data.js"></script>
+<script>
+const CAT_COLORS = {
+  painting:     'var(--painting)',
+  sculpture:    'var(--sculpture)',
+  architecture: 'var(--architecture)',
+  other:        'var(--other)',
+};
+const CAT_BG = {
+  painting:     'var(--painting-bg)',
+  sculpture:    'var(--sculpture-bg)',
+  architecture: 'var(--architecture-bg)',
+  other:        'var(--other-bg)',
+};
+const CAT_LABELS = {
+  painting: 'Painting', sculpture: 'Sculpture',
+  architecture: 'Architecture', other: 'Other',
+};
+
+const DATA = window.ART_DATA || [];
+
+// ── Build timeline ───────────────────────────────────────────
+const timeline = document.getElementById('timeline');
+const countBar = document.getElementById('count-bar');
+
+DATA.forEach((era, i) => {
+  const id = 'era-' + i;
+  const section = document.createElement('section');
+  section.className = 'era-section';
+  section.id = id;
+
+  const header = document.createElement('div');
+  header.className = 'era-header';
+  header.innerHTML = `<h3>${era.era}</h3><span class="era-count">${era.period}</span>`;
+  section.appendChild(header);
+
+  const entries = document.createElement('div');
+  entries.className = 'entries';
+
+  era.entries.forEach(e => {
+    const row = document.createElement('div');
+    row.className = 'entry';
+    row.dataset.cat = e.cat;
+
+    const tag = `<span class="cat-tag" style="background:${CAT_BG[e.cat]};color:${CAT_COLORS[e.cat].replace('var(--','').replace(')','')}">${CAT_LABELS[e.cat]}</span>`;
+
+    row.innerHTML = `
+      <div class="entry-date">${e.date}</div>
+      <div class="entry-dot" style="background:${CAT_COLORS[e.cat]}"></div>
+      <div class="entry-body">
+        <div class="entry-title">${e.title}</div>
+        <div class="entry-artist">${e.artist}${e.lifespan ? '<span class="lifespan"> ' + e.lifespan + '</span>' : ''}</div>
+        <div class="entry-note">${e.note}</div>
+        ${e.img ? `<div class="entry-img-wrap"><img src="${e.img}" alt="${e.title}" loading="lazy"><p class="entry-img-caption">${e.imgCaption || ''}</p></div>` : ''}
+      </div>`;
+    entries.appendChild(row);
+  });
+
+  section.appendChild(entries);
+  timeline.appendChild(section);
+});
+
+// ── Filter logic ─────────────────────────────────────────────
+let activeCat = 'all';
+
+function applyFilter(cat) {
+  activeCat = cat;
+  let total = 0;
+  document.querySelectorAll('.entry').forEach(el => {
+    const show = cat === 'all' || el.dataset.cat === cat;
+    el.classList.toggle('hidden', !show);
+    if (show) total++;
+  });
+
+  // hide empty era sections
+  document.querySelectorAll('.era-section').forEach(sec => {
+    const visible = sec.querySelectorAll('.entry:not(.hidden)').length;
+    sec.style.display = visible ? '' : 'none';
+  });
+
+  countBar.textContent = cat === 'all'
+    ? `${total} works across all media`
+    : `${total} works · ${CAT_LABELS[cat]}`;
+
+  document.getElementById('empty').style.display = total === 0 ? 'block' : 'none';
+
+  document.querySelectorAll('.art-filter').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+
+  // fix sidebar dot colours for cat tags after filter
+  document.querySelectorAll('.entry-body .cat-tag').forEach(tag => {
+    // already inline styled
+  });
+}
+
+
+applyFilter('all');
+
+// ── Art controls ──────────────────────────────────────────────
+const artControls = document.getElementById('art-controls');
+if (artControls) {
+  artControls.addEventListener('click', e => {
+    const btn = e.target.closest('.art-filter');
+    if (btn) {
+      document.querySelectorAll('.art-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.dataset.cat);
+      return;
+    }
+    const era = e.target.closest('.art-era-btn');
+    if (era) {
+      const target = document.getElementById(era.dataset.era);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+}
+
+// ── Active era in sidebar ────────────────────────────────────
+const eraLinks = [];
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      eraLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.era-section').forEach(s => observer.observe(s));
+
+// ── Back to top ──────────────────────────────────────────────
+const backTop = document.getElementById('back-top');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+});
+backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+
+<div id="lightbox">
+  <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+document.addEventListener('click', e => {
+  const img = e.target.closest('.entry-img-wrap img');
+  if (img) { lbImg.src = img.src; lbImg.alt = img.alt; lb.classList.add('open'); }
+});
+lb.addEventListener('click', () => lb.classList.remove('open'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+</script>
+
+</div>
+
+<div id="tab-poems" class="tab-panel">
+  <div class="content-wrap">
+    <div class="section-hero">
+      <p class="eyebrow">Personal selection</p>
+      <h2>Favourite Poems</h2>
+      <p>A collection of poems that have stayed with me.</p>
+    </div>
+    <div id="poem-index">
+      <a class="poem-index-link" href="#poem-0">Still I Rise</a>
+      <a class="poem-index-link" href="#poem-1">Musée des Beaux Arts</a>
+      <a class="poem-index-link" href="#poem-2">Jerusalem</a>
+      <a class="poem-index-link" href="#poem-3">An Aspect of Love, Alive in the Ice and Fire</a>
+      <a class="poem-index-link" href="#poem-4">The Love Song of J. Alfred Prufrock</a>
+      <a class="poem-index-link" href="#poem-5">The Darkling Thrush</a>
+      <a class="poem-index-link" href="#poem-6">Prayer (I)</a>
+      <a class="poem-index-link" href="#poem-7">God&#x27;s Grandeur</a>
+      <a class="poem-index-link" href="#poem-8">To Autumn</a>
+      <a class="poem-index-link" href="#poem-9">Psalm 23</a>
+      <a class="poem-index-link" href="#poem-10">The Arundel Tomb</a>
+      <a class="poem-index-link" href="#poem-11">The Raven</a>
+      <a class="poem-index-link" href="#poem-12">Eloisa to Abelard [Extract]</a>
+      <a class="poem-index-link" href="#poem-13">The Tempest — &quot;Be not afeard&quot;</a>
+      <a class="poem-index-link" href="#poem-14">Sonnet 29</a>
+      <a class="poem-index-link" href="#poem-15">Macbeth — &quot;Tomorrow and tomorrow&quot;</a>
+      <a class="poem-index-link" href="#poem-16">Do Not Go Gentle into That Good Night</a>
+      <a class="poem-index-link" href="#poem-17">Composed Upon Westminster Bridge</a>
+      <a class="poem-index-link" href="#poem-18">A Slumber Did My Spirit Seal</a>
+      <a class="poem-index-link" href="#poem-19">The Lake Isle of Innisfree</a>
+    </div>
+    <div id="poems-list">
+      <div class="poem-card" id="poem-0">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Still I Rise</span>
+          <span class="poem-author">Maya Angelou</span>
+          <span class="poem-year">1978</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">You may write me down in history
+
+With your bitter, twisted lies,
+
+You may trod me in the very dirt
+
+But still, like dust, I&#x27;ll rise.
+
+Does my sassiness upset you?
+
+Why are you beset with gloom?
+
+’Cause I walk like I&#x27;ve got oil wells
+
+Pumping in my living room.
+
+Just like moons and like suns,
+
+With the certainty of tides,
+
+Just like hopes springing high,
+
+Still I&#x27;ll rise.
+
+Did you want to see me broken?
+
+Bowed head and lowered eyes?
+
+Shoulders falling down like teardrops,
+
+Weakened by my soulful cries?
+
+Does my haughtiness offend you?
+
+Don&#x27;t you take it awful hard
+
+’Cause I laugh like I&#x27;ve got gold mines
+
+Diggin’ in my own backyard.
+
+You may shoot me with your words,
+
+You may cut me with your eyes,
+
+You may kill me with your hatefulness,
+
+But still, like air, I’ll rise.
+
+Does my sexiness upset you?
+
+Does it come as a surprise
+
+That I dance like I&#x27;ve got diamonds
+
+At the meeting of my thighs?
+
+Out of the huts of history’s shame
+
+I rise
+
+Up from a past that’s rooted in pain
+
+I rise
+
+I&#x27;m a black ocean, leaping and wide,
+
+Welling and swelling I bear in the tide.
+
+Leaving behind nights of terror and fear
+
+I rise
+
+Into a daybreak that’s wondrously clear
+
+I rise
+
+Bringing the gifts that my ancestors gave,
+
+I am the dream and the hope of the slave.
+
+I rise
+
+I rise
+
+I rise.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-1">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Musée des Beaux Arts</span>
+          <span class="poem-author">W. H. Auden</span>
+          <span class="poem-year">1938</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">About suffering they were never wrong,
+
+The Old Masters: how well they understood
+
+Its human position; how it takes place
+
+While someone else is eating or opening a window or just walking dully along
+
+How, when the aged are reverently, passionately waiting
+
+For the miraculous birth, there always must be
+
+Children who did not specially want it to happen, skating
+
+On a pond at the edge of the wood:
+
+They never forgot
+
+That even the dreadful martyrdom must run its course
+
+Anyhow in a corner, some untidy spot
+
+Where the dogs go on with their doggy life and the torturer&#x27;s horse
+
+Scratches its innocent behind on a tree.
+
+In Brueghel&#x27;s *Icarus*, for instance: how everything turns away
+
+Quite leisurely from the disaster; the ploughman may
+
+Have heard the splash, the forsaken cry,
+
+But for him it was not an important failure; the sun shone
+
+As it had to on the white legs disappearing into the green
+
+Water; and the expensive delicate ship that must have seen
+
+Something amazing, a boy falling out of the sky,
+
+Had somewhere to get to and sailed calmly on.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-2">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Jerusalem</span>
+          <span class="poem-author">William Blake</span>
+          <span class="poem-year">1804</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">And did those feet in ancient time
+
+Walk upon Englands mountains green:
+
+And was the holy Lamb of God,
+
+On Englands pleasant pastures seen!
+
+And did the Countenance Divine,
+
+Shine forth upon our clouded hills?
+
+And was Jerusalem builded here,
+
+Among these dark Satanic Mills?
+
+Bring me my Bow of burning gold:
+
+Bring me my arrows of desire:
+
+Bring me my Spear: O clouds unfold!
+
+Bring me my Chariot of fire!
+
+I will not cease from Mental Fight,
+
+Nor shall my sword sleep in my hand:
+
+Till we have built Jerusalem,
+
+In Englands green &amp; pleasant Land.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-3">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">An Aspect of Love, Alive in the Ice and Fire</span>
+          <span class="poem-author">Gwendolyn Brooks</span>
+          <span class="poem-year">1963</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">In a package of minutes there is this We.
+
+How beautiful.
+
+Merry foreigners in our morning,
+
+we laugh, we touch each other,
+
+are responsible props and posts.
+
+A physical light is in the room.
+
+Because the world is at the window
+
+we cannot wonder very long.
+
+You rise. Although
+
+genial, you are in yourself again.
+
+I observe
+
+your direct and respectable stride.
+
+You are direct and self-accepting as a lion
+
+in Afrikan velvet. You are level, lean,
+
+remote.
+
+There is a moment in Camaraderie
+
+when interruption is not to be understood.
+
+I cannot bear an interruption.
+
+This is the shining joy;
+
+the time of not-to-end.
+
+On the street we smile.
+
+We go
+
+in different directions
+
+down the imperturbable street.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-4">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">The Love Song of J. Alfred Prufrock</span>
+          <span class="poem-author">T. S. Eliot</span>
+          <span class="poem-year">1915</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">*S’io credesse che mia risposta fosse
+A persona che mai tornasse al mondo,
+Questa fiamma staria senza piu scosse.
+Ma percioche giammai di questo fondo
+Non torno vivo alcun, s’i’odo il vero,
+Senza tema d’infamia ti rispondo.*
+
+Let us go then, you and I,
+
+When the evening is spread out against the sky
+
+Like a patient etherized upon a table;
+
+Let us go, through certain half-deserted streets,
+
+The muttering retreats
+
+Of restless nights in one-night cheap hotels
+
+And sawdust restaurants with oyster-shells:
+
+Streets that follow like a tedious argument
+
+Of insidious intent
+
+To lead you to an overwhelming question ...
+
+Oh, do not ask, “What is it?”
+
+Let us go and make our visit.
+
+In the room the women come and go
+
+Talking of Michelangelo.
+
+The yellow fog that rubs its back upon the window-panes,
+
+The yellow smoke that rubs its muzzle on the window-panes,
+
+Licked its tongue into the corners of the evening,
+
+Lingered upon the pools that stand in drains,
+
+Let fall upon its back the soot that falls from chimneys,
+
+Slipped by the terrace, made a sudden leap,
+
+And seeing that it was a soft October night,
+
+Curled once about the house, and fell asleep.
+
+And indeed there will be time
+
+For the yellow smoke that slides along the street,
+
+Rubbing its back upon the window-panes;
+
+There will be time, there will be time
+
+To prepare a face to meet the faces that you meet;
+
+There will be time to murder and create,
+
+And time for all the works and days of hands
+
+That lift and drop a question on your plate;
+
+Time for you and time for me,
+
+And time yet for a hundred indecisions,
+
+And for a hundred visions and revisions,
+
+Before the taking of a toast and tea.
+
+In the room the women come and go
+
+Talking of Michelangelo.
+
+And indeed there will be time
+
+To wonder, “Do I dare?” and, “Do I dare?”
+
+Time to turn back and descend the stair,
+
+With a bald spot in the middle of my hair —
+
+(They will say: “How his hair is growing thin!”)
+
+My morning coat, my collar mounting firmly to the chin,
+
+My necktie rich and modest, but asserted by a simple pin —
+
+(They will say: “But how his arms and legs are thin!”)
+
+Do I dare
+
+Disturb the universe?
+
+In a minute there is time
+
+For decisions and revisions which a minute will reverse.
+
+For I have known them all already, known them all:
+
+Have known the evenings, mornings, afternoons,
+
+I have measured out my life with coffee spoons;
+
+I know the voices dying with a dying fall
+
+Beneath the music from a farther room.
+
+So how should I presume?
+
+And I have known the eyes already, known them all—
+
+The eyes that fix you in a formulated phrase,
+
+And when I am formulated, sprawling on a pin,
+
+When I am pinned and wriggling on the wall,
+
+Then how should I begin
+
+To spit out all the butt-ends of my days and ways?
+
+And how should I presume?
+
+And I have known the arms already, known them all—
+
+Arms that are braceleted and white and bare
+
+(But in the lamplight, downed with light brown hair!)
+
+Is it perfume from a dress
+
+That makes me so digress?
+
+Arms that lie along a table, or wrap about a shawl.
+
+And should I then presume?
+
+And how should I begin?
+
+Shall I say, I have gone at dusk through narrow streets
+
+And watched the smoke that rises from the pipes
+
+Of lonely men in shirt-sleeves, leaning out of windows? ...
+
+I should have been a pair of ragged claws
+
+Scuttling across the floors of silent seas.
+
+And the afternoon, the evening, sleeps so peacefully!
+
+Smoothed by long fingers,
+
+Asleep ... tired ... or it malingers,
+
+Stretched on the floor, here beside you and me.
+
+Should I, after tea and cakes and ices,
+
+Have the strength to force the moment to its crisis?
+
+But though I have wept and fasted, wept and prayed,
+
+Though I have seen my head (grown slightly bald) brought in upon a platter,
+
+I am no prophet — and here’s no great matter;
+
+I have seen the moment of my greatness flicker,
+
+And I have seen the eternal Footman hold my coat, and snicker,
+
+And in short, I was afraid.
+
+And would it have been worth it, after all,
+
+After the cups, the marmalade, the tea,
+
+Among the porcelain, among some talk of you and me,
+
+Would it have been worth while,
+
+To have bitten off the matter with a smile,
+
+To have squeezed the universe into a ball
+
+To roll it towards some overwhelming question,
+
+To say: “I am Lazarus, come from the dead,
+
+Come back to tell you all, I shall tell you all”—
+
+If one, settling a pillow by her head
+
+Should say: “That is not what I meant at all;
+
+That is not it, at all.”
+
+And would it have been worth it, after all,
+
+Would it have been worth while,
+
+After the sunsets and the dooryards and the sprinkled streets,
+
+After the novels, after the teacups, after the skirts that trail along the floor—
+
+And this, and so much more?—
+
+It is impossible to say just what I mean!
+
+But as if a magic lantern threw the nerves in patterns on a screen:
+
+Would it have been worth while
+
+If one, settling a pillow or throwing off a shawl,
+
+And turning toward the window, should say:
+
+“That is not it at all,
+
+That is not what I meant, at all.”
+
+No! I am not Prince Hamlet, nor was meant to be;
+
+Am an attendant lord, one that will do
+
+To swell a progress, start a scene or two,
+
+Advise the prince; no doubt, an easy tool,
+
+Deferential, glad to be of use,
+
+Politic, cautious, and meticulous;
+
+Full of high sentence, but a bit obtuse;
+
+At times, indeed, almost ridiculous—
+
+Almost, at times, the Fool.
+
+I grow old ... I grow old ...
+
+I shall wear the bottoms of my trousers rolled.
+
+Shall I part my hair behind?   Do I dare to eat a peach?
+
+I shall wear white flannel trousers, and walk upon the beach.
+
+I have heard the mermaids singing, each to each.
+
+I do not think that they will sing to me.
+
+I have seen them riding seaward on the waves
+
+Combing the white hair of the waves blown back
+
+When the wind blows the water white and black.
+
+We have lingered in the chambers of the sea
+
+By sea-girls wreathed with seaweed red and brown
+
+Till human voices wake us, and we drown.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-5">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">The Darkling Thrush</span>
+          <span class="poem-author">Thomas Hardy</span>
+          <span class="poem-year">1900</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">I leant upon a coppice gate
+
+When Frost was spectre-grey,
+
+And Winter&#x27;s dregs made desolate
+
+The weakening eye of day.
+
+The tangled bine-stems scored the sky
+
+Like strings of broken lyres,
+
+And all mankind that haunted nigh
+
+Had sought their household fires.
+
+The land&#x27;s sharp features seemed to be
+
+The Century&#x27;s corpse outleant,
+
+His crypt the cloudy canopy,
+
+The wind his death-lament.
+
+The ancient pulse of germ and birth
+
+Was shrunken hard and dry,
+
+And every spirit upon earth
+
+Seemed fervourless as I.
+
+At once a voice arose among
+
+The bleak twigs overhead
+
+In a full-hearted evensong
+
+Of joy illimited;
+
+An aged thrush, frail, gaunt, and small,
+
+In blast-beruffled plume,
+
+Had chosen thus to fling his soul
+
+Upon the growing gloom.
+
+So little cause for carolings
+
+Of such ecstatic sound
+
+Was written on terrestrial things
+
+Afar or nigh around,
+
+That I could think there trembled through
+
+His happy good-night air
+
+Some blessed Hope, whereof he knew
+
+And I was unaware.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-6">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Prayer (I)</span>
+          <span class="poem-author">George Herbert</span>
+          <span class="poem-year">1633</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">Prayer the church’s banquet, angel’s age,
+
+God’s breath in man returning to his birth,
+
+The soul in paraphrase, heart in pilgrimage,
+
+The Christian plummet sounding heav’n and earth
+
+Engine against th’ Almighty, sinner’s tow’r,
+
+Reversed thunder, Christ-side-piercing spear,
+
+The six-days world transposing in an hour,
+
+A kind of tune, which all things hear and fear;
+
+Softness, and peace, and joy, and love, and bliss,
+
+Exalted manna, gladness of the best,
+
+Heaven in ordinary, man well drest,
+
+The milky way, the bird of Paradise,
+
+Church-bells beyond the stars heard, the soul’s blood,
+
+The land of spices; something understood.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-7">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">God&#x27;s Grandeur</span>
+          <span class="poem-author">Gerard Manley Hopkins</span>
+          <span class="poem-year">1877</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">The world is charged with the grandeur of God.
+
+It will flame out, like shining from shook foil;
+
+It gathers to a greatness, like the ooze of oil
+
+Crushed. Why do men then now not reck his rod?
+
+Generations have trod, have trod, have trod;
+
+And all is seared with trade; bleared, smeared with toil;
+
+And wears man&#x27;s smudge and shares man&#x27;s smell: the soil
+
+Is bare now, nor can foot feel, being shod.
+
+And for all this, nature is never spent;
+
+There lives the dearest freshness deep down things;
+
+And though the last lights off the black West went
+
+Oh, morning, at the brown brink eastward, springs —
+
+Because the Holy Ghost over the bent
+
+World broods with warm breast and with ah! bright wings.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-8">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">To Autumn</span>
+          <span class="poem-author">John Keats</span>
+          <span class="poem-year">1819</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">Season of mists and mellow fruitfulness,
+
+Close bosom-friend of the maturing sun;
+
+Conspiring with him how to load and bless
+
+With fruit the vines that round the thatch-eves run;
+
+To bend with apples the moss&#x27;d cottage-trees,
+
+And fill all fruit with ripeness to the core;
+
+To swell the gourd, and plump the hazel shells
+
+With a sweet kernel; to set budding more,
+
+And still more, later flowers for the bees,
+
+Until they think warm days will never cease,
+
+For summer has o&#x27;er-brimm&#x27;d their clammy cells.
+
+Who hath not seen thee oft amid thy store?
+
+Sometimes whoever seeks abroad may find
+
+Thee sitting careless on a granary floor,
+
+Thy hair soft-lifted by the winnowing wind;
+
+Or on a half-reap&#x27;d furrow sound asleep,
+
+Drows&#x27;d with the fume of poppies, while thy hook
+
+Spares the next swath and all its twined flowers:
+
+And sometimes like a gleaner thou dost keep
+
+Steady thy laden head across a brook;
+
+Or by a cyder-press, with patient look,
+
+Thou watchest the last oozings hours by hours.
+
+Where are the songs of spring? Ay, Where are they?
+
+Think not of them, thou hast thy music too,—
+
+While barred clouds bloom the soft-dying day,
+
+And touch the stubble-plains with rosy hue;
+
+Then in a wailful choir the small gnats mourn
+
+Among the river sallows, borne aloft
+
+Or sinking as the light wind lives or dies;
+
+And full-grown lambs loud bleat from hilly bourn;
+
+Hedge-crickets sing; and now with treble soft
+
+The red-breast whistles from a garden-croft;
+
+And gathering swallows twitter in the skies.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-9">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Psalm 23</span>
+          <span class="poem-author">King James Bible</span>
+          <span class="poem-year">1611</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">The LORD is my shepherd; I shall not want.
+
+He maketh me to lie down in green pastures:
+
+He leadeth me beside the still waters.
+
+He restoreth my soul:
+
+He leadeth me in the paths of righteousness for his name&#x27;s sake.
+
+Yea, though I walk through the valley of the shadow of death, I will fear no evil:
+
+for thou art with me; Thy rod and thy staff they comfort me.
+
+Thou preparest a table before me in the presence of mine enemies:
+
+Thou anointest my head with oil; my cup runneth over.
+
+Surely goodness and mercy shall follow me all the days of my life:
+
+And I will dwell in the house of the LORD for ever.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-10">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">The Arundel Tomb</span>
+          <span class="poem-author">Philip Larkin</span>
+          <span class="poem-year">1956</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">Side by side, their faces blurred,
+
+The earl and countess lie in stone,
+
+Their proper habits  vaguely shown
+
+As jointed armour, stiffened pleat,
+
+And that faint hint of the absurd—
+
+The little dogs under their feet.
+
+Such plainness of the pre-baroque
+
+Hardly involves the eye, until
+
+It meets his left-hand gauntlet, still
+
+Clasped empty in the other; and
+
+One sees, with a sharp tender shock,
+
+His hand withdrawn, holding her hand.
+
+They would not think to lie so long.
+
+Such faithfulness in effigy
+
+Was just a detail friends would see:
+
+A sculptor’s sweet commissioned grace
+
+Thrown off in helping to prolong
+
+The Latin names around the base.
+
+They would not guess how early in
+
+Their supine stationary voyage
+
+The air would change to soundless damage,
+
+Turn the old tenantry away;
+
+How soon succeeding eyes begin
+
+To look, not read. Rigidly they
+
+Persisted, linked, through lengths and breadths
+
+Of time. Snow fell, undated. Light
+
+Each summer thronged the glass. A bright
+
+Litter of birdcalls strewed the same
+
+Bone-riddled ground. And up the paths
+
+The endless altered people came,
+
+Washing at their identity.
+
+Now, helpless in the hollow of
+
+An unarmorial age, a trough
+
+Of smoke in slow suspended skeins
+
+Above their scrap of history,
+
+Only an attitude remains:
+
+Time has transfigured them into
+
+Untruth. The stone fidelity
+
+They hardly meant has come to be
+
+Their final blazon, and to prove
+
+Our almost-instinct almost true:
+
+What will survive of us is love.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-11">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">The Raven</span>
+          <span class="poem-author">Edgar Allan Poe</span>
+          <span class="poem-year">1845</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">Once upon a midnight dreary, while I pondered, weak and weary,
+
+Over many a quaint and curious volume of forgotten lore—
+
+While I nodded, nearly napping, suddenly there came a tapping,
+
+As of some one gently rapping, rapping at my chamber door—
+
+“’Tis some visitor,” I muttered, “tapping at my chamber door—
+
+Only this and nothing more.”
+
+Ah, distinctly I remember it was in the bleak December;
+
+And each separate dying ember wrought its ghost upon the floor.
+
+Eagerly I wished the morrow;—vainly I had sought to borrow
+
+From my books surcease of sorrow—sorrow for the lost Lenore—
+
+For the rare and radiant maiden whom the angels name Lenore—
+
+Nameless *here* for evermore.
+
+And the silken, sad, uncertain rustling of each purple curtain
+
+Thrilled me—filled me with fantastic terrors never felt before;
+
+So that now, to still the beating of my heart, I stood repeating,
+
+“’Tis some visitor entreating entrance at my chamber door—
+
+Some late visitor entreating entrance at my chamber door;—
+
+This it is and nothing more.”
+
+Presently my soul grew stronger; hesitating then no longer,
+
+“Sir,” said I, “or Madam, truly your forgiveness I implore;
+
+But the fact is I was napping, and so gently you came rapping,
+
+And so faintly you came tapping, tapping at my chamber door,
+
+That I scarce was sure I heard you”—here I opened wide the door;—
+
+Darkness there and nothing more.
+
+Deep into that darkness peering, long I stood there wondering, fearing,
+
+Doubting, dreaming dreams no mortal ever dared to dream before;
+
+But the silence was unbroken, and the stillness gave no token,
+
+And the only word there spoken was the whispered word, “Lenore?”
+
+This I whispered, and an echo murmured back the word, “Lenore!”—
+
+Merely this and nothing more.
+
+Back into the chamber turning, all my soul within me burning,
+
+Soon again I heard a tapping somewhat louder than before.
+
+“Surely,” said I, “surely that is something at my window lattice;
+
+Let me see, then, what thereat is, and this mystery explore—
+
+Let my heart be still a moment and this mystery explore;—
+
+’Tis the wind and nothing more!”
+
+Open here I flung the shutter, when, with many a flirt and flutter,
+
+In there stepped a stately Raven of the saintly days of yore;
+
+Not the least obeisance made he; not a minute stopped or stayed he;
+
+But, with mien of lord or lady, perched above my chamber door—
+
+Perched upon a bust of Pallas just above my chamber door—
+
+Perched, and sat, and nothing more.
+
+Then this ebony bird beguiling my sad fancy into smiling,
+
+By the grave and stern decorum of the countenance it wore,
+
+“Though thy crest be shorn and shaven, thou,” I said, “art sure no craven,
+
+Ghastly grim and ancient Raven wandering from the Nightly shore—
+
+Tell me what thy lordly name is on the Night’s Plutonian shore!”
+
+Quoth the Raven “Nevermore.”
+
+Much I marvelled this ungainly fowl to hear discourse so plainly,
+
+Though its answer little meaning—little relevancy bore;
+
+For we cannot help agreeing that no living human being
+
+Ever yet was blest with seeing bird above his chamber door—
+
+Bird or beast upon the sculptured bust above his chamber door,
+
+With such name as “Nevermore.”
+
+But the Raven, sitting lonely on the placid bust, spoke only
+
+That one word, as if his soul in that one word he did outpour.
+
+Nothing further then he uttered—not a feather then he fluttered—
+
+Till I scarcely more than muttered “Other friends have flown before—
+
+On the morrow *he* will leave me, as my hopes have flown before.”
+
+Then the bird said “Nevermore.”
+
+Startled at the stillness broken by reply so aptly spoken,
+
+“Doubtless,” said I, “what it utters is its only stock and store
+
+Caught from some unhappy master whom unmerciful Disaster
+
+Followed fast and followed faster till his songs one burden bore—
+
+Till the dirges of his Hope that melancholy burden bore
+
+Of ‘Never—nevermore.’”
+
+But the Raven still beguiling my sad fancy into smiling,
+
+Straight I wheeled a cushioned seat in front of bird, and bust and door;
+
+Then, upon the velvet sinking, I betook myself to linking
+
+Fancy unto fancy, thinking what this ominous bird of yore—
+
+What this grim, ungainly, ghastly, gaunt and ominous bird of yore
+
+Meant in croaking “Nevermore.”
+
+This I sat engaged in guessing, but no syllable expressing
+
+To the fowl whose fiery eyes now burned into my bosom’s core;
+
+This and more I sat divining, with my head at ease reclining
+
+On the cushion’s velvet lining that the lamp-light gloated o’er,
+
+But whose velvet violet lining with the lamp-light gloating o&#x27;er,
+
+*She* shall press, ah, nevermore!
+
+Then, methought, the air grew denser, perfumed from an unseen censer
+
+Swung by Seraphim whose foot-falls tinkled on the tufted floor.
+
+“Wretch,” I cried, “thy God hath lent thee—by these angels he hath sent thee
+
+Respite—respite and nepenthe, from thy memories of Lenore;
+
+Quaff, oh quaff this kind nepenthe and forget this lost Lenore!”
+
+Quoth the Raven “Nevermore.”
+
+“Prophet!” said I, “thing of evil!—prophet still, if bird or devil!—
+
+Whether Tempter sent, or whether tempest tossed thee here ashore,
+
+Desolate yet all undaunted, on this desert land enchanted—
+
+On this home by Horror haunted—tell me truly, I implore—
+
+Is there—is there balm in Gilead?—tell me—tell me, I implore!”
+
+Quoth the Raven “Nevermore.”
+
+“Prophet!” said I, “thing of evil—prophet still, if bird or devil!
+
+By that Heaven that bends above us—by that God we both adore—
+
+Tell this soul with sorrow laden if, within the distant Aidenn,
+
+It shall clasp a sainted maiden whom the angels name Lenore—
+
+Clasp a rare and radiant maiden whom the angels name Lenore.”
+
+Quoth the Raven “Nevermore.”
+
+“Be that word our sign in parting, bird or fiend!” I shrieked, upstarting—
+
+“Get thee back into the tempest and the Night’s Plutonian shore!
+
+Leave no black plume as a token of that lie thy soul hath spoken!
+
+Leave my loneliness unbroken!—quit the bust above my door!
+
+Take thy beak from out my heart, and take thy form from off my door!”
+
+Quoth the Raven “Nevermore.”
+
+And the Raven, never flitting, still is sitting, *still* is sitting
+
+On the pallid bust of Pallas just above my chamber door;
+
+And his eyes have all the seeming of a demon’s that is dreaming,
+
+And the lamp-light o’er him streaming throws his shadow on the floor;
+
+And my soul from out that shadow that lies floating on the floor
+
+Shall be lifted—nevermore!</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-12">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Eloisa to Abelard [Extract]</span>
+          <span class="poem-author">Alexander Pope</span>
+          <span class="poem-year">1717</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">How happy is the blameless vestal&#x27;s lot!
+
+The world forgetting, by the world forgot.
+
+Eternal sunshine of the spotless mind!
+
+Each pray&#x27;r accepted, and each wish resign&#x27;d;</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-13">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">The Tempest — &quot;Be not afeard&quot;</span>
+          <span class="poem-author">William Shakespeare</span>
+          <span class="poem-year">1611</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">*Caliban speaks to Stephano and Trinculo*.
+
+Be not afeard; the isle is full of noises,
+Sounds and sweet airs, that give delight, and hurt not.
+Sometimes a thousand twangling instruments
+Will hum about mine ears; and sometime voices,
+That, if I then had waked after long sleep,
+Will make me sleep again: and then, in dreaming,
+The clouds methought would open, and show riches
+Ready to drop upon me; that, when I waked,
+I cried to dream again.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-14">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Sonnet 29</span>
+          <span class="poem-author">William Shakespeare</span>
+          <span class="poem-year">1609</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">I all alone beweep my outcast state,
+
+And trouble deaf heaven with my bootless cries,
+
+And look upon myself and curse my fate,
+
+Wishing me like to one more rich in hope,
+
+Featured like him, like him with friends possessed,
+
+Desiring this man’s art and that man’s scope,
+
+With what I most enjoy contented least;
+
+Yet in these thoughts myself almost despising,
+
+Haply I think on thee, and then my state,
+
+(Like to the lark at break of day arising
+
+From sullen earth) sings hymns at heaven’s gate;
+
+For thy sweet love remembered such wealth brings
+
+That then I scorn to change my state with kings.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-15">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Macbeth — &quot;Tomorrow and tomorrow&quot;</span>
+          <span class="poem-author">William Shakespeare</span>
+          <span class="poem-year">1606</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">She should have died hereafter;
+
+There would have been a time for such a word.
+
+Tomorrow, and tomorrow, and tomorrow
+
+Creeps in this petty pace from day to day
+
+To the last syllable of recorded time;
+
+And all our yesterdays have lighted fools
+
+The way to dusty death. Out, out, brief candle!
+
+Life’s but a walking shadow, a poor player
+
+That struts and frets his hour upon the stage
+
+And then is heard no more. It is a tale
+
+Told by an idiot, full of sound and fury
+
+Signifying nothing.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-16">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Do Not Go Gentle into That Good Night</span>
+          <span class="poem-author">Dylan Thomas</span>
+          <span class="poem-year">1947</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">Do not go gentle into that good night,
+
+Old age should burn and rave at close of day;
+
+Rage, rage against the dying of the light.
+
+Though wise men at their end know dark is right,
+
+Because their words had forked no lightning they
+
+Do not go gentle into that good night.
+
+Good men, the last wave by, crying how bright
+
+Their frail deeds might have danced in a green bay,
+
+Rage, rage against the dying of the light.
+
+Wild men who caught and sang the sun in flight,
+
+And learn, too late, they grieved it on its way,
+
+Do not go gentle into that good night.
+
+Grave men, near death, who see with blinding sight
+
+Blind eyes could blaze like meteors and be gay,
+
+Rage, rage against the dying of the light.
+
+And you, my father, there on the sad height,
+
+Curse, bless, me now with your fierce tears, I pray.
+
+Do not go gentle into that good night.
+
+Rage, rage against the dying of the light.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-17">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">Composed Upon Westminster Bridge</span>
+          <span class="poem-author">William Wordsworth</span>
+          <span class="poem-year">1802</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">Earth has not any thing to show more fair:
+
+Dull would he be of soul who could pass by
+
+A sight so touching in its majesty:
+
+This City now doth, like a garment, wear
+
+The beauty of the morning; silent, bare,
+
+Ships, towers, domes, theatres, and temples lie
+
+Open unto the fields, and to the sky;
+
+All bright and glittering in the smokeless air.
+
+Never did sun more beautifully steep
+
+In his first splendour, valley, rock, or hill;
+
+Ne&#x27;er saw I, never felt, a calm so deep!
+
+The river glideth at his own sweet will:
+
+Dear God! the very houses seem asleep;
+
+And all that mighty heart is lying still!</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-18">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">A Slumber Did My Spirit Seal</span>
+          <span class="poem-author">William Wordsworth</span>
+          <span class="poem-year">1799</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">A slumber did my spirit seal;
+I had no human fears:
+She seemed a thing that could not feel
+The touch of earthly years.
+No motion has she now, no force;
+She neither hears nor sees;
+Rolled round in earth&#x27;s diurnal course,
+With rocks, and stones, and trees.</div>
+        </div>
+      </div>
+      <div class="poem-card" id="poem-19">
+        <button class="poem-toggle" onclick="togglePoem(this)">
+          <span class="poem-title">The Lake Isle of Innisfree</span>
+          <span class="poem-author">W. B. Yeats</span>
+          <span class="poem-year">1890</span>
+          <span class="poem-chevron">▼</span>
+        </button>
+        <div class="poem-body-wrap">
+          <div class="poem-body">I will arise and go now, and go to Innisfree,
+
+And a small cabin build there, of clay and wattles made;
+
+Nine bean-rows will I have there, a hive for the honey-bee,
+
+And live alone in the bee-loud glade.
+
+And I shall have some peace there, for peace comes dropping slow,
+
+Dropping from the veils of the morning to where the cricket sings;
+
+There midnight’s all a glimmer, and noon a purple glow,
+
+And evening full of the linnet’s wings.
+
+I will arise and go now, for always night and day
+
+I hear lake water lapping with low sounds by the shore;
+
+While I stand on the roadway, or on the pavements grey,
+
+I hear it in the deep heart’s core.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-films" class="tab-panel">
+  <div class="content-wrap" style="max-width:1100px">
+    <div class="section-hero">
+      <p class="eyebrow">Personal selection</p>
+      <h2>Favourite Directors</h2>
+      <p>First 21 ranked. Filter by region or browse all 54.</p>
+    </div>
+    <div id="films-controls">
+      <button class="films-filter active" data-region="all">All</button>
+      <button class="films-filter" data-region="usa">USA</button>
+      <button class="films-filter" data-region="uk">UK</button>
+      <button class="films-filter" data-region="france">France</button>
+      <button class="films-filter" data-region="europe">Europe</button>
+      <button class="films-filter" data-region="asia">Asia</button>
+      <button class="films-filter" data-region="other">Other</button>
+    </div>
+    <p class="films-section-head">Ranked — 21 Favourites</p>
+    <div class="director-grid" id="directors-ranked">
+      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#1</div>
+        <div class="dir-header"><span class="dir-name">David Lynch</span><span class="dir-meta">USA · 1946–2025</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Eraserhead</em><span class="dir-year">1977</span></div>
+          <div class="dir-film"><em>Blue Velvet</em><span class="dir-year">1986</span></div>
+          <div class="dir-film"><em>Mulholland Drive</em><span class="dir-year">2001</span></div>
+          <div class="dir-film"><em>Twin Peaks: Fire Walk with Me</em><span class="dir-year">1992</span></div>
+        </div>
+        <p class="dir-note">The American surrealist — a cinema of dread, dream-logic, and small-town darkness.</p>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-rank-badge">#2</div>
+        <div class="dir-header"><span class="dir-name">Yasujirō Ozu</span><span class="dir-meta">Japan · 1903–1963</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Late Spring</em><span class="dir-year">1949</span></div>
+          <div class="dir-film"><em>Tokyo Story</em><span class="dir-year">1953</span></div>
+          <div class="dir-film"><em>Early Summer</em><span class="dir-year">1951</span></div>
+          <div class="dir-film"><em>An Autumn Afternoon</em><span class="dir-year">1962</span></div>
+        </div>
+        <p class="dir-note">The master of stillness — low angles, tatami shots, elliptical editing, quiet sorrow.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#3</div>
+        <div class="dir-header"><span class="dir-name">Paul Thomas Anderson</span><span class="dir-meta">USA · b. 1970</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Magnolia</em><span class="dir-year">1999</span></div>
+          <div class="dir-film"><em>There Will Be Blood</em><span class="dir-year">2007</span></div>
+          <div class="dir-film"><em>Phantom Thread</em><span class="dir-year">2017</span></div>
+          <div class="dir-film"><em>Boogie Nights</em><span class="dir-year">1997</span></div>
+        </div>
+        <p class="dir-note">The great American maximalist — ensemble epics of ambition, failure, and need.</p>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-rank-badge">#4</div>
+        <div class="dir-header"><span class="dir-name">Wong Kar-wai</span><span class="dir-meta">Hong Kong · b. 1958</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>In the Mood for Love</em><span class="dir-year">2000</span></div>
+          <div class="dir-film"><em>Chungking Express</em><span class="dir-year">1994</span></div>
+          <div class="dir-film"><em>2046</em><span class="dir-year">2004</span></div>
+          <div class="dir-film"><em>Happy Together</em><span class="dir-year">1997</span></div>
+        </div>
+        <p class="dir-note">Memory, longing, and missed connection in saturated colour and slow-motion blur.</p>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-rank-badge">#5</div>
+        <div class="dir-header"><span class="dir-name">Wim Wenders</span><span class="dir-meta">Germany · b. 1945</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Paris, Texas</em><span class="dir-year">1984</span></div>
+          <div class="dir-film"><em>Wings of Desire</em><span class="dir-year">1987</span></div>
+          <div class="dir-film"><em>The American Friend</em><span class="dir-year">1977</span></div>
+          <div class="dir-film"><em>Alice in the Cities</em><span class="dir-year">1974</span></div>
+        </div>
+        <p class="dir-note">Road movies as existential quests, America seen through European eyes.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#6</div>
+        <div class="dir-header"><span class="dir-name">Richard Linklater</span><span class="dir-meta">USA · b. 1960</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Before Sunrise</em><span class="dir-year">1995</span></div>
+          <div class="dir-film"><em>Before Sunset</em><span class="dir-year">2004</span></div>
+          <div class="dir-film"><em>Before Midnight</em><span class="dir-year">2013</span></div>
+          <div class="dir-film"><em>Boyhood</em><span class="dir-year">2014</span></div>
+        </div>
+        <p class="dir-note">The philosopher of real time — long conversations and the drama of ordinary life.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#7</div>
+        <div class="dir-header"><span class="dir-name">Martin Scorsese</span><span class="dir-meta">USA · b. 1942</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Taxi Driver</em><span class="dir-year">1976</span></div>
+          <div class="dir-film"><em>Raging Bull</em><span class="dir-year">1980</span></div>
+          <div class="dir-film"><em>GoodFellas</em><span class="dir-year">1990</span></div>
+          <div class="dir-film"><em>The Departed</em><span class="dir-year">2006</span></div>
+        </div>
+        <p class="dir-note">The great stylist of American violence and guilt — Catholic obsession, kinetic editing.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#8</div>
+        <div class="dir-header"><span class="dir-name">Quentin Tarantino</span><span class="dir-meta">USA · b. 1963</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Pulp Fiction</em><span class="dir-year">1994</span></div>
+          <div class="dir-film"><em>Kill Bill: Vol. 1</em><span class="dir-year">2003</span></div>
+          <div class="dir-film"><em>Jackie Brown</em><span class="dir-year">1997</span></div>
+          <div class="dir-film"><em>Inglourious Basterds</em><span class="dir-year">2009</span></div>
+        </div>
+        <p class="dir-note">A cinema built from other cinema — pop-culture collage, genre subversion.</p>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-rank-badge">#9</div>
+        <div class="dir-header"><span class="dir-name">Charlie Chaplin</span><span class="dir-meta">UK / USA · 1889–1977</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>City Lights</em><span class="dir-year">1931</span></div>
+          <div class="dir-film"><em>Modern Times</em><span class="dir-year">1936</span></div>
+          <div class="dir-film"><em>The Kid</em><span class="dir-year">1921</span></div>
+          <div class="dir-film"><em>The Great Dictator</em><span class="dir-year">1940</span></div>
+        </div>
+        <p class="dir-note">The Tramp — comedy and pathos inseparably fused.</p>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-rank-badge">#10</div>
+        <div class="dir-header"><span class="dir-name">Alfred Hitchcock</span><span class="dir-meta">UK / USA · 1899–1980</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Vertigo</em><span class="dir-year">1958</span></div>
+          <div class="dir-film"><em>Rear Window</em><span class="dir-year">1954</span></div>
+          <div class="dir-film"><em>Psycho</em><span class="dir-year">1960</span></div>
+          <div class="dir-film"><em>North by Northwest</em><span class="dir-year">1959</span></div>
+        </div>
+        <p class="dir-note">The master of suspense and the audience&#x27;s moral implication.</p>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-rank-badge">#11</div>
+        <div class="dir-header"><span class="dir-name">Akira Kurosawa</span><span class="dir-meta">Japan · 1910–1998</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Ikiru</em><span class="dir-year">1952</span></div>
+          <div class="dir-film"><em>High and Low</em><span class="dir-year">1963</span></div>
+          <div class="dir-film"><em>Rashomon</em><span class="dir-year">1950</span></div>
+          <div class="dir-film"><em>Seven Samurai</em><span class="dir-year">1954</span></div>
+        </div>
+        <p class="dir-note">A humanist with a samurai&#x27;s precision.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#12</div>
+        <div class="dir-header"><span class="dir-name">Stanley Kubrick</span><span class="dir-meta">USA / UK · 1928–1999</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>2001: A Space Odyssey</em><span class="dir-year">1968</span></div>
+          <div class="dir-film"><em>The Shining</em><span class="dir-year">1980</span></div>
+          <div class="dir-film"><em>Barry Lyndon</em><span class="dir-year">1975</span></div>
+          <div class="dir-film"><em>Dr. Strangelove</em><span class="dir-year">1964</span></div>
+        </div>
+        <p class="dir-note">Cold, perfect, and utterly strange. A cinema of alienation and control.</p>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-rank-badge">#13</div>
+        <div class="dir-header"><span class="dir-name">Ridley Scott</span><span class="dir-meta">UK · b. 1937</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Alien</em><span class="dir-year">1979</span></div>
+          <div class="dir-film"><em>Blade Runner</em><span class="dir-year">1982</span></div>
+          <div class="dir-film"><em>Thelma &amp; Louise</em><span class="dir-year">1991</span></div>
+          <div class="dir-film"><em>The Duellists</em><span class="dir-year">1977</span></div>
+        </div>
+        <p class="dir-note">Unmatched as a visual world-builder.</p>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-rank-badge">#14</div>
+        <div class="dir-header"><span class="dir-name">Werner Herzog</span><span class="dir-meta">Germany · b. 1942</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Aguirre, the Wrath of God</em><span class="dir-year">1972</span></div>
+          <div class="dir-film"><em>Fitzcarraldo</em><span class="dir-year">1982</span></div>
+          <div class="dir-film"><em>Nosferatu the Vampyre</em><span class="dir-year">1979</span></div>
+          <div class="dir-film"><em>Stroszek</em><span class="dir-year">1977</span></div>
+        </div>
+        <p class="dir-note">Obsession, landscape, and the limits of human will.</p>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-rank-badge">#15</div>
+        <div class="dir-header"><span class="dir-name">Terence Davies</span><span class="dir-meta">UK · b. 1945</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Distant Voices, Still Lives</em><span class="dir-year">1988</span></div>
+          <div class="dir-film"><em>The Long Day Closes</em><span class="dir-year">1992</span></div>
+          <div class="dir-film"><em>The House of Mirth</em><span class="dir-year">2000</span></div>
+          <div class="dir-film"><em>Of Time and the City</em><span class="dir-year">2008</span></div>
+        </div>
+        <p class="dir-note">Memory and loss in working-class Liverpool — liturgical in rhythm.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#16</div>
+        <div class="dir-header"><span class="dir-name">John Carpenter</span><span class="dir-meta">USA · b. 1948</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Halloween</em><span class="dir-year">1978</span></div>
+          <div class="dir-film"><em>The Thing</em><span class="dir-year">1982</span></div>
+          <div class="dir-film"><em>They Live</em><span class="dir-year">1988</span></div>
+          <div class="dir-film"><em>The Fog</em><span class="dir-year">1980</span></div>
+        </div>
+        <p class="dir-note">Synthesiser scores, widescreen compositions, political paranoia in horror clothing.</p>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-rank-badge">#17</div>
+        <div class="dir-header"><span class="dir-name">Jacques Tati</span><span class="dir-meta">France · 1907–1982</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>PlayTime</em><span class="dir-year">1967</span></div>
+          <div class="dir-film"><em>Mon Oncle</em><span class="dir-year">1958</span></div>
+          <div class="dir-film"><em>Jour de Fête</em><span class="dir-year">1949</span></div>
+          <div class="dir-film"><em>Traffic</em><span class="dir-year">1971</span></div>
+        </div>
+        <p class="dir-note">A clown in the age of modernism — PlayTime the most elaborate comedy ever made.</p>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-rank-badge">#18</div>
+        <div class="dir-header"><span class="dir-name">Hayao Miyazaki</span><span class="dir-meta">Japan · b. 1941</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>My Neighbor Totoro</em><span class="dir-year">1988</span></div>
+          <div class="dir-film"><em>Spirited Away</em><span class="dir-year">2001</span></div>
+          <div class="dir-film"><em>Princess Mononoke</em><span class="dir-year">1997</span></div>
+          <div class="dir-film"><em>Nausicaä</em><span class="dir-year">1984</span></div>
+        </div>
+        <p class="dir-note">Animation as genuine feeling and ecological wonder.</p>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-rank-badge">#19</div>
+        <div class="dir-header"><span class="dir-name">Christopher Nolan</span><span class="dir-meta">UK / USA · b. 1970</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Memento</em><span class="dir-year">2000</span></div>
+          <div class="dir-film"><em>The Dark Knight</em><span class="dir-year">2008</span></div>
+          <div class="dir-film"><em>Inception</em><span class="dir-year">2010</span></div>
+          <div class="dir-film"><em>Dunkirk</em><span class="dir-year">2017</span></div>
+        </div>
+        <p class="dir-note">The master of the puzzle — time, structure, and popular spectacle as intellectual project.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#20</div>
+        <div class="dir-header"><span class="dir-name">Joel &amp; Ethan Coen</span><span class="dir-meta">USA · b. 1954/57</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Blood Simple</em><span class="dir-year">1984</span></div>
+          <div class="dir-film"><em>Fargo</em><span class="dir-year">1996</span></div>
+          <div class="dir-film"><em>No Country for Old Men</em><span class="dir-year">2007</span></div>
+          <div class="dir-film"><em>The Big Lebowski</em><span class="dir-year">1998</span></div>
+        </div>
+        <p class="dir-note">Genre and fate — pitch-black comedy and formal brilliance.</p>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-rank-badge">#21</div>
+        <div class="dir-header"><span class="dir-name">Terrence Malick</span><span class="dir-meta">USA · b. 1943</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Badlands</em><span class="dir-year">1973</span></div>
+          <div class="dir-film"><em>Days of Heaven</em><span class="dir-year">1978</span></div>
+          <div class="dir-film"><em>The Thin Red Line</em><span class="dir-year">1998</span></div>
+          <div class="dir-film"><em>The Tree of Life</em><span class="dir-year">2011</span></div>
+        </div>
+        <p class="dir-note">Nature, grace, the voiceover of the soul — cinema as prayer or memory.</p>
+      </div>
+    </div>
+    <p class="films-section-head" id="essential-head">Also Essential</p>
+    <div class="director-grid" id="directors-essential">
+      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Chantal Akerman</span><span class="dir-meta">Belgium · 1950–2015</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Jeanne Dielman</em><span class="dir-year">1975</span></div>
+          <div class="dir-film"><em>News from Home</em><span class="dir-year">1977</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Michelangelo Antonioni</span><span class="dir-meta">Italy · 1912–2007</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>L&#x27;Avventura</em><span class="dir-year">1960</span></div>
+          <div class="dir-film"><em>La Notte</em><span class="dir-year">1961</span></div>
+          <div class="dir-film"><em>Blow-Up</em><span class="dir-year">1966</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-header"><span class="dir-name">Robert Bresson</span><span class="dir-meta">France · 1901–1999</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Au Hasard Balthazar</em><span class="dir-year">1966</span></div>
+          <div class="dir-film"><em>Mouchette</em><span class="dir-year">1967</span></div>
+          <div class="dir-film"><em>L&#x27;Argent</em><span class="dir-year">1983</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Carl Theodor Dreyer</span><span class="dir-meta">Denmark · 1889–1968</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The Passion of Joan of Arc</em><span class="dir-year">1928</span></div>
+          <div class="dir-film"><em>Ordet</em><span class="dir-year">1955</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Sergei Eisenstein</span><span class="dir-meta">USSR · 1898–1948</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Battleship Potemkin</em><span class="dir-year">1925</span></div>
+          <div class="dir-film"><em>October</em><span class="dir-year">1928</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Bong Joon-ho</span><span class="dir-meta">S. Korea · b. 1969</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Memories of Murder</em><span class="dir-year">2003</span></div>
+          <div class="dir-film"><em>Parasite</em><span class="dir-year">2019</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">John Cassavetes</span><span class="dir-meta">USA · 1929–1989</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Faces</em><span class="dir-year">1968</span></div>
+          <div class="dir-film"><em>A Woman Under the Influence</em><span class="dir-year">1974</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-header"><span class="dir-name">Jacques Demy</span><span class="dir-meta">France · 1931–1990</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Lola</em><span class="dir-year">1961</span></div>
+          <div class="dir-film"><em>The Umbrellas of Cherbourg</em><span class="dir-year">1964</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Vittorio De Sica</span><span class="dir-meta">Italy · 1901–1974</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Bicycle Thieves</em><span class="dir-year">1948</span></div>
+          <div class="dir-film"><em>Umberto D.</em><span class="dir-year">1952</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-header"><span class="dir-name">Claire Denis</span><span class="dir-meta">France · b. 1946</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Beau Travail</em><span class="dir-year">1999</span></div>
+          <div class="dir-film"><em>35 Shots of Rum</em><span class="dir-year">2008</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">John Ford</span><span class="dir-meta">USA · 1894–1973</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The Grapes of Wrath</em><span class="dir-year">1940</span></div>
+          <div class="dir-film"><em>The Searchers</em><span class="dir-year">1956</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">William Friedkin</span><span class="dir-meta">USA · 1935–2023</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The Exorcist</em><span class="dir-year">1973</span></div>
+          <div class="dir-film"><em>Sorcerer</em><span class="dir-year">1977</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">Barry Jenkins</span><span class="dir-meta">USA · b. 1979</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Moonlight</em><span class="dir-year">2016</span></div>
+          <div class="dir-film"><em>If Beale Street Could Talk</em><span class="dir-year">2018</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">Buster Keaton</span><span class="dir-meta">USA · 1895–1966</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Sherlock Jr.</em><span class="dir-year">1924</span></div>
+          <div class="dir-film"><em>The General</em><span class="dir-year">1926</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Abbas Kiarostami</span><span class="dir-meta">Iran · 1940–2016</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Where Is the Friend&#x27;s House?</em><span class="dir-year">1987</span></div>
+          <div class="dir-film"><em>Close-Up</em><span class="dir-year">1990</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Krzysztof Kieślowski</span><span class="dir-meta">Poland · 1941–1996</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The Double Life of Véronique</em><span class="dir-year">1991</span></div>
+          <div class="dir-film"><em>Three Colours: Red</em><span class="dir-year">1994</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Fritz Lang</span><span class="dir-meta">Germany/USA · 1890–1976</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Metropolis</em><span class="dir-year">1927</span></div>
+          <div class="dir-film"><em>M</em><span class="dir-year">1931</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">Spike Lee</span><span class="dir-meta">USA · b. 1957</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Do the Right Thing</em><span class="dir-year">1989</span></div>
+          <div class="dir-film"><em>Malcolm X</em><span class="dir-year">1992</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-header"><span class="dir-name">Ken Loach</span><span class="dir-meta">UK · b. 1936</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Kes</em><span class="dir-year">1969</span></div>
+          <div class="dir-film"><em>I, Daniel Blake</em><span class="dir-year">2016</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Ang Lee</span><span class="dir-meta">Taiwan/USA · b. 1954</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The Ice Storm</em><span class="dir-year">1997</span></div>
+          <div class="dir-film"><em>Brokeback Mountain</em><span class="dir-year">2005</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="other">
+        <div class="dir-header"><span class="dir-name">George Miller</span><span class="dir-meta">Australia · b. 1945</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Mad Max 2</em><span class="dir-year">1981</span></div>
+          <div class="dir-film"><em>Mad Max: Fury Road</em><span class="dir-year">2015</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-header"><span class="dir-name">Powell &amp; Pressburger</span><span class="dir-meta">UK · 1905–90/1902–88</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The Red Shoes</em><span class="dir-year">1948</span></div>
+          <div class="dir-film"><em>A Matter of Life and Death</em><span class="dir-year">1946</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="uk">
+        <div class="dir-header"><span class="dir-name">Sally Potter</span><span class="dir-meta">UK · b. 1949</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Orlando</em><span class="dir-year">1992</span></div>
+          <div class="dir-film"><em>Tango Lesson</em><span class="dir-year">1997</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Satyajit Ray</span><span class="dir-meta">India · 1921–1992</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Pather Panchali</em><span class="dir-year">1955</span></div>
+          <div class="dir-film"><em>Aparajito</em><span class="dir-year">1956</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">Paul Schrader</span><span class="dir-meta">USA · b. 1946</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Mishima</em><span class="dir-year">1985</span></div>
+          <div class="dir-film"><em>First Reformed</em><span class="dir-year">2017</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-header"><span class="dir-name">Céline Sciamma</span><span class="dir-meta">France · b. 1978</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Portrait of a Lady on Fire</em><span class="dir-year">2019</span></div>
+          <div class="dir-film"><em>Petite Maman</em><span class="dir-year">2021</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Andrei Tarkovsky</span><span class="dir-meta">USSR · 1932–1986</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Mirror</em><span class="dir-year">1975</span></div>
+          <div class="dir-film"><em>Stalker</em><span class="dir-year">1979</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-header"><span class="dir-name">François Truffaut</span><span class="dir-meta">France · 1932–1984</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>The 400 Blows</em><span class="dir-year">1959</span></div>
+          <div class="dir-film"><em>Jules and Jim</em><span class="dir-year">1962</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="france">
+        <div class="dir-header"><span class="dir-name">Agnès Varda</span><span class="dir-meta">France · 1928–2019</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Cléo from 5 to 7</em><span class="dir-year">1962</span></div>
+          <div class="dir-film"><em>The Gleaners and I</em><span class="dir-year">2000</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="europe">
+        <div class="dir-header"><span class="dir-name">Dziga Vertov</span><span class="dir-meta">USSR · 1896–1954</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Man with a Movie Camera</em><span class="dir-year">1929</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">John Waters</span><span class="dir-meta">USA · b. 1946</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Pink Flamingos</em><span class="dir-year">1972</span></div>
+          <div class="dir-film"><em>Polyester</em><span class="dir-year">1981</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="usa">
+        <div class="dir-header"><span class="dir-name">Billy Wilder</span><span class="dir-meta">USA · 1906–2002</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Sunset Boulevard</em><span class="dir-year">1950</span></div>
+          <div class="dir-film"><em>Some Like It Hot</em><span class="dir-year">1959</span></div>
+          <div class="dir-film"><em>The Apartment</em><span class="dir-year">1960</span></div>
+        </div>
+      </div>      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Edward Yang</span><span class="dir-meta">Taiwan · 1947–2007</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>A Brighter Summer Day</em><span class="dir-year">1991</span></div>
+          <div class="dir-film"><em>Yi Yi</em><span class="dir-year">2000</span></div>
+        </div>
+      </div>
+      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Hirokazu Kore-eda</span><span class="dir-meta">Japan · b. 1962</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Nobody Knows</em><span class="dir-year">2004</span></div>
+          <div class="dir-film"><em>Still Walking</em><span class="dir-year">2008</span></div>
+          <div class="dir-film"><em>Shoplifters</em><span class="dir-year">2018</span></div>
+        </div>
+      </div>
+      <div class="director-card" data-region="asia">
+        <div class="dir-header"><span class="dir-name">Lee Chang-dong</span><span class="dir-meta">South Korea · b. 1954</span></div>
+        <div class="dir-films">
+          <div class="dir-film"><em>Peppermint Candy</em><span class="dir-year">1999</span></div>
+          <div class="dir-film"><em>Poetry</em><span class="dir-year">2010</span></div>
+          <div class="dir-film"><em>Burning</em><span class="dir-year">2018</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-albums" class="tab-panel">
+  <div class="content-wrap" style="max-width:1100px">
+    <div class="section-hero">
+      <p class="eyebrow">Personal selection</p>
+      <h2>Favourite Albums</h2>
+      <p>50 albums — 42 added so far.</p>
+    </div>
+    <div id="album-grid" class="album-grid">
+        <div class="album-card" data-genre="Electronic" data-title="Discovery" data-artist="Daft Punk">
+          <div class="album-art" id="art-Discovery">
+            <img src="" alt="Discovery" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Discovery</div>
+            <div class="album-artist">Daft Punk</div>
+            <div class="album-year">2001 · Electronic</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Abbey Road" data-artist="The Beatles">
+          <div class="album-art" id="art-Abbey-Road">
+            <img src="" alt="Abbey Road" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Abbey Road</div>
+            <div class="album-artist">The Beatles</div>
+            <div class="album-year">1969 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Jazz" data-title="Kind of Blue" data-artist="Miles Davis">
+          <div class="album-art" id="art-Kind-of-Blue">
+            <img src="" alt="Kind of Blue" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Kind of Blue</div>
+            <div class="album-artist">Miles Davis</div>
+            <div class="album-year">1959 · Jazz</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Art Pop" data-title="Hounds of Love" data-artist="Kate Bush">
+          <div class="album-art" id="art-Hounds-of-Love">
+            <img src="" alt="Hounds of Love" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Hounds of Love</div>
+            <div class="album-artist">Kate Bush</div>
+            <div class="album-year">1985 · Art Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Nevermind" data-artist="Nirvana">
+          <div class="album-art" id="art-Nevermind">
+            <img src="" alt="Nevermind" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Nevermind</div>
+            <div class="album-artist">Nirvana</div>
+            <div class="album-year">1991 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="The Dark Side of the Moon" data-artist="Pink Floyd">
+          <div class="album-art" id="art-The-Dark-Side-of-the">
+            <img src="" alt="The Dark Side of the Moon" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">The Dark Side of the Moon</div>
+            <div class="album-artist">Pink Floyd</div>
+            <div class="album-year">1973 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Electronic" data-title="Kid A" data-artist="Radiohead">
+          <div class="album-art" id="art-Kid-A">
+            <img src="" alt="Kid A" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Kid A</div>
+            <div class="album-artist">Radiohead</div>
+            <div class="album-year">2000 · Electronic</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Purple Rain" data-artist="Prince">
+          <div class="album-art" id="art-Purple-Rain">
+            <img src="" alt="Purple Rain" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Purple Rain</div>
+            <div class="album-artist">Prince</div>
+            <div class="album-year">1984 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Is This It" data-artist="The Strokes">
+          <div class="album-art" id="art-Is-This-It">
+            <img src="" alt="Is This It" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Is This It</div>
+            <div class="album-artist">The Strokes</div>
+            <div class="album-year">2001 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Jazz" data-title="A Love Supreme" data-artist="John Coltrane">
+          <div class="album-art" id="art-A-Love-Supreme">
+            <img src="" alt="A Love Supreme" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">A Love Supreme</div>
+            <div class="album-artist">John Coltrane</div>
+            <div class="album-year">1965 · Jazz</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Born This Way" data-artist="Lady Gaga">
+          <div class="album-art" id="art-Born-This-Way">
+            <img src="" alt="Born This Way" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Born This Way</div>
+            <div class="album-artist">Lady Gaga</div>
+            <div class="album-year">2011 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Alternative" data-title="Yoshimi Battles the Pink Robots" data-artist="The Flaming Lips">
+          <div class="album-art" id="art-Yoshimi-Battles-the-">
+            <img src="" alt="Yoshimi Battles the Pink Robots" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Yoshimi Battles the Pink Robots</div>
+            <div class="album-artist">The Flaming Lips</div>
+            <div class="album-year">2002 · Alternative</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Rumours" data-artist="Fleetwood Mac">
+          <div class="album-art" id="art-Rumours">
+            <img src="" alt="Rumours" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Rumours</div>
+            <div class="album-artist">Fleetwood Mac</div>
+            <div class="album-year">1977 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="London Calling" data-artist="The Clash">
+          <div class="album-art" id="art-London-Calling">
+            <img src="" alt="London Calling" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">London Calling</div>
+            <div class="album-artist">The Clash</div>
+            <div class="album-year">1979 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="The Velvet Underground &amp; Nico" data-artist="The Velvet Underground">
+          <div class="album-art" id="art-The-Velvet-Undergrou">
+            <img src="" alt="The Velvet Underground &amp; Nico" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">The Velvet Underground &amp; Nico</div>
+            <div class="album-artist">The Velvet Underground</div>
+            <div class="album-year">1967 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="OK Computer" data-artist="Radiohead">
+          <div class="album-art" id="art-OK-Computer">
+            <img src="" alt="OK Computer" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">OK Computer</div>
+            <div class="album-artist">Radiohead</div>
+            <div class="album-year">1997 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Automatic for the People" data-artist="R.E.M.">
+          <div class="album-art" id="art-Automatic-for-the-Pe">
+            <img src="" alt="Automatic for the People" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Automatic for the People</div>
+            <div class="album-artist">R.E.M.</div>
+            <div class="album-year">1992 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Jagged Little Pill" data-artist="Alanis Morissette">
+          <div class="album-art" id="art-Jagged-Little-Pill">
+            <img src="" alt="Jagged Little Pill" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Jagged Little Pill</div>
+            <div class="album-artist">Alanis Morissette</div>
+            <div class="album-year">1995 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Lemonade" data-artist="Beyoncé">
+          <div class="album-art" id="art-Lemonade">
+            <img src="" alt="Lemonade" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Lemonade</div>
+            <div class="album-artist">Beyoncé</div>
+            <div class="album-year">2016 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="The Immaculate Collection" data-artist="Madonna">
+          <div class="album-art" id="art-The-Immaculate-Colle">
+            <img src="" alt="The Immaculate Collection" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">The Immaculate Collection</div>
+            <div class="album-artist">Madonna</div>
+            <div class="album-year">1990 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Bad" data-artist="Michael Jackson">
+          <div class="album-art" id="art-Bad">
+            <img src="" alt="Bad" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Bad</div>
+            <div class="album-artist">Michael Jackson</div>
+            <div class="album-year">1987 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Art Pop" data-title="Debut" data-artist="Björk">
+          <div class="album-art" id="art-Debut">
+            <img src="" alt="Debut" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Debut</div>
+            <div class="album-artist">Björk</div>
+            <div class="album-year">1993 · Art Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Smash" data-artist="The Offspring">
+          <div class="album-art" id="art-Smash">
+            <img src="" alt="Smash" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Smash</div>
+            <div class="album-artist">The Offspring</div>
+            <div class="album-year">1994 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Art Pop" data-title="I Am a Bird Now" data-artist="Antony and the Johnsons">
+          <div class="album-art" id="art-I-Am-a-Bird-Now">
+            <img src="" alt="I Am a Bird Now" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">I Am a Bird Now</div>
+            <div class="album-artist">Antony and the Johnsons</div>
+            <div class="album-year">2005 · Art Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Dream Pop" data-title="Heaven or Las Vegas" data-artist="Cocteau Twins">
+          <div class="album-art" id="art-Heaven-or-Las-Vegas">
+            <img src="" alt="Heaven or Las Vegas" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Heaven or Las Vegas</div>
+            <div class="album-artist">Cocteau Twins</div>
+            <div class="album-year">1990 · Dream Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Born to Die" data-artist="Lana Del Rey">
+          <div class="album-art" id="art-Born-to-Die">
+            <img src="" alt="Born to Die" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Born to Die</div>
+            <div class="album-artist">Lana Del Rey</div>
+            <div class="album-year">2012 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Elephant" data-artist="The White Stripes">
+          <div class="album-art" id="art-Elephant">
+            <img src="" alt="Elephant" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Elephant</div>
+            <div class="album-artist">The White Stripes</div>
+            <div class="album-year">2003 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="Getting Killed" data-artist="Geese">
+          <div class="album-art" id="art-Getting-Killed">
+            <img src="" alt="Getting Killed" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Getting Killed</div>
+            <div class="album-artist">Geese</div>
+            <div class="album-year">2025 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Art Rock" data-title="Spirit of Eden" data-artist="Talk Talk">
+          <div class="album-art" id="art-Spirit-of-Eden">
+            <img src="" alt="Spirit of Eden" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Spirit of Eden</div>
+            <div class="album-artist">Talk Talk</div>
+            <div class="album-year">1988 · Art Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Art Rock" data-title="Let England Shake" data-artist="PJ Harvey">
+          <div class="album-art" id="art-Let-England-Shake">
+            <img src="" alt="Let England Shake" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Let England Shake</div>
+            <div class="album-artist">PJ Harvey</div>
+            <div class="album-year">2011 · Art Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Rock" data-title="The Queen Is Dead" data-artist="The Smiths">
+          <div class="album-art" id="art-The-Queen-Is-Dead">
+            <img src="" alt="The Queen Is Dead" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">The Queen Is Dead</div>
+            <div class="album-artist">The Smiths</div>
+            <div class="album-year">1986 · Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Electronic" data-title="Dummy" data-artist="Portishead">
+          <div class="album-art" id="art-Dummy">
+            <img src="" alt="Dummy" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Dummy</div>
+            <div class="album-artist">Portishead</div>
+            <div class="album-year">1994 · Electronic</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Electronic" data-title="Mezzanine" data-artist="Massive Attack">
+          <div class="album-art" id="art-Mezzanine">
+            <img src="" alt="Mezzanine" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Mezzanine</div>
+            <div class="album-artist">Massive Attack</div>
+            <div class="album-year">1998 · Electronic</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Post-Punk" data-title="Unknown Pleasures" data-artist="Joy Division">
+          <div class="album-art" id="art-Unknown-Pleasures">
+            <img src="" alt="Unknown Pleasures" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Unknown Pleasures</div>
+            <div class="album-artist">Joy Division</div>
+            <div class="album-year">1979 · Post-Punk</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Brat" data-artist="Charli XCX">
+          <div class="album-art" id="art-Brat">
+            <img src="" alt="Brat" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Brat</div>
+            <div class="album-artist">Charli XCX</div>
+            <div class="album-year">2024 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Body Talk" data-artist="Robyn">
+          <div class="album-art" id="art-Body-Talk">
+            <img src="" alt="Body Talk" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Body Talk</div>
+            <div class="album-artist">Robyn</div>
+            <div class="album-year">2010 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Folk" data-title="Folklore" data-artist="Taylor Swift">
+          <div class="album-art" id="art-Folklore">
+            <img src="" alt="Folklore" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Folklore</div>
+            <div class="album-artist">Taylor Swift</div>
+            <div class="album-year">2020 · Folk</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Actually" data-artist="Pet Shop Boys">
+          <div class="album-art" id="art-Actually">
+            <img src="" alt="Actually" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Actually</div>
+            <div class="album-artist">Pet Shop Boys</div>
+            <div class="album-year">1987 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Pop" data-title="Behaviour" data-artist="Pet Shop Boys">
+          <div class="album-art" id="art-Behaviour">
+            <img src="" alt="Behaviour" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Behaviour</div>
+            <div class="album-artist">Pet Shop Boys</div>
+            <div class="album-year">1990 · Pop</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Folk" data-title="Illinois" data-artist="Sufjan Stevens">
+          <div class="album-art" id="art-Illinois">
+            <img src="" alt="Illinois" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Illinois</div>
+            <div class="album-artist">Sufjan Stevens</div>
+            <div class="album-year">2005 · Folk</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Art Rock" data-title="Blackstar" data-artist="David Bowie">
+          <div class="album-art" id="art-Blackstar">
+            <img src="" alt="Blackstar" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Blackstar</div>
+            <div class="album-artist">David Bowie</div>
+            <div class="album-year">2016 · Art Rock</div>
+          </div>
+        </div>
+        <div class="album-card" data-genre="Folk" data-title="Blue" data-artist="Joni Mitchell">
+          <div class="album-art" id="art-Blue">
+            <img src="" alt="Blue" style="display:none">
+            ♪
+          </div>
+          <div class="album-info">
+            <div class="album-name">Blue</div>
+            <div class="album-artist">Joni Mitchell</div>
+            <div class="album-year">1971 · Folk</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-books" class="tab-panel">
+  <div class="content-wrap">
+    <div class="section-hero">
+      <p class="eyebrow">Personal selection</p>
+      <h2>Favourite Books</h2>
+      <p>Books that have shaped how I think.</p>
+    </div>
+    <div class="book-filters" id="book-filters">
+      <button class="book-filter active" data-genre="all">All</button>
+      <button class="book-filter" data-genre="fiction">Fiction</button>
+      <button class="book-filter" data-genre="non-fiction">Non-fiction</button>
+      <button class="book-filter" data-genre="philosophy">Philosophy</button>
+      <button class="book-filter" data-genre="history">History</button>
+      <button class="book-filter" data-genre="psychology">Psychology</button>
+    </div>
+    <div id="books-list">
+      <div class="book-entry" data-genre="fiction" data-title="A Month in the Country" data-author="J. L. Carr">
+        <div class="book-spine" id="cover-A-Month-in-the-Count">
+          <img src="" alt="A Month in the Country" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">A Month in the Country</div>
+          <div class="book-author">J. L. Carr</div>
+          <div class="book-meta"><span class="book-tag">1980</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="American Psycho" data-author="Bret Easton Ellis">
+        <div class="book-spine" id="cover-American-Psycho">
+          <img src="" alt="American Psycho" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">American Psycho</div>
+          <div class="book-author">Bret Easton Ellis</div>
+          <div class="book-meta"><span class="book-tag">1991</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="The Secret History" data-author="Donna Tartt">
+        <div class="book-spine" id="cover-The-Secret-History">
+          <img src="" alt="The Secret History" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">The Secret History</div>
+          <div class="book-author">Donna Tartt</div>
+          <div class="book-meta"><span class="book-tag">1992</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="Beloved" data-author="Toni Morrison">
+        <div class="book-spine" id="cover-Beloved">
+          <img src="" alt="Beloved" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">Beloved</div>
+          <div class="book-author">Toni Morrison</div>
+          <div class="book-meta"><span class="book-tag">1987</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="Misery" data-author="Stephen King">
+        <div class="book-spine" id="cover-Misery">
+          <img src="" alt="Misery" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">Misery</div>
+          <div class="book-author">Stephen King</div>
+          <div class="book-meta"><span class="book-tag">1987</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="Austerlitz" data-author="W. G. Sebald">
+        <div class="book-spine" id="cover-Austerlitz">
+          <img src="" alt="Austerlitz" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">Austerlitz</div>
+          <div class="book-author">W. G. Sebald</div>
+          <div class="book-meta"><span class="book-tag">2001</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="non-fiction" data-title="I Know Why the Caged Bird Sings" data-author="Maya Angelou">
+        <div class="book-spine" id="cover-I-Know-Why-the-Caged">
+          <img src="" alt="I Know Why the Caged Bird Sings" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">I Know Why the Caged Bird Sings</div>
+          <div class="book-author">Maya Angelou</div>
+          <div class="book-meta"><span class="book-tag">1969</span><span class="book-tag">non-fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="His Dark Materials" data-author="Philip Pullman">
+        <div class="book-spine" id="cover-His-Dark-Materials">
+          <img src="" alt="His Dark Materials" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">His Dark Materials</div>
+          <div class="book-author">Philip Pullman</div>
+          <div class="book-meta"><span class="book-tag">1995–2000</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="Nineteen Eighty-Four" data-author="George Orwell">
+        <div class="book-spine" id="cover-Nineteen-Eighty-Four">
+          <img src="" alt="Nineteen Eighty-Four" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">Nineteen Eighty-Four</div>
+          <div class="book-author">George Orwell</div>
+          <div class="book-meta"><span class="book-tag">1949</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="The Hound of the Baskervilles" data-author="Arthur Conan Doyle">
+        <div class="book-spine" id="cover-The-Hound-of-the-Bas">
+          <img src="" alt="The Hound of the Baskervilles" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">The Hound of the Baskervilles</div>
+          <div class="book-author">Arthur Conan Doyle</div>
+          <div class="book-meta"><span class="book-tag">1902</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="The Code of the Woosters" data-author="P. G. Wodehouse">
+        <div class="book-spine" id="cover-Code-of-the-Wooster">
+          <img src="" alt="The Code of the Woosters" style="display:none">📖
+        </div>
+        <div class="book-info">
+          <div class="book-title">The Code of the Woosters</div>
+          <div class="book-author">P. G. Wodehouse</div>
+          <div class="book-meta"><span class="book-tag">1938</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="Crime and Punishment" data-author="Fyodor Dostoevsky">
+        <div class="book-spine"><img src="" alt="Crime and Punishment" style="display:none">📖</div>
+        <div class="book-info">
+          <div class="book-title">Crime and Punishment</div>
+          <div class="book-author">Fyodor Dostoevsky</div>
+          <div class="book-meta"><span class="book-tag">1866</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="The Leopard" data-author="Giuseppe Tomasi di Lampedusa">
+        <div class="book-spine"><img src="" alt="The Leopard" style="display:none">📖</div>
+        <div class="book-info">
+          <div class="book-title">The Leopard</div>
+          <div class="book-author">Giuseppe Tomasi di Lampedusa</div>
+          <div class="book-meta"><span class="book-tag">1958</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+      <div class="book-entry" data-genre="fiction" data-title="The Handmaid&#x27;s Tale" data-author="Margaret Atwood">
+        <div class="book-spine"><img src="" alt="The Handmaid&#x27;s Tale" style="display:none">📖</div>
+        <div class="book-info">
+          <div class="book-title">The Handmaid&#x27;s Tale</div>
+          <div class="book-author">Margaret Atwood</div>
+          <div class="book-meta"><span class="book-tag">1985</span><span class="book-tag">fiction</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-tv" class="tab-panel">
+  <div class="content-wrap" style="max-width:1100px">
+    <div class="section-hero">
+      <p class="eyebrow">Personal selection</p>
+      <h2>Favourite TV</h2>
+      <p>Top 30 — 29 added so far.</p>
+    </div>
+    <div id="tv-controls">
+      <button class="tv-filter active" data-filter="all">All</button>
+      <button class="tv-filter" data-filter="country-usa">USA</button>
+      <button class="tv-filter" data-filter="country-uk">UK</button>
+      <button class="tv-filter" data-filter="genre-drama">Drama</button>
+      <button class="tv-filter" data-filter="genre-comedy">Comedy</button>
+      <button class="tv-filter" data-filter="genre-sci-fi">Sci-Fi</button>
+    </div>
+    <div class="show-grid" id="show-grid">
+      <div class="show-card" data-country="usa" data-genre="drama" data-title="The Wire">
+        <div class="show-poster" id="poster-The-Wire">
+          <img src="" alt="The Wire" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The Wire</div>
+          <div class="show-creator">David Simon</div>
+          <div class="show-meta">HBO · 2002–2008</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Twin Peaks">
+        <div class="show-poster" id="poster-Twin-Peaks">
+          <img src="" alt="Twin Peaks" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Twin Peaks</div>
+          <div class="show-creator">Lynch &amp; Frost</div>
+          <div class="show-meta">ABC / Showtime · 1990–2017</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="The X-Files">
+        <div class="show-poster" id="poster-The-X-Files">
+          <img src="" alt="The X-Files" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The X-Files</div>
+          <div class="show-creator">Chris Carter</div>
+          <div class="show-meta">Fox · 1993–2018</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The Sopranos">
+        <div class="show-poster" id="poster-The-Sopranos">
+          <img src="" alt="The Sopranos" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The Sopranos</div>
+          <div class="show-creator">David Chase</div>
+          <div class="show-meta">HBO · 1999–2007</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Miami Vice">
+        <div class="show-poster" id="poster-Miami-Vice">
+          <img src="" alt="Miami Vice" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Miami Vice</div>
+          <div class="show-creator">Anthony Yerkovich</div>
+          <div class="show-meta">NBC · 1984–1990</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Game of Thrones">
+        <div class="show-poster" id="poster-Game-of-Thrones">
+          <img src="" alt="Game of Thrones" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Game of Thrones</div>
+          <div class="show-creator">Benioff &amp; Weiss</div>
+          <div class="show-meta">HBO · 2011–2019</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Breaking Bad">
+        <div class="show-poster" id="poster-Breaking-Bad">
+          <img src="" alt="Breaking Bad" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Breaking Bad</div>
+          <div class="show-creator">Vince Gilligan</div>
+          <div class="show-meta">AMC · 2008–2013</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="I May Destroy You">
+        <div class="show-poster" id="poster-I-May-Destroy-You">
+          <img src="" alt="I May Destroy You" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">I May Destroy You</div>
+          <div class="show-creator">Michaela Coel</div>
+          <div class="show-meta">BBC / HBO · 2020</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="ER">
+        <div class="show-poster" id="poster-ER">
+          <img src="" alt="ER" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">ER</div>
+          <div class="show-creator">Michael Crichton</div>
+          <div class="show-meta">NBC · 1994–2009</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Thick of It">
+        <div class="show-poster" id="poster-The-Thick-of-It">
+          <img src="" alt="The Thick of It" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The Thick of It</div>
+          <div class="show-creator">Armando Iannucci</div>
+          <div class="show-meta">BBC Two · 2005–2012</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Star Trek: The Next Generation">
+        <div class="show-poster" id="poster-Star-Trek--The-Next-">
+          <img src="" alt="Star Trek: The Next Generation" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Star Trek: The Next Generation</div>
+          <div class="show-creator">Gene Roddenberry</div>
+          <div class="show-meta">Syndicated · 1987–1994</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Office">
+        <div class="show-poster" id="poster-The-Office">
+          <img src="" alt="The Office" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The Office</div>
+          <div class="show-creator">Gervais &amp; Merchant</div>
+          <div class="show-meta">BBC Two · 2001–2003</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Cracker">
+        <div class="show-poster" id="poster-Cracker">
+          <img src="" alt="Cracker" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Cracker</div>
+          <div class="show-creator">Jimmy McGovern</div>
+          <div class="show-meta">ITV · 1993–2006</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Six Feet Under">
+        <div class="show-poster" id="poster-Six-Feet-Under">
+          <img src="" alt="Six Feet Under" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Six Feet Under</div>
+          <div class="show-creator">Alan Ball</div>
+          <div class="show-meta">HBO · 2001–2005</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Fleabag">
+        <div class="show-poster" id="poster-Fleabag">
+          <img src="" alt="Fleabag" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Fleabag</div>
+          <div class="show-creator">Phoebe Waller-Bridge</div>
+          <div class="show-meta">BBC Three · 2016–2019</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Deadwood">
+        <div class="show-poster" id="poster-Deadwood">
+          <img src="" alt="Deadwood" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Deadwood</div>
+          <div class="show-creator">David Milch</div>
+          <div class="show-meta">HBO · 2004–2006</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="animation" data-title="The Simpsons">
+        <div class="show-poster" id="poster-The-Simpsons">
+          <img src="" alt="The Simpsons" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The Simpsons</div>
+          <div class="show-creator">Matt Groening</div>
+          <div class="show-meta">Fox · 1989–</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Mad Men">
+        <div class="show-poster" id="poster-Mad-Men">
+          <img src="" alt="Mad Men" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Mad Men</div>
+          <div class="show-creator">Matthew Weiner</div>
+          <div class="show-meta">AMC · 2007–2015</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The West Wing">
+        <div class="show-poster" id="poster-The-West-Wing">
+          <img src="" alt="The West Wing" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The West Wing</div>
+          <div class="show-creator">Aaron Sorkin</div>
+          <div class="show-meta">NBC · 1999–2006</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Friends">
+        <div class="show-poster" id="poster-Friends">
+          <img src="" alt="Friends" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Friends</div>
+          <div class="show-creator">Kauffman &amp; Crane</div>
+          <div class="show-meta">NBC · 1994–2004</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Succession">
+        <div class="show-poster" id="poster-Succession">
+          <img src="" alt="Succession" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Succession</div>
+          <div class="show-creator">Jesse Armstrong</div>
+          <div class="show-meta">HBO · 2018–2023</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="True Detective">
+        <div class="show-poster" id="poster-True-Detective">
+          <img src="" alt="True Detective" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">True Detective</div>
+          <div class="show-creator">Nic Pizzolatto</div>
+          <div class="show-meta">HBO · 2014</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Brass Eye">
+        <div class="show-poster" id="poster-Brass-Eye">
+          <img src="" alt="Brass Eye" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Brass Eye</div>
+          <div class="show-creator">Chris Morris</div>
+          <div class="show-meta">Channel 4 · 1997–2001</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Day Today">
+        <div class="show-poster" id="poster-The-Day-Today">
+          <img src="" alt="The Day Today" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">The Day Today</div>
+          <div class="show-creator">Morris &amp; Iannucci</div>
+          <div class="show-meta">BBC Two · 1994</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="My So-Called Life">
+        <div class="show-poster" id="poster-My-So-Called-Life">
+          <img src="" alt="My So-Called Life" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">My So-Called Life</div>
+          <div class="show-creator">Winnie Holzman</div>
+          <div class="show-meta">ABC · 1994–1995</div>
+        </div>
+      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="I&#x27;m Alan Partridge">
+        <div class="show-poster" id="poster-I-m-Alan-Partridge">
+          <img src="" alt="I&#x27;m Alan Partridge" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">I&#x27;m Alan Partridge</div>
+          <div class="show-creator">Coogan &amp; Iannucci</div>
+          <div class="show-meta">BBC Two · 1997–2002</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Columbo">
+        <div class="show-poster" id="poster-Columbo">
+          <img src="" alt="Columbo" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Columbo</div>
+          <div class="show-creator">Levinson &amp; Link</div>
+          <div class="show-meta">NBC · 1968–2003</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Late Night with David Letterman">
+        <div class="show-poster" id="poster-Late-Night-with-Davi">
+          <img src="" alt="Late Night with David Letterman" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Late Night with David Letterman</div>
+          <div class="show-creator">David Letterman</div>
+          <div class="show-meta">NBC · 1982–1993</div>
+        </div>
+      </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Battlestar Galactica">
+        <div class="show-poster" id="poster-Battlestar-Galactica">
+          <img src="" alt="Battlestar Galactica" style="display:none">▶
+        </div>
+        <div class="show-info">
+          <div class="show-title">Battlestar Galactica</div>
+          <div class="show-creator">Ronald D. Moore</div>
+          <div class="show-meta">Sci Fi Channel · 2004–2009</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<script>
+
+// ── Tab switching ──────────────────────────────────────────────
+const tabBtns   = document.querySelectorAll('.tab-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+let artLoaded = false, coversLoaded = false, postersLoaded = false;
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === target));
+    tabPanels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
+    window.scrollTo(0, 0);
+    if (target === 'albums' && !artLoaded) { artLoaded = true; loadAlbumArt(); }
+    if (target === 'books'  && !coversLoaded) { coversLoaded = true; loadBookCovers(); }
+    if (target === 'tv'     && !postersLoaded) { postersLoaded = true; loadShowPosters(); }
+  });
+});
+
+// ── Poem toggle ────────────────────────────────────────────────
+function togglePoem(btn) {
+  const card = btn.closest('.poem-card');
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.poem-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+document.querySelectorAll('.poem-index-link').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    t.classList.add('open');
+    t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ── Films filter ───────────────────────────────────────────────
+document.getElementById('films-controls').addEventListener('click', e => {
+  const btn = e.target.closest('.films-filter');
+  if (!btn) return;
+  const region = btn.dataset.region;
+  document.querySelectorAll('.films-filter').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.director-card').forEach(card => {
+    card.classList.toggle('hidden', region !== 'all' && card.dataset.region !== region);
+  });
+  document.querySelectorAll('.director-grid').forEach(grid => {
+    const head = grid.previousElementSibling;
+    const visible = grid.querySelectorAll('.director-card:not(.hidden)').length;
+    if (head && head.classList.contains('films-section-head')) head.style.display = visible ? '' : 'none';
+  });
+});
+
+// ── Book filter ────────────────────────────────────────────────
+document.getElementById('book-filters').addEventListener('click', e => {
+  const btn = e.target.closest('.book-filter');
+  if (!btn) return;
+  const genre = btn.dataset.genre;
+  document.querySelectorAll('.book-filter').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.book-entry').forEach(el => {
+    el.style.display = (genre === 'all' || el.dataset.genre === genre) ? '' : 'none';
+  });
+});
+
+// ── TV filter ──────────────────────────────────────────────────
+document.getElementById('tv-controls').addEventListener('click', e => {
+  const btn = e.target.closest('.tv-filter');
+  if (!btn) return;
+  const f = btn.dataset.filter;
+  document.querySelectorAll('.tv-filter').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.show-card').forEach(card => {
+    const match = f === 'all' ||
+      (f.startsWith('country-') && card.dataset.country === f.replace('country-','')) ||
+      (f.startsWith('genre-')   && card.dataset.genre   === f.replace('genre-',''));
+    card.classList.toggle('hidden', !match);
+  });
+});
+
+// ── Album art ──────────────────────────────────────────────────
+async function loadAlbumArt() {
+  const cards = document.querySelectorAll('.album-card[data-title]');
+  for (const card of cards) {
+    const title = card.dataset.title, artist = card.dataset.artist;
+    const artDiv = card.querySelector('.album-art'), img = artDiv?.querySelector('img');
+    if (!img || img.src) continue;
+    try {
+      const q = encodeURIComponent(artist + ' ' + title);
+      const res = await fetch(`https://itunes.apple.com/search?term=${q}&entity=album&limit=3`);
+      const data = await res.json();
+      const match = data.results.find(r => r.collectionName.toLowerCase().includes(title.toLowerCase().split('(')[0].trim())) || data.results[0];
+      if (match?.artworkUrl100) {
+        img.src = match.artworkUrl100.replace('100x100bb','400x400bb');
+        img.style.display = 'block';
+        Array.from(artDiv.childNodes).forEach(n => { if (n.nodeType === 3) n.textContent = ''; });
+      }
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 80));
+  }
+}
+
+// ── Book covers ────────────────────────────────────────────────
+async function loadBookCovers() {
+  const entries = document.querySelectorAll('.book-entry[data-title]');
+  for (const entry of entries) {
+    const spine = entry.querySelector('.book-spine'), img = spine?.querySelector('img');
+    if (!img || img.src) continue;
+    try {
+      const q = encodeURIComponent(entry.dataset.title + ' ' + entry.dataset.author);
+      const res = await fetch(`https://openlibrary.org/search.json?q=${q}&fields=cover_i&limit=3`);
+      const data = await res.json();
+      const book = data.docs?.find(d => d.cover_i);
+      if (book?.cover_i) {
+        img.src = `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`;
+        img.style.display = 'block';
+        Array.from(spine.childNodes).forEach(n => { if (n.nodeType === 3) n.textContent = ''; });
+      }
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 100));
+  }
+}
+
+// ── TV posters ─────────────────────────────────────────────────
+async function loadShowPosters() {
+  const cards = document.querySelectorAll('.show-card[data-title]');
+  for (const card of cards) {
+    const poster = card.querySelector('.show-poster'), img = poster?.querySelector('img');
+    if (!img || img.src) continue;
+    try {
+      const q = encodeURIComponent(card.dataset.title);
+      const res = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${q}`);
+      const data = await res.json();
+      const url = data?.image?.medium || data?.image?.original;
+      if (url) {
+        img.src = url; img.style.display = 'block';
+        Array.from(poster.childNodes).forEach(n => { if (n.nodeType === 3) n.textContent = ''; });
+      }
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 80));
+  }
+}
+
+
+// ── Back to top ────────────────────────────────────────────────
+const siteBackTop = document.getElementById('back-top');
+if (siteBackTop) {
+  window.addEventListener('scroll', () => siteBackTop.classList.toggle('visible', window.scrollY > 400));
+  siteBackTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+</script>
+
+</body>
+</html>
