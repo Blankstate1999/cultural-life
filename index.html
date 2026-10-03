@@ -17,10 +17,12 @@
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
-  body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6;overflow-x:hidden;}
 
   /* Top nav */
-  #top-nav{position:fixed;top:0;left:0;right:0;height:var(--tab-h);background:var(--ink);display:flex;align-items:stretch;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);}
+  #top-nav{position:fixed;top:0;left:0;right:0;height:var(--tab-h);background:var(--ink);display:flex;align-items:stretch;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  #top-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{flex-shrink:0;}
   #site-title{font-family:var(--font-display);font-size:0.9rem;color:#C8C0B4;padding:0 1.25rem;display:flex;align-items:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.08);letter-spacing:0.01em;}
   .tab-btn{background:none;border:none;color:#9E9890;font-family:var(--font-body);font-size:0.8rem;padding:0 1.1rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;letter-spacing:0.04em;text-transform:uppercase;}
   .tab-btn:hover{color:#E8E4DE;}
@@ -34,7 +36,9 @@
   #art-main{flex:1;padding:2.5rem 2.5rem 4rem;max-width:900px;margin:0 auto;width:100%;}
 
   /* Art controls */
-  #art-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.65rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:0.3rem 0.4rem;align-items:center;}
+  #art-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.65rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--rule);display:flex;flex-wrap:nowrap;gap:0.4rem;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  #art-controls::-webkit-scrollbar{display:none;}
+  .art-filter,.art-era-btn{flex-shrink:0;}
   .art-filter,.art-era-btn{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;white-space:nowrap;}
   .art-filter:hover,.art-era-btn:hover{color:var(--ink);}
   .art-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
@@ -48,6 +52,15 @@
   .section-hero p{font-size:0.95rem;color:var(--muted);}
 
   /* Poems */
+
+  #poem-filters{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.65rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--rule);display:flex;flex-wrap:nowrap;gap:0.4rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  #poem-filters::-webkit-scrollbar{display:none;}
+  .poet-filter{flex-shrink:0;}
+  .poet-filter{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
+  .poet-filter:hover{color:var(--ink);}
+  .poet-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
+  .poem-card.hidden{display:none;}
+
   #poem-index{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.6rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:0.3rem 0.5rem;}
   .poem-index-link{font-size:0.7rem;color:var(--muted);text-decoration:none;padding:2px 6px;border-radius:3px;border:1px solid transparent;transition:all 0.12s;}
   .poem-index-link:hover{color:var(--ink);border-color:var(--rule);background:var(--surface);}
@@ -62,10 +75,11 @@
   .poem-card.open .poem-chevron{transform:rotate(180deg);}
   .poem-body-wrap{display:none;padding-bottom:1.25rem;}
   .poem-card.open .poem-body-wrap{display:block;}
-  .poem-body{font-family:var(--font-display);font-size:0.92rem;line-height:1.6;color:#2C2820;white-space:pre-wrap;}
+  .poem-body{font-family:var(--font-display);font-size:0.92rem;line-height:1.6;color:#2C2820;white-space:pre-wrap;overflow-x:auto;max-width:100%;}
 
   /* Films */
-  #films-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.75rem 0;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);display:flex;gap:0.4rem;flex-wrap:wrap;}
+  #films-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.75rem 0;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);display:flex;gap:0.4rem;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  #films-controls::-webkit-scrollbar{display:none;}
   .films-filter{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
   .films-filter:hover{color:var(--ink);}
   .films-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
@@ -86,17 +100,21 @@
 
   /* Albums */
   .album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem;}
-  .album-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;}
+  .album-card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden;transition:box-shadow 0.15s;cursor:grab;}
   .album-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1);}
   .album-art{width:100%;aspect-ratio:1;background:#1c1a17;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#3a3530;overflow:hidden;}
   .album-art img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.3s;}
-  .album-info{padding:0.55rem 0.65rem 0.7rem;}
-  .album-name{font-size:0.78rem;font-weight:600;color:var(--ink);margin-bottom:2px;line-height:1.3;}
-  .album-artist{font-size:0.7rem;color:var(--muted);margin-bottom:2px;}
+  .album-info{padding:0.5rem 0.65rem 0.65rem;display:flex;align-items:baseline;gap:0.4rem;}
+  .album-rank-inline{font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;min-width:1rem;}
+  .album-text{min-width:0;}
+  .album-name{font-size:0.78rem;font-weight:600;color:var(--ink);margin-bottom:1px;line-height:1.3;}
+  .album-artist{font-size:0.7rem;color:var(--muted);margin-bottom:1px;}
   .album-year{font-size:0.65rem;font-family:var(--font-mono);color:var(--muted);}
 
   /* Books */
-  .book-filters{display:flex;gap:0.5rem 0.4rem;flex-wrap:wrap;margin-bottom:2rem;}
+  .book-filters{display:flex;gap:0.4rem;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:2rem;padding-bottom:0.25rem;}
+  .book-filters::-webkit-scrollbar{display:none;}
+  .book-filter{flex-shrink:0;}
   .book-filter{font-size:0.75rem;padding:4px 12px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
   .book-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
   .book-entry{display:grid;grid-template-columns:1.5rem 68px 1fr;gap:0.75rem 1rem;padding:1rem 0;border-bottom:1px solid var(--rule);align-items:start;}
@@ -109,21 +127,27 @@
   .book-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;padding:2px 7px;border-radius:3px;background:var(--bg);color:var(--muted);border:1px solid var(--rule);}
 
   /* TV */
-  #tv-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.75rem 0;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);display:flex;gap:0.4rem;flex-wrap:wrap;}
+  #tv-controls{position:sticky;top:var(--tab-h);background:var(--bg);z-index:10;padding:0.75rem 0;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);display:flex;gap:0.4rem;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  #tv-controls::-webkit-scrollbar{display:none;}
   .tv-filter{font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.12s;}
   .tv-filter.active{background:var(--ink);color:#F0EBE3;border-color:var(--ink);}
   .show-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem;}
-  .show-grid{grid-template-columns:1fr!important;}
+  .show-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
 
   /* Drag-and-drop ranks */
-  .album-card { position: relative; cursor: grab; }
   .album-card:active { cursor: grabbing; }
-  .album-rank { position: absolute; top: 4px; left: 5px; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.7); z-index: 2; line-height: 1; }
   .album-card.sortable-ghost { opacity: 0.3; }
   .album-card.sortable-drag { box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: grabbing; }
 
   .book-entry { cursor: grab; }
   .book-entry:active { cursor: grabbing; }
+
+  .book-rating { display:flex; align-items:center; gap:2px; margin-top:0.3rem; }
+  .star { font-size:0.75rem; color:#D4A800; line-height:1; }
+  .star.empty { color:var(--rule); }
+  .star.half { position:relative; color:var(--rule); }
+  .star.half::before { content:'★'; position:absolute; left:0; color:#D4A800; width:50%; overflow:hidden; }
+
   .book-rank { font-family: var(--font-mono); font-size: 0.72rem; color: var(--rule); font-weight: 700; min-width: 1.5rem; flex-shrink: 0; text-align: right; padding-top: 2px; }
   .book-entry.sortable-ghost { opacity: 0.3; }
 
@@ -546,6 +570,17 @@
     #main { margin-left: 0; padding: 1.25rem; }
   }
 
+
+  @media(max-width:600px){
+    .content-wrap{padding:1.25rem 1rem 3rem;}
+    .section-hero h2{font-size:1.6rem;}
+    .director-grid{grid-template-columns:1fr;}
+    .show-grid{grid-template-columns:1fr;}
+    .album-grid{grid-template-columns:repeat(2,1fr);}
+    #art-main{padding:1.25rem 1rem 3rem;}
+    .poem-toggle{flex-wrap:wrap;}
+    .poem-year{margin-left:0!important;}
+  }
 </style>
 </head>
 <body>
@@ -617,6 +652,10 @@ const CAT_LABELS = {
 };
 
 const DATA = window.ART_DATA || [];
+if (!window.ART_DATA) {
+  const el = document.getElementById('timeline');
+  if (el) el.innerHTML = '<div style="padding:2rem;color:var(--muted);font-size:0.9rem">Art timeline requires <code>art-data.js</code> to be uploaded alongside this file. Both files must be in the same folder on GitHub Pages.</div>';
+}
 
 // ── Build timeline ───────────────────────────────────────────
 const timeline = document.getElementById('timeline');
@@ -757,31 +796,28 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList
       <h2>Favourite Poems</h2>
       <p>A collection of poems that have stayed with me.</p>
     </div>
-    <div id="poem-index">
-      <a class="poem-index-link" href="#poem-0">Still I Rise</a>
-      <a class="poem-index-link" href="#poem-1">Musée des Beaux Arts</a>
-      <a class="poem-index-link" href="#poem-2">Jerusalem</a>
-      <a class="poem-index-link" href="#poem-3">An Aspect of Love, Alive in the Ice and Fire</a>
-      <a class="poem-index-link" href="#poem-4">The Love Song of J. Alfred Prufrock</a>
-      <a class="poem-index-link" href="#poem-5">The Darkling Thrush</a>
-      <a class="poem-index-link" href="#poem-6">Prayer (I)</a>
-      <a class="poem-index-link" href="#poem-7">God&#x27;s Grandeur</a>
-      <a class="poem-index-link" href="#poem-8">To Autumn</a>
-      <a class="poem-index-link" href="#poem-9">Psalm 23</a>
-      <a class="poem-index-link" href="#poem-10">The Arundel Tomb</a>
-      <a class="poem-index-link" href="#poem-11">The Raven</a>
-      <a class="poem-index-link" href="#poem-12">Eloisa to Abelard [Extract]</a>
-      <a class="poem-index-link" href="#poem-13">The Tempest — &quot;Be not afeard&quot;</a>
-      <a class="poem-index-link" href="#poem-14">Sonnet 29</a>
-      <a class="poem-index-link" href="#poem-15">Macbeth — &quot;Tomorrow and tomorrow&quot;</a>
-      <a class="poem-index-link" href="#poem-16">Do Not Go Gentle into That Good Night</a>
-      <a class="poem-index-link" href="#poem-17">Composed Upon Westminster Bridge</a>
-      <a class="poem-index-link" href="#poem-18">A Slumber Did My Spirit Seal</a>
-      <a class="poem-index-link" href="#poem-19">The Lake Isle of Innisfree</a>
-      
+    <div id="poem-filters">
+      <button class="poet-filter active" data-poet="all">All</button>
+      <button class="poet-filter" data-poet="Angelou">Maya Angelou</button>
+      <button class="poet-filter" data-poet="Auden">W. H. Auden</button>
+      <button class="poet-filter" data-poet="Blake">William Blake</button>
+      <button class="poet-filter" data-poet="Brooks">Gwendolyn Brooks</button>
+      <button class="poet-filter" data-poet="Eliot">T. S. Eliot</button>
+      <button class="poet-filter" data-poet="Hardy">Thomas Hardy</button>
+      <button class="poet-filter" data-poet="Herbert">George Herbert</button>
+      <button class="poet-filter" data-poet="Hopkins">G. M. Hopkins</button>
+      <button class="poet-filter" data-poet="Keats">John Keats</button>
+      <button class="poet-filter" data-poet="KJB">King James Bible</button>
+      <button class="poet-filter" data-poet="Larkin">Philip Larkin</button>
+      <button class="poet-filter" data-poet="Poe">Edgar Allan Poe</button>
+      <button class="poet-filter" data-poet="Pope">Alexander Pope</button>
+      <button class="poet-filter" data-poet="Shakespeare">Shakespeare</button>
+      <button class="poet-filter" data-poet="Thomas">Dylan Thomas</button>
+      <button class="poet-filter" data-poet="Wordsworth">Wordsworth</button>
+      <button class="poet-filter" data-poet="Yeats">W. B. Yeats</button>
     </div>
     <div id="poems-list">
-      <div class="poem-card" id="poem-0">
+      <div class="poem-card" id="poem-0" data-poet="Angelou">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Still I Rise</span>
           <span class="poem-author">Maya Angelou</span>
@@ -834,7 +870,7 @@ I rise
 I rise.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-1">
+      <div class="poem-card" id="poem-1" data-poet="Auden">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Musée des Beaux Arts</span>
           <span class="poem-author">W. H. Auden</span>
@@ -865,7 +901,7 @@ Something amazing, a boy falling out of the sky,
 Had somewhere to get to and sailed calmly on.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-2">
+      <div class="poem-card" id="poem-2" data-poet="Blake">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Jerusalem</span>
           <span class="poem-author">William Blake</span>
@@ -891,7 +927,7 @@ Till we have built Jerusalem,
 In Englands green &amp; pleasant Land.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-3">
+      <div class="poem-card" id="poem-3" data-poet="Brooks">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">An Aspect of Love, Alive in the Ice and Fire</span>
           <span class="poem-author">Gwendolyn Brooks</span>
@@ -925,7 +961,7 @@ in different directions
 down the imperturbable street.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-4">
+      <div class="poem-card" id="poem-4" data-poet="Eliot">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">The Love Song of J. Alfred Prufrock</span>
           <span class="poem-author">T. S. Eliot</span>
@@ -1072,7 +1108,7 @@ By sea-girls wreathed with seaweed red and brown
 Till human voices wake us, and we drown.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-5">
+      <div class="poem-card" id="poem-5" data-poet="Hardy">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">The Darkling Thrush</span>
           <span class="poem-author">Thomas Hardy</span>
@@ -1114,7 +1150,7 @@ Some blessed Hope, whereof he knew
 And I was unaware.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-6">
+      <div class="poem-card" id="poem-6" data-poet="Herbert">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Prayer (I)</span>
           <span class="poem-author">George Herbert</span>
@@ -1138,7 +1174,7 @@ Church-bells beyond the stars heard, the soul’s blood,
 The land of spices; something understood.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-7">
+      <div class="poem-card" id="poem-7" data-poet="Hopkins">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">God&#x27;s Grandeur</span>
           <span class="poem-author">Gerard Manley Hopkins</span>
@@ -1162,7 +1198,7 @@ Because the Holy Ghost over the bent
 World broods with warm breast and with ah! bright wings.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-8">
+      <div class="poem-card" id="poem-8" data-poet="Keats">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">To Autumn</span>
           <span class="poem-author">John Keats</span>
@@ -1205,7 +1241,7 @@ The red-breast whistles from a garden-croft;
 And gathering swallows twitter in the skies.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-9">
+      <div class="poem-card" id="poem-9" data-poet="KJB">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Psalm 23</span>
           <span class="poem-author">King James Bible</span>
@@ -1226,7 +1262,7 @@ Surely goodness and mercy shall follow me all the days of my life:
 And I will dwell in the house of the LORD for ever.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-10">
+      <div class="poem-card" id="poem-10" data-poet="Larkin">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">The Arundel Tomb</span>
           <span class="poem-author">Philip Larkin</span>
@@ -1278,7 +1314,7 @@ Our almost-instinct almost true:
 What will survive of us is love.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-11">
+      <div class="poem-card" id="poem-11" data-poet="Poe">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">The Raven</span>
           <span class="poem-author">Edgar Allan Poe</span>
@@ -1396,7 +1432,7 @@ And my soul from out that shadow that lies floating on the floor
 Shall be lifted—nevermore!</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-12">
+      <div class="poem-card" id="poem-12" data-poet="Pope">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Eloisa to Abelard [Extract]</span>
           <span class="poem-author">Alexander Pope</span>
@@ -1410,7 +1446,7 @@ Eternal sunshine of the spotless mind!
 Each pray&#x27;r accepted, and each wish resign&#x27;d;</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-13">
+      <div class="poem-card" id="poem-13" data-poet="Shakespeare">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">The Tempest — &quot;Be not afeard&quot;</span>
           <span class="poem-author">William Shakespeare</span>
@@ -1418,19 +1454,21 @@ Each pray&#x27;r accepted, and each wish resign&#x27;d;</div>
           <span class="poem-chevron">▼</span>
         </button>
         <div class="poem-body-wrap">
-          <div class="poem-body">*Caliban speaks to Stephano and Trinculo*.
-Be not afeard; the isle is full of noises,
-Sounds and sweet airs, that give delight, and hurt not.
-Sometimes a thousand twangling instruments
-Will hum about mine ears; and sometime voices,
-That, if I then had waked after long sleep,
-Will make me sleep again: and then, in dreaming,
-The clouds methought would open, and show riches
-Ready to drop upon me; that, when I waked,
-I cried to dream again.</div>
+          <div class="poem-body">She should have died hereafter;
+There would have been a time for such a word.
+Tomorrow, and tomorrow, and tomorrow
+Creeps in this petty pace from day to day
+To the last syllable of recorded time;
+And all our yesterdays have lighted fools
+The way to dusty death. Out, out, brief candle!
+Life’s but a walking shadow, a poor player
+That struts and frets his hour upon the stage
+And then is heard no more. It is a tale
+Told by an idiot, full of sound and fury
+Signifying nothing.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-14">
+      <div class="poem-card" id="poem-14" data-poet="Shakespeare">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Sonnet 29</span>
           <span class="poem-author">William Shakespeare</span>
@@ -1438,22 +1476,21 @@ I cried to dream again.</div>
           <span class="poem-chevron">▼</span>
         </button>
         <div class="poem-body-wrap">
-          <div class="poem-body">I all alone beweep my outcast state,
-And trouble deaf heaven with my bootless cries,
-And look upon myself and curse my fate,
-Wishing me like to one more rich in hope,
-Featured like him, like him with friends possessed,
-Desiring this man’s art and that man’s scope,
-With what I most enjoy contented least;
-Yet in these thoughts myself almost despising,
-Haply I think on thee, and then my state,
-(Like to the lark at break of day arising
-From sullen earth) sings hymns at heaven’s gate;
-For thy sweet love remembered such wealth brings
-That then I scorn to change my state with kings.</div>
+          <div class="poem-body">She should have died hereafter;
+There would have been a time for such a word.
+Tomorrow, and tomorrow, and tomorrow
+Creeps in this petty pace from day to day
+To the last syllable of recorded time;
+And all our yesterdays have lighted fools
+The way to dusty death. Out, out, brief candle!
+Life’s but a walking shadow, a poor player
+That struts and frets his hour upon the stage
+And then is heard no more. It is a tale
+Told by an idiot, full of sound and fury
+Signifying nothing.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-15">
+      <div class="poem-card" id="poem-15" data-poet="Shakespeare">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Macbeth — &quot;Tomorrow and tomorrow&quot;</span>
           <span class="poem-author">William Shakespeare</span>
@@ -1475,7 +1512,7 @@ Told by an idiot, full of sound and fury
 Signifying nothing.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-16">
+      <div class="poem-card" id="poem-16" data-poet="Thomas">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Do Not Go Gentle into That Good Night</span>
           <span class="poem-author">Dylan Thomas</span>
@@ -1504,7 +1541,7 @@ Do not go gentle into that good night.
 Rage, rage against the dying of the light.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-17">
+      <div class="poem-card" id="poem-17" data-poet="Wordsworth">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">Composed Upon Westminster Bridge</span>
           <span class="poem-author">William Wordsworth</span>
@@ -1512,23 +1549,17 @@ Rage, rage against the dying of the light.</div>
           <span class="poem-chevron">▼</span>
         </button>
         <div class="poem-body-wrap">
-          <div class="poem-body">Earth has not any thing to show more fair:
-Dull would he be of soul who could pass by
-A sight so touching in its majesty:
-This City now doth, like a garment, wear
-The beauty of the morning; silent, bare,
-Ships, towers, domes, theatres, and temples lie
-Open unto the fields, and to the sky;
-All bright and glittering in the smokeless air.
-Never did sun more beautifully steep
-In his first splendour, valley, rock, or hill;
-Ne&#x27;er saw I, never felt, a calm so deep!
-The river glideth at his own sweet will:
-Dear God! the very houses seem asleep;
-And all that mighty heart is lying still!</div>
+          <div class="poem-body">A slumber did my spirit seal;
+I had no human fears:
+She seemed a thing that could not feel
+The touch of earthly years.
+No motion has she now, no force;
+She neither hears nor sees;
+Rolled round in earth&#x27;s diurnal course,
+With rocks, and stones, and trees.</div>
         </div>
       </div>
-      <div class="poem-card" id="poem-18">
+      <div class="poem-card" id="poem-18" data-poet="Wordsworth">
         <button class="poem-toggle" onclick="togglePoem(this)">
           <span class="poem-title">A Slumber Did My Spirit Seal</span>
           <span class="poem-author">William Wordsworth</span>
@@ -1544,28 +1575,6 @@ No motion has she now, no force;
 She neither hears nor sees;
 Rolled round in earth&#x27;s diurnal course,
 With rocks, and stones, and trees.</div>
-        </div>
-      </div>
-      <div class="poem-card" id="poem-19">
-        <button class="poem-toggle" onclick="togglePoem(this)">
-          <span class="poem-title">The Lake Isle of Innisfree</span>
-          <span class="poem-author">W. B. Yeats</span>
-          <span class="poem-year">1890</span>
-          <span class="poem-chevron">▼</span>
-        </button>
-        <div class="poem-body-wrap">
-          <div class="poem-body">I will arise and go now, and go to Innisfree,
-And a small cabin build there, of clay and wattles made;
-Nine bean-rows will I have there, a hive for the honey-bee,
-And live alone in the bee-loud glade.
-And I shall have some peace there, for peace comes dropping slow,
-Dropping from the veils of the morning to where the cricket sings;
-There midnight’s all a glimmer, and noon a purple glow,
-And evening full of the linnet’s wings.
-I will arise and go now, for always night and day
-I hear lake water lapping with low sounds by the shore;
-While I stand on the roadway, or on the pavements grey,
-I hear it in the deep heart’s core.</div>
         </div>
       </div>
     </div></div>
@@ -2033,508 +2042,592 @@ I hear it in the deep heart’s core.</div>
       <p>50 albums — 42 added so far.</p>
     </div>
     <div id="album-grid" class="album-grid">
-        <div class="album-card" data-genre="Electronic" data-title="Discovery" data-artist="Daft Punk">
-          <div class="album-rank">1</div>
+                <div class="album-card" data-genre="Electronic" data-title="Discovery" data-artist="Daft Punk">
           <div class="album-art" id="art-Discovery">
-            <img src="" alt="Discovery" style="display:none">
+            <img alt="Discovery" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Discovery</div>
-            <div class="album-artist">Daft Punk</div>
-            <div class="album-year">2001 · Electronic</div>
+            <span class="album-rank-inline">1.</span>
+            <div class="album-text">
+              <div class="album-name">Discovery</div>
+              <div class="album-artist">Daft Punk</div>
+              <div class="album-year">2001 · Electronic</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Abbey Road" data-artist="The Beatles">
-          <div class="album-rank">2</div>
+                <div class="album-card" data-genre="Rock" data-title="Abbey Road" data-artist="The Beatles">
           <div class="album-art" id="art-Abbey-Road">
-            <img src="" alt="Abbey Road" style="display:none">
+            <img alt="Abbey Road" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Abbey Road</div>
-            <div class="album-artist">The Beatles</div>
-            <div class="album-year">1969 · Rock</div>
+            <span class="album-rank-inline">2.</span>
+            <div class="album-text">
+              <div class="album-name">Abbey Road</div>
+              <div class="album-artist">The Beatles</div>
+              <div class="album-year">1969 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Jazz" data-title="Kind of Blue" data-artist="Miles Davis">
-          <div class="album-rank">3</div>
+                <div class="album-card" data-genre="Jazz" data-title="Kind of Blue" data-artist="Miles Davis">
           <div class="album-art" id="art-Kind-of-Blue">
-            <img src="" alt="Kind of Blue" style="display:none">
+            <img alt="Kind of Blue" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Kind of Blue</div>
-            <div class="album-artist">Miles Davis</div>
-            <div class="album-year">1959 · Jazz</div>
+            <span class="album-rank-inline">3.</span>
+            <div class="album-text">
+              <div class="album-name">Kind of Blue</div>
+              <div class="album-artist">Miles Davis</div>
+              <div class="album-year">1959 · Jazz</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Art Pop" data-title="Hounds of Love" data-artist="Kate Bush">
-          <div class="album-rank">4</div>
+                <div class="album-card" data-genre="Art Pop" data-title="Hounds of Love" data-artist="Kate Bush">
           <div class="album-art" id="art-Hounds-of-Love">
-            <img src="" alt="Hounds of Love" style="display:none">
+            <img alt="Hounds of Love" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Hounds of Love</div>
-            <div class="album-artist">Kate Bush</div>
-            <div class="album-year">1985 · Art Pop</div>
+            <span class="album-rank-inline">4.</span>
+            <div class="album-text">
+              <div class="album-name">Hounds of Love</div>
+              <div class="album-artist">Kate Bush</div>
+              <div class="album-year">1985 · Art Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Nevermind" data-artist="Nirvana">
-          <div class="album-rank">5</div>
+                <div class="album-card" data-genre="Rock" data-title="Nevermind" data-artist="Nirvana">
           <div class="album-art" id="art-Nevermind">
-            <img src="" alt="Nevermind" style="display:none">
+            <img alt="Nevermind" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Nevermind</div>
-            <div class="album-artist">Nirvana</div>
-            <div class="album-year">1991 · Rock</div>
+            <span class="album-rank-inline">5.</span>
+            <div class="album-text">
+              <div class="album-name">Nevermind</div>
+              <div class="album-artist">Nirvana</div>
+              <div class="album-year">1991 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="The Dark Side of the Moon" data-artist="Pink Floyd">
-          <div class="album-rank">6</div>
+                <div class="album-card" data-genre="Rock" data-title="The Dark Side of the Moon" data-artist="Pink Floyd">
           <div class="album-art" id="art-The-Dark-Side-of-the">
-            <img src="" alt="The Dark Side of the Moon" style="display:none">
+            <img alt="The Dark Side of the Moon" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">The Dark Side of the Moon</div>
-            <div class="album-artist">Pink Floyd</div>
-            <div class="album-year">1973 · Rock</div>
+            <span class="album-rank-inline">6.</span>
+            <div class="album-text">
+              <div class="album-name">The Dark Side of the Moon</div>
+              <div class="album-artist">Pink Floyd</div>
+              <div class="album-year">1973 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Electronic" data-title="Kid A" data-artist="Radiohead">
-          <div class="album-rank">7</div>
+                <div class="album-card" data-genre="Electronic" data-title="Kid A" data-artist="Radiohead">
           <div class="album-art" id="art-Kid-A">
-            <img src="" alt="Kid A" style="display:none">
+            <img alt="Kid A" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Kid A</div>
-            <div class="album-artist">Radiohead</div>
-            <div class="album-year">2000 · Electronic</div>
+            <span class="album-rank-inline">7.</span>
+            <div class="album-text">
+              <div class="album-name">Kid A</div>
+              <div class="album-artist">Radiohead</div>
+              <div class="album-year">2000 · Electronic</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Purple Rain" data-artist="Prince">
-          <div class="album-rank">8</div>
+                <div class="album-card" data-genre="Pop" data-title="Purple Rain" data-artist="Prince">
           <div class="album-art" id="art-Purple-Rain">
-            <img src="" alt="Purple Rain" style="display:none">
+            <img alt="Purple Rain" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Purple Rain</div>
-            <div class="album-artist">Prince</div>
-            <div class="album-year">1984 · Pop</div>
+            <span class="album-rank-inline">8.</span>
+            <div class="album-text">
+              <div class="album-name">Purple Rain</div>
+              <div class="album-artist">Prince</div>
+              <div class="album-year">1984 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Is This It" data-artist="The Strokes">
-          <div class="album-rank">9</div>
+                <div class="album-card" data-genre="Rock" data-title="Is This It" data-artist="The Strokes">
           <div class="album-art" id="art-Is-This-It">
-            <img src="" alt="Is This It" style="display:none">
+            <img alt="Is This It" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Is This It</div>
-            <div class="album-artist">The Strokes</div>
-            <div class="album-year">2001 · Rock</div>
+            <span class="album-rank-inline">9.</span>
+            <div class="album-text">
+              <div class="album-name">Is This It</div>
+              <div class="album-artist">The Strokes</div>
+              <div class="album-year">2001 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Jazz" data-title="A Love Supreme" data-artist="John Coltrane">
-          <div class="album-rank">10</div>
+                <div class="album-card" data-genre="Jazz" data-title="A Love Supreme" data-artist="John Coltrane">
           <div class="album-art" id="art-A-Love-Supreme">
-            <img src="" alt="A Love Supreme" style="display:none">
+            <img alt="A Love Supreme" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">A Love Supreme</div>
-            <div class="album-artist">John Coltrane</div>
-            <div class="album-year">1965 · Jazz</div>
+            <span class="album-rank-inline">10.</span>
+            <div class="album-text">
+              <div class="album-name">A Love Supreme</div>
+              <div class="album-artist">John Coltrane</div>
+              <div class="album-year">1965 · Jazz</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Born This Way" data-artist="Lady Gaga">
-          <div class="album-rank">11</div>
+                <div class="album-card" data-genre="Pop" data-title="Born This Way" data-artist="Lady Gaga">
           <div class="album-art" id="art-Born-This-Way">
-            <img src="" alt="Born This Way" style="display:none">
+            <img alt="Born This Way" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Born This Way</div>
-            <div class="album-artist">Lady Gaga</div>
-            <div class="album-year">2011 · Pop</div>
+            <span class="album-rank-inline">11.</span>
+            <div class="album-text">
+              <div class="album-name">Born This Way</div>
+              <div class="album-artist">Lady Gaga</div>
+              <div class="album-year">2011 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Alternative" data-title="Yoshimi Battles the Pink Robots" data-artist="The Flaming Lips">
-          <div class="album-rank">12</div>
+                <div class="album-card" data-genre="Alternative" data-title="Yoshimi Battles the Pink Robots" data-artist="The Flaming Lips">
           <div class="album-art" id="art-Yoshimi-Battles-the-">
-            <img src="" alt="Yoshimi Battles the Pink Robots" style="display:none">
+            <img alt="Yoshimi Battles the Pink Robots" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Yoshimi Battles the Pink Robots</div>
-            <div class="album-artist">The Flaming Lips</div>
-            <div class="album-year">2002 · Alternative</div>
+            <span class="album-rank-inline">12.</span>
+            <div class="album-text">
+              <div class="album-name">Yoshimi Battles the Pink Robots</div>
+              <div class="album-artist">The Flaming Lips</div>
+              <div class="album-year">2002 · Alternative</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Rumours" data-artist="Fleetwood Mac">
-          <div class="album-rank">13</div>
+                <div class="album-card" data-genre="Rock" data-title="Rumours" data-artist="Fleetwood Mac">
           <div class="album-art" id="art-Rumours">
-            <img src="" alt="Rumours" style="display:none">
+            <img alt="Rumours" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Rumours</div>
-            <div class="album-artist">Fleetwood Mac</div>
-            <div class="album-year">1977 · Rock</div>
+            <span class="album-rank-inline">13.</span>
+            <div class="album-text">
+              <div class="album-name">Rumours</div>
+              <div class="album-artist">Fleetwood Mac</div>
+              <div class="album-year">1977 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="London Calling" data-artist="The Clash">
-          <div class="album-rank">14</div>
+                <div class="album-card" data-genre="Rock" data-title="London Calling" data-artist="The Clash">
           <div class="album-art" id="art-London-Calling">
-            <img src="" alt="London Calling" style="display:none">
+            <img alt="London Calling" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">London Calling</div>
-            <div class="album-artist">The Clash</div>
-            <div class="album-year">1979 · Rock</div>
+            <span class="album-rank-inline">14.</span>
+            <div class="album-text">
+              <div class="album-name">London Calling</div>
+              <div class="album-artist">The Clash</div>
+              <div class="album-year">1979 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="The Velvet Underground &amp; Nico" data-artist="The Velvet Underground">
-          <div class="album-rank">15</div>
+                <div class="album-card" data-genre="Rock" data-title="The Velvet Underground &amp; Nico" data-artist="The Velvet Underground">
           <div class="album-art" id="art-The-Velvet-Undergrou">
-            <img src="" alt="The Velvet Underground &amp; Nico" style="display:none">
+            <img alt="The Velvet Underground &amp; Nico" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">The Velvet Underground &amp; Nico</div>
-            <div class="album-artist">The Velvet Underground</div>
-            <div class="album-year">1967 · Rock</div>
+            <span class="album-rank-inline">15.</span>
+            <div class="album-text">
+              <div class="album-name">The Velvet Underground &amp; Nico</div>
+              <div class="album-artist">The Velvet Underground</div>
+              <div class="album-year">1967 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="OK Computer" data-artist="Radiohead">
-          <div class="album-rank">16</div>
+                <div class="album-card" data-genre="Rock" data-title="OK Computer" data-artist="Radiohead">
           <div class="album-art" id="art-OK-Computer">
-            <img src="" alt="OK Computer" style="display:none">
+            <img alt="OK Computer" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">OK Computer</div>
-            <div class="album-artist">Radiohead</div>
-            <div class="album-year">1997 · Rock</div>
+            <span class="album-rank-inline">16.</span>
+            <div class="album-text">
+              <div class="album-name">OK Computer</div>
+              <div class="album-artist">Radiohead</div>
+              <div class="album-year">1997 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Automatic for the People" data-artist="R.E.M.">
-          <div class="album-rank">17</div>
+                <div class="album-card" data-genre="Rock" data-title="Automatic for the People" data-artist="R.E.M.">
           <div class="album-art" id="art-Automatic-for-the-Pe">
-            <img src="" alt="Automatic for the People" style="display:none">
+            <img alt="Automatic for the People" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Automatic for the People</div>
-            <div class="album-artist">R.E.M.</div>
-            <div class="album-year">1992 · Rock</div>
+            <span class="album-rank-inline">17.</span>
+            <div class="album-text">
+              <div class="album-name">Automatic for the People</div>
+              <div class="album-artist">R.E.M.</div>
+              <div class="album-year">1992 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Jagged Little Pill" data-artist="Alanis Morissette">
-          <div class="album-rank">18</div>
+                <div class="album-card" data-genre="Rock" data-title="Jagged Little Pill" data-artist="Alanis Morissette">
           <div class="album-art" id="art-Jagged-Little-Pill">
-            <img src="" alt="Jagged Little Pill" style="display:none">
+            <img alt="Jagged Little Pill" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Jagged Little Pill</div>
-            <div class="album-artist">Alanis Morissette</div>
-            <div class="album-year">1995 · Rock</div>
+            <span class="album-rank-inline">18.</span>
+            <div class="album-text">
+              <div class="album-name">Jagged Little Pill</div>
+              <div class="album-artist">Alanis Morissette</div>
+              <div class="album-year">1995 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Lemonade" data-artist="Beyoncé">
-          <div class="album-rank">19</div>
+                <div class="album-card" data-genre="Pop" data-title="Lemonade" data-artist="Beyoncé">
           <div class="album-art" id="art-Lemonade">
-            <img src="" alt="Lemonade" style="display:none">
+            <img alt="Lemonade" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Lemonade</div>
-            <div class="album-artist">Beyoncé</div>
-            <div class="album-year">2016 · Pop</div>
+            <span class="album-rank-inline">19.</span>
+            <div class="album-text">
+              <div class="album-name">Lemonade</div>
+              <div class="album-artist">Beyoncé</div>
+              <div class="album-year">2016 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="The Immaculate Collection" data-artist="Madonna">
-          <div class="album-rank">20</div>
+                <div class="album-card" data-genre="Pop" data-title="The Immaculate Collection" data-artist="Madonna">
           <div class="album-art" id="art-The-Immaculate-Colle">
-            <img src="" alt="The Immaculate Collection" style="display:none">
+            <img alt="The Immaculate Collection" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">The Immaculate Collection</div>
-            <div class="album-artist">Madonna</div>
-            <div class="album-year">1990 · Pop</div>
+            <span class="album-rank-inline">20.</span>
+            <div class="album-text">
+              <div class="album-name">The Immaculate Collection</div>
+              <div class="album-artist">Madonna</div>
+              <div class="album-year">1990 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Bad" data-artist="Michael Jackson">
-          <div class="album-rank">21</div>
+                <div class="album-card" data-genre="Pop" data-title="Bad" data-artist="Michael Jackson">
           <div class="album-art" id="art-Bad">
-            <img src="" alt="Bad" style="display:none">
+            <img alt="Bad" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Bad</div>
-            <div class="album-artist">Michael Jackson</div>
-            <div class="album-year">1987 · Pop</div>
+            <span class="album-rank-inline">21.</span>
+            <div class="album-text">
+              <div class="album-name">Bad</div>
+              <div class="album-artist">Michael Jackson</div>
+              <div class="album-year">1987 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Art Pop" data-title="Debut" data-artist="Björk">
-          <div class="album-rank">22</div>
+                <div class="album-card" data-genre="Art Pop" data-title="Debut" data-artist="Björk">
           <div class="album-art" id="art-Debut">
-            <img src="" alt="Debut" style="display:none">
+            <img alt="Debut" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Debut</div>
-            <div class="album-artist">Björk</div>
-            <div class="album-year">1993 · Art Pop</div>
+            <span class="album-rank-inline">22.</span>
+            <div class="album-text">
+              <div class="album-name">Debut</div>
+              <div class="album-artist">Björk</div>
+              <div class="album-year">1993 · Art Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Smash" data-artist="The Offspring">
-          <div class="album-rank">23</div>
+                <div class="album-card" data-genre="Rock" data-title="Smash" data-artist="The Offspring">
           <div class="album-art" id="art-Smash">
-            <img src="" alt="Smash" style="display:none">
+            <img alt="Smash" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Smash</div>
-            <div class="album-artist">The Offspring</div>
-            <div class="album-year">1994 · Rock</div>
+            <span class="album-rank-inline">23.</span>
+            <div class="album-text">
+              <div class="album-name">Smash</div>
+              <div class="album-artist">The Offspring</div>
+              <div class="album-year">1994 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Art Pop" data-title="I Am a Bird Now" data-artist="Antony and the Johnsons">
-          <div class="album-rank">24</div>
+                <div class="album-card" data-genre="Art Pop" data-title="I Am a Bird Now" data-artist="Antony and the Johnsons">
           <div class="album-art" id="art-I-Am-a-Bird-Now">
-            <img src="" alt="I Am a Bird Now" style="display:none">
+            <img alt="I Am a Bird Now" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">I Am a Bird Now</div>
-            <div class="album-artist">Antony and the Johnsons</div>
-            <div class="album-year">2005 · Art Pop</div>
+            <span class="album-rank-inline">24.</span>
+            <div class="album-text">
+              <div class="album-name">I Am a Bird Now</div>
+              <div class="album-artist">Antony and the Johnsons</div>
+              <div class="album-year">2005 · Art Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Dream Pop" data-title="Heaven or Las Vegas" data-artist="Cocteau Twins">
-          <div class="album-rank">25</div>
+                <div class="album-card" data-genre="Dream Pop" data-title="Heaven or Las Vegas" data-artist="Cocteau Twins">
           <div class="album-art" id="art-Heaven-or-Las-Vegas">
-            <img src="" alt="Heaven or Las Vegas" style="display:none">
+            <img alt="Heaven or Las Vegas" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Heaven or Las Vegas</div>
-            <div class="album-artist">Cocteau Twins</div>
-            <div class="album-year">1990 · Dream Pop</div>
+            <span class="album-rank-inline">25.</span>
+            <div class="album-text">
+              <div class="album-name">Heaven or Las Vegas</div>
+              <div class="album-artist">Cocteau Twins</div>
+              <div class="album-year">1990 · Dream Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Born to Die" data-artist="Lana Del Rey">
-          <div class="album-rank">26</div>
+                <div class="album-card" data-genre="Pop" data-title="Born to Die" data-artist="Lana Del Rey">
           <div class="album-art" id="art-Born-to-Die">
-            <img src="" alt="Born to Die" style="display:none">
+            <img alt="Born to Die" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Born to Die</div>
-            <div class="album-artist">Lana Del Rey</div>
-            <div class="album-year">2012 · Pop</div>
+            <span class="album-rank-inline">26.</span>
+            <div class="album-text">
+              <div class="album-name">Born to Die</div>
+              <div class="album-artist">Lana Del Rey</div>
+              <div class="album-year">2012 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Elephant" data-artist="The White Stripes">
-          <div class="album-rank">27</div>
+                <div class="album-card" data-genre="Rock" data-title="Elephant" data-artist="The White Stripes">
           <div class="album-art" id="art-Elephant">
-            <img src="" alt="Elephant" style="display:none">
+            <img alt="Elephant" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Elephant</div>
-            <div class="album-artist">The White Stripes</div>
-            <div class="album-year">2003 · Rock</div>
+            <span class="album-rank-inline">27.</span>
+            <div class="album-text">
+              <div class="album-name">Elephant</div>
+              <div class="album-artist">The White Stripes</div>
+              <div class="album-year">2003 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="Getting Killed" data-artist="Geese">
-          <div class="album-rank">28</div>
+                <div class="album-card" data-genre="Rock" data-title="Getting Killed" data-artist="Geese">
           <div class="album-art" id="art-Getting-Killed">
-            <img src="" alt="Getting Killed" style="display:none">
+            <img alt="Getting Killed" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Getting Killed</div>
-            <div class="album-artist">Geese</div>
-            <div class="album-year">2025 · Rock</div>
+            <span class="album-rank-inline">28.</span>
+            <div class="album-text">
+              <div class="album-name">Getting Killed</div>
+              <div class="album-artist">Geese</div>
+              <div class="album-year">2025 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Art Rock" data-title="Spirit of Eden" data-artist="Talk Talk">
-          <div class="album-rank">29</div>
+                <div class="album-card" data-genre="Art Rock" data-title="Spirit of Eden" data-artist="Talk Talk">
           <div class="album-art" id="art-Spirit-of-Eden">
-            <img src="" alt="Spirit of Eden" style="display:none">
+            <img alt="Spirit of Eden" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Spirit of Eden</div>
-            <div class="album-artist">Talk Talk</div>
-            <div class="album-year">1988 · Art Rock</div>
+            <span class="album-rank-inline">29.</span>
+            <div class="album-text">
+              <div class="album-name">Spirit of Eden</div>
+              <div class="album-artist">Talk Talk</div>
+              <div class="album-year">1988 · Art Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Art Rock" data-title="Let England Shake" data-artist="PJ Harvey">
-          <div class="album-rank">30</div>
+                <div class="album-card" data-genre="Art Rock" data-title="Let England Shake" data-artist="PJ Harvey">
           <div class="album-art" id="art-Let-England-Shake">
-            <img src="" alt="Let England Shake" style="display:none">
+            <img alt="Let England Shake" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Let England Shake</div>
-            <div class="album-artist">PJ Harvey</div>
-            <div class="album-year">2011 · Art Rock</div>
+            <span class="album-rank-inline">30.</span>
+            <div class="album-text">
+              <div class="album-name">Let England Shake</div>
+              <div class="album-artist">PJ Harvey</div>
+              <div class="album-year">2011 · Art Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Rock" data-title="The Queen Is Dead" data-artist="The Smiths">
-          <div class="album-rank">31</div>
+                <div class="album-card" data-genre="Rock" data-title="The Queen Is Dead" data-artist="The Smiths">
           <div class="album-art" id="art-The-Queen-Is-Dead">
-            <img src="" alt="The Queen Is Dead" style="display:none">
+            <img alt="The Queen Is Dead" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">The Queen Is Dead</div>
-            <div class="album-artist">The Smiths</div>
-            <div class="album-year">1986 · Rock</div>
+            <span class="album-rank-inline">31.</span>
+            <div class="album-text">
+              <div class="album-name">The Queen Is Dead</div>
+              <div class="album-artist">The Smiths</div>
+              <div class="album-year">1986 · Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Electronic" data-title="Dummy" data-artist="Portishead">
-          <div class="album-rank">32</div>
+                <div class="album-card" data-genre="Electronic" data-title="Dummy" data-artist="Portishead">
           <div class="album-art" id="art-Dummy">
-            <img src="" alt="Dummy" style="display:none">
+            <img alt="Dummy" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Dummy</div>
-            <div class="album-artist">Portishead</div>
-            <div class="album-year">1994 · Electronic</div>
+            <span class="album-rank-inline">32.</span>
+            <div class="album-text">
+              <div class="album-name">Dummy</div>
+              <div class="album-artist">Portishead</div>
+              <div class="album-year">1994 · Electronic</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Electronic" data-title="Mezzanine" data-artist="Massive Attack">
-          <div class="album-rank">33</div>
+                <div class="album-card" data-genre="Electronic" data-title="Mezzanine" data-artist="Massive Attack">
           <div class="album-art" id="art-Mezzanine">
-            <img src="" alt="Mezzanine" style="display:none">
+            <img alt="Mezzanine" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Mezzanine</div>
-            <div class="album-artist">Massive Attack</div>
-            <div class="album-year">1998 · Electronic</div>
+            <span class="album-rank-inline">33.</span>
+            <div class="album-text">
+              <div class="album-name">Mezzanine</div>
+              <div class="album-artist">Massive Attack</div>
+              <div class="album-year">1998 · Electronic</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Post-Punk" data-title="Unknown Pleasures" data-artist="Joy Division">
-          <div class="album-rank">34</div>
+                <div class="album-card" data-genre="Post-Punk" data-title="Unknown Pleasures" data-artist="Joy Division">
           <div class="album-art" id="art-Unknown-Pleasures">
-            <img src="" alt="Unknown Pleasures" style="display:none">
+            <img alt="Unknown Pleasures" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Unknown Pleasures</div>
-            <div class="album-artist">Joy Division</div>
-            <div class="album-year">1979 · Post-Punk</div>
+            <span class="album-rank-inline">34.</span>
+            <div class="album-text">
+              <div class="album-name">Unknown Pleasures</div>
+              <div class="album-artist">Joy Division</div>
+              <div class="album-year">1979 · Post-Punk</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Brat" data-artist="Charli XCX">
-          <div class="album-rank">35</div>
+                <div class="album-card" data-genre="Pop" data-title="Brat" data-artist="Charli XCX">
           <div class="album-art" id="art-Brat">
-            <img src="" alt="Brat" style="display:none">
+            <img alt="Brat" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Brat</div>
-            <div class="album-artist">Charli XCX</div>
-            <div class="album-year">2024 · Pop</div>
+            <span class="album-rank-inline">35.</span>
+            <div class="album-text">
+              <div class="album-name">Brat</div>
+              <div class="album-artist">Charli XCX</div>
+              <div class="album-year">2024 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Body Talk" data-artist="Robyn">
-          <div class="album-rank">36</div>
+                <div class="album-card" data-genre="Pop" data-title="Body Talk" data-artist="Robyn">
           <div class="album-art" id="art-Body-Talk">
-            <img src="" alt="Body Talk" style="display:none">
+            <img alt="Body Talk" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Body Talk</div>
-            <div class="album-artist">Robyn</div>
-            <div class="album-year">2010 · Pop</div>
+            <span class="album-rank-inline">36.</span>
+            <div class="album-text">
+              <div class="album-name">Body Talk</div>
+              <div class="album-artist">Robyn</div>
+              <div class="album-year">2010 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Folk" data-title="Folklore" data-artist="Taylor Swift">
-          <div class="album-rank">37</div>
+                <div class="album-card" data-genre="Folk" data-title="Folklore" data-artist="Taylor Swift">
           <div class="album-art" id="art-Folklore">
-            <img src="" alt="Folklore" style="display:none">
+            <img alt="Folklore" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Folklore</div>
-            <div class="album-artist">Taylor Swift</div>
-            <div class="album-year">2020 · Folk</div>
+            <span class="album-rank-inline">37.</span>
+            <div class="album-text">
+              <div class="album-name">Folklore</div>
+              <div class="album-artist">Taylor Swift</div>
+              <div class="album-year">2020 · Folk</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Actually" data-artist="Pet Shop Boys">
-          <div class="album-rank">38</div>
+                <div class="album-card" data-genre="Pop" data-title="Actually" data-artist="Pet Shop Boys">
           <div class="album-art" id="art-Actually">
-            <img src="" alt="Actually" style="display:none">
+            <img alt="Actually" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Actually</div>
-            <div class="album-artist">Pet Shop Boys</div>
-            <div class="album-year">1987 · Pop</div>
+            <span class="album-rank-inline">38.</span>
+            <div class="album-text">
+              <div class="album-name">Actually</div>
+              <div class="album-artist">Pet Shop Boys</div>
+              <div class="album-year">1987 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Pop" data-title="Behaviour" data-artist="Pet Shop Boys">
-          <div class="album-rank">39</div>
+                <div class="album-card" data-genre="Pop" data-title="Behaviour" data-artist="Pet Shop Boys">
           <div class="album-art" id="art-Behaviour">
-            <img src="" alt="Behaviour" style="display:none">
+            <img alt="Behaviour" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Behaviour</div>
-            <div class="album-artist">Pet Shop Boys</div>
-            <div class="album-year">1990 · Pop</div>
+            <span class="album-rank-inline">39.</span>
+            <div class="album-text">
+              <div class="album-name">Behaviour</div>
+              <div class="album-artist">Pet Shop Boys</div>
+              <div class="album-year">1990 · Pop</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Folk" data-title="Illinois" data-artist="Sufjan Stevens">
-          <div class="album-rank">40</div>
+                <div class="album-card" data-genre="Folk" data-title="Illinois" data-artist="Sufjan Stevens">
           <div class="album-art" id="art-Illinois">
-            <img src="" alt="Illinois" style="display:none">
+            <img alt="Illinois" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Illinois</div>
-            <div class="album-artist">Sufjan Stevens</div>
-            <div class="album-year">2005 · Folk</div>
+            <span class="album-rank-inline">40.</span>
+            <div class="album-text">
+              <div class="album-name">Illinois</div>
+              <div class="album-artist">Sufjan Stevens</div>
+              <div class="album-year">2005 · Folk</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Art Rock" data-title="Blackstar" data-artist="David Bowie">
-          <div class="album-rank">41</div>
+                <div class="album-card" data-genre="Art Rock" data-title="Blackstar" data-artist="David Bowie">
           <div class="album-art" id="art-Blackstar">
-            <img src="" alt="Blackstar" style="display:none">
+            <img alt="Blackstar" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Blackstar</div>
-            <div class="album-artist">David Bowie</div>
-            <div class="album-year">2016 · Art Rock</div>
+            <span class="album-rank-inline">41.</span>
+            <div class="album-text">
+              <div class="album-name">Blackstar</div>
+              <div class="album-artist">David Bowie</div>
+              <div class="album-year">2016 · Art Rock</div>
+            </div>
           </div>
         </div>
-        <div class="album-card" data-genre="Folk" data-title="Blue" data-artist="Joni Mitchell">
-          <div class="album-rank">42</div>
+                <div class="album-card" data-genre="Folk" data-title="Blue" data-artist="Joni Mitchell">
           <div class="album-art" id="art-Blue">
-            <img src="" alt="Blue" style="display:none">
+            <img alt="Blue" style="display:none">
             ♪
           </div>
           <div class="album-info">
-            <div class="album-name">Blue</div>
-            <div class="album-artist">Joni Mitchell</div>
-            <div class="album-year">1971 · Folk</div>
+            <span class="album-rank-inline">42.</span>
+            <div class="album-text">
+              <div class="album-name">Blue</div>
+              <div class="album-artist">Joni Mitchell</div>
+              <div class="album-year">1971 · Folk</div>
+            </div>
           </div>
         </div>
     </div>
@@ -2560,7 +2653,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="A Month in the Country" data-author="J. L. Carr">
         <div class="book-rank">1</div>
         <div class="book-spine" id="cover-A-Month-in-the-Count">
-          <img src="" alt="A Month in the Country" style="display:none">📖
+          <img alt="A Month in the Country" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">A Month in the Country</div>
@@ -2571,7 +2664,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="American Psycho" data-author="Bret Easton Ellis">
         <div class="book-rank">2</div>
         <div class="book-spine" id="cover-American-Psycho">
-          <img src="" alt="American Psycho" style="display:none">📖
+          <img alt="American Psycho" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">American Psycho</div>
@@ -2582,10 +2675,11 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="The Secret History" data-author="Donna Tartt">
         <div class="book-rank">3</div>
         <div class="book-spine" id="cover-The-Secret-History">
-          <img src="" alt="The Secret History" style="display:none">📖
+          <img alt="The Secret History" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">The Secret History</div>
+          <div class="book-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star half">★</span></div>
           <div class="book-author">Donna Tartt</div>
           <div class="book-meta"><span class="book-tag">1992</span><span class="book-tag">fiction</span></div>
         </div>
@@ -2593,10 +2687,11 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="Beloved" data-author="Toni Morrison">
         <div class="book-rank">4</div>
         <div class="book-spine" id="cover-Beloved">
-          <img src="" alt="Beloved" style="display:none">📖
+          <img alt="Beloved" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">Beloved</div>
+          <div class="book-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
           <div class="book-author">Toni Morrison</div>
           <div class="book-meta"><span class="book-tag">1987</span><span class="book-tag">fiction</span></div>
         </div>
@@ -2604,7 +2699,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="Misery" data-author="Stephen King">
         <div class="book-rank">5</div>
         <div class="book-spine" id="cover-Misery">
-          <img src="" alt="Misery" style="display:none">📖
+          <img alt="Misery" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">Misery</div>
@@ -2615,7 +2710,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="Austerlitz" data-author="W. G. Sebald">
         <div class="book-rank">6</div>
         <div class="book-spine" id="cover-Austerlitz">
-          <img src="" alt="Austerlitz" style="display:none">📖
+          <img alt="Austerlitz" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">Austerlitz</div>
@@ -2626,7 +2721,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="non-fiction" data-title="I Know Why the Caged Bird Sings" data-author="Maya Angelou">
         <div class="book-rank">7</div>
         <div class="book-spine" id="cover-I-Know-Why-the-Caged">
-          <img src="" alt="I Know Why the Caged Bird Sings" style="display:none">📖
+          <img alt="I Know Why the Caged Bird Sings" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">I Know Why the Caged Bird Sings</div>
@@ -2637,7 +2732,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="His Dark Materials" data-author="Philip Pullman">
         <div class="book-rank">8</div>
         <div class="book-spine" id="cover-His-Dark-Materials">
-          <img src="" alt="His Dark Materials" style="display:none">📖
+          <img alt="His Dark Materials" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">His Dark Materials</div>
@@ -2648,7 +2743,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="Nineteen Eighty-Four" data-author="George Orwell">
         <div class="book-rank">9</div>
         <div class="book-spine" id="cover-Nineteen-Eighty-Four">
-          <img src="" alt="Nineteen Eighty-Four" style="display:none">📖
+          <img alt="Nineteen Eighty-Four" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">Nineteen Eighty-Four</div>
@@ -2659,7 +2754,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="The Hound of the Baskervilles" data-author="Arthur Conan Doyle">
         <div class="book-rank">10</div>
         <div class="book-spine" id="cover-The-Hound-of-the-Bas">
-          <img src="" alt="The Hound of the Baskervilles" style="display:none">📖
+          <img alt="The Hound of the Baskervilles" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">The Hound of the Baskervilles</div>
@@ -2670,7 +2765,7 @@ I hear it in the deep heart’s core.</div>
       <div class="book-entry" data-genre="fiction" data-title="The Code of the Woosters" data-author="P. G. Wodehouse">
         <div class="book-rank">11</div>
         <div class="book-spine" id="cover-Code-of-the-Wooster">
-          <img src="" alt="The Code of the Woosters" style="display:none">📖
+          <img alt="The Code of the Woosters" style="display:none">📖
         </div>
         <div class="book-info">
           <div class="book-title">The Code of the Woosters</div>
@@ -2680,7 +2775,7 @@ I hear it in the deep heart’s core.</div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="Crime and Punishment" data-author="Fyodor Dostoevsky">
         <div class="book-rank">12</div>
-        <div class="book-spine"><img src="" alt="Crime and Punishment" style="display:none">📖</div>
+        <div class="book-spine"><img alt="Crime and Punishment" style="display:none">📖</div>
         <div class="book-info">
           <div class="book-title">Crime and Punishment</div>
           <div class="book-author">Fyodor Dostoevsky</div>
@@ -2689,7 +2784,7 @@ I hear it in the deep heart’s core.</div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Leopard" data-author="Giuseppe Tomasi di Lampedusa">
         <div class="book-rank">13</div>
-        <div class="book-spine"><img src="" alt="The Leopard" style="display:none">📖</div>
+        <div class="book-spine"><img alt="The Leopard" style="display:none">📖</div>
         <div class="book-info">
           <div class="book-title">The Leopard</div>
           <div class="book-author">Giuseppe Tomasi di Lampedusa</div>
@@ -2698,7 +2793,7 @@ I hear it in the deep heart’s core.</div>
       </div>
       <div class="book-entry" data-genre="fiction" data-title="The Handmaid&#x27;s Tale" data-author="Margaret Atwood">
         <div class="book-rank">14</div>
-        <div class="book-spine"><img src="" alt="The Handmaid&#x27;s Tale" style="display:none">📖</div>
+        <div class="book-spine"><img alt="The Handmaid&#x27;s Tale" style="display:none">📖</div>
         <div class="book-info">
           <div class="book-title">The Handmaid&#x27;s Tale</div>
           <div class="book-author">Margaret Atwood</div>
@@ -2725,238 +2820,238 @@ I hear it in the deep heart’s core.</div>
       <button class="tv-filter" data-filter="genre-sci-fi">Sci-Fi</button>
     </div>
     <div class="show-grid" id="show-grid">
-      <div class="show-card" data-country="usa" data-genre="drama" data-title="The Wire">
-        
-        <div class="show-rank">1</div>
+            <div class="show-card" data-country="usa" data-genre="drama" data-title="The Wire">
+        <div class="show-rank">#1</div>
         <div class="show-info">
-          <div class="show-title">The Wire</div>
-          <div class="show-creator">David Simon</div>
-          <div class="show-meta">HBO · 2002–2008</div>
+          <span class="show-title">The Wire</span>
+          <span class="show-creator">David Simon</span>
+          <span class="show-meta">HBO · 2002–2008</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Twin Peaks">
-        
-        <div class="show-rank">2</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Twin Peaks">
+        <div class="show-rank">#2</div>
         <div class="show-info">
-          <div class="show-title">Twin Peaks</div>
-          <div class="show-creator">Lynch &amp; Frost</div>
-          <div class="show-meta">ABC / Showtime · 1990–2017</div>
+          <span class="show-title">Twin Peaks</span>
+          <span class="show-creator">Lynch &amp;amp; Frost</span>
+          <span class="show-meta">ABC / Showtime · 1990–2017</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="The X-Files">
-        
-        <div class="show-rank">3</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="The X-Files">
+        <div class="show-rank">#3</div>
         <div class="show-info">
-          <div class="show-title">The X-Files</div>
-          <div class="show-creator">Chris Carter</div>
-          <div class="show-meta">Fox · 1993–2018</div>
+          <span class="show-title">The X-Files</span>
+          <span class="show-creator">Chris Carter</span>
+          <span class="show-meta">Fox · 1993–2018</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The Sopranos">
-        
-        <div class="show-rank">4</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="The Sopranos">
+        <div class="show-rank">#4</div>
         <div class="show-info">
-          <div class="show-title">The Sopranos</div>
-          <div class="show-creator">David Chase</div>
-          <div class="show-meta">HBO · 1999–2007</div>
+          <span class="show-title">The Sopranos</span>
+          <span class="show-creator">David Chase</span>
+          <span class="show-meta">HBO · 1999–2007</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Miami Vice">
-        
-        <div class="show-rank">5</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Miami Vice">
+        <div class="show-rank">#5</div>
         <div class="show-info">
-          <div class="show-title">Miami Vice</div>
-          <div class="show-creator">Anthony Yerkovich</div>
-          <div class="show-meta">NBC · 1984–1990</div>
+          <span class="show-title">Miami Vice</span>
+          <span class="show-creator">Anthony Yerkovich</span>
+          <span class="show-meta">NBC · 1984–1990</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Game of Thrones">
-        
-        <div class="show-rank">6</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Game of Thrones">
+        <div class="show-rank">#6</div>
         <div class="show-info">
-          <div class="show-title">Game of Thrones</div>
-          <div class="show-creator">Benioff &amp; Weiss</div>
-          <div class="show-meta">HBO · 2011–2019</div>
+          <span class="show-title">Game of Thrones</span>
+          <span class="show-creator">Benioff &amp;amp; Weiss</span>
+          <span class="show-meta">HBO · 2011–2019</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Breaking Bad">
-        
-        <div class="show-rank">7</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Breaking Bad">
+        <div class="show-rank">#7</div>
         <div class="show-info">
-          <div class="show-title">Breaking Bad</div>
-          <div class="show-creator">Vince Gilligan</div>
-          <div class="show-meta">AMC · 2008–2013</div>
+          <span class="show-title">Breaking Bad</span>
+          <span class="show-creator">Vince Gilligan</span>
+          <span class="show-meta">AMC · 2008–2013</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="I May Destroy You">
-        
-        <div class="show-rank">8</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="drama" data-title="I May Destroy You">
+        <div class="show-rank">#8</div>
         <div class="show-info">
-          <div class="show-title">I May Destroy You</div>
-          <div class="show-creator">Michaela Coel</div>
-          <div class="show-meta">BBC / HBO · 2020</div>
+          <span class="show-title">I May Destroy You</span>
+          <span class="show-creator">Michaela Coel</span>
+          <span class="show-meta">BBC / HBO · 2020</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="ER">
-        
-        <div class="show-rank">9</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="ER">
+        <div class="show-rank">#9</div>
         <div class="show-info">
-          <div class="show-title">ER</div>
-          <div class="show-creator">Michael Crichton</div>
-          <div class="show-meta">NBC · 1994–2009</div>
+          <span class="show-title">ER</span>
+          <span class="show-creator">Michael Crichton</span>
+          <span class="show-meta">NBC · 1994–2009</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Thick of It">
-        
-        <div class="show-rank">10</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Thick of It">
+        <div class="show-rank">#10</div>
         <div class="show-info">
-          <div class="show-title">The Thick of It</div>
-          <div class="show-creator">Armando Iannucci</div>
-          <div class="show-meta">BBC Two · 2005–2012</div>
+          <span class="show-title">The Thick of It</span>
+          <span class="show-creator">Armando Iannucci</span>
+          <span class="show-meta">BBC Two · 2005–2012</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Star Trek: The Next Generation">
-        
-        <div class="show-rank">11</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Star Trek: The Next Generation">
+        <div class="show-rank">#11</div>
         <div class="show-info">
-          <div class="show-title">Star Trek: The Next Generation</div>
-          <div class="show-creator">Gene Roddenberry</div>
-          <div class="show-meta">Syndicated · 1987–1994</div>
+          <span class="show-title">Star Trek: The Next Generation</span>
+          <span class="show-creator">Gene Roddenberry</span>
+          <span class="show-meta">Syndicated · 1987–1994</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Office">
-        
-        <div class="show-rank">12</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Office">
+        <div class="show-rank">#12</div>
         <div class="show-info">
-          <div class="show-title">The Office</div>
-          <div class="show-creator">Gervais &amp; Merchant</div>
-          <div class="show-meta">BBC Two · 2001–2003</div>
+          <span class="show-title">The Office</span>
+          <span class="show-creator">Gervais &amp;amp; Merchant</span>
+          <span class="show-meta">BBC Two · 2001–2003</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Cracker">
-        
-        <div class="show-rank">13</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="drama" data-title="Cracker">
+        <div class="show-rank">#13</div>
         <div class="show-info">
-          <div class="show-title">Cracker</div>
-          <div class="show-creator">Jimmy McGovern</div>
-          <div class="show-meta">ITV · 1993–2006</div>
+          <span class="show-title">Cracker</span>
+          <span class="show-creator">Jimmy McGovern</span>
+          <span class="show-meta">ITV · 1993–2006</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Six Feet Under">
-        
-        <div class="show-rank">14</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Six Feet Under">
+        <div class="show-rank">#14</div>
         <div class="show-info">
-          <div class="show-title">Six Feet Under</div>
-          <div class="show-creator">Alan Ball</div>
-          <div class="show-meta">HBO · 2001–2005</div>
+          <span class="show-title">Six Feet Under</span>
+          <span class="show-creator">Alan Ball</span>
+          <span class="show-meta">HBO · 2001–2005</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Fleabag">
-        
-        <div class="show-rank">15</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="comedy" data-title="Fleabag">
+        <div class="show-rank">#15</div>
         <div class="show-info">
-          <div class="show-title">Fleabag</div>
-          <div class="show-creator">Phoebe Waller-Bridge</div>
-          <div class="show-meta">BBC Three · 2016–2019</div>
+          <span class="show-title">Fleabag</span>
+          <span class="show-creator">Phoebe Waller-Bridge</span>
+          <span class="show-meta">BBC Three · 2016–2019</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Deadwood">
-        
-        <div class="show-rank">16</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Deadwood">
+        <div class="show-rank">#16</div>
         <div class="show-info">
-          <div class="show-title">Deadwood</div>
-          <div class="show-creator">David Milch</div>
-          <div class="show-meta">HBO · 2004–2006</div>
+          <span class="show-title">Deadwood</span>
+          <span class="show-creator">David Milch</span>
+          <span class="show-meta">HBO · 2004–2006</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="animation" data-title="The Simpsons">
-        
-        <div class="show-rank">17</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="animation" data-title="The Simpsons">
+        <div class="show-rank">#17</div>
         <div class="show-info">
-          <div class="show-title">The Simpsons</div>
-          <div class="show-creator">Matt Groening</div>
-          <div class="show-meta">Fox · 1989–</div>
+          <span class="show-title">The Simpsons</span>
+          <span class="show-creator">Matt Groening</span>
+          <span class="show-meta">Fox · 1989–</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Mad Men">
-        
-        <div class="show-rank">18</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Mad Men">
+        <div class="show-rank">#18</div>
         <div class="show-info">
-          <div class="show-title">Mad Men</div>
-          <div class="show-creator">Matthew Weiner</div>
-          <div class="show-meta">AMC · 2007–2015</div>
+          <span class="show-title">Mad Men</span>
+          <span class="show-creator">Matthew Weiner</span>
+          <span class="show-meta">AMC · 2007–2015</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="The West Wing">
-        
-        <div class="show-rank">19</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="The West Wing">
+        <div class="show-rank">#19</div>
         <div class="show-info">
-          <div class="show-title">The West Wing</div>
-          <div class="show-creator">Aaron Sorkin</div>
-          <div class="show-meta">NBC · 1999–2006</div>
+          <span class="show-title">The West Wing</span>
+          <span class="show-creator">Aaron Sorkin</span>
+          <span class="show-meta">NBC · 1999–2006</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Friends">
-        
-        <div class="show-rank">20</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="comedy" data-title="Friends">
+        <div class="show-rank">#20</div>
         <div class="show-info">
-          <div class="show-title">Friends</div>
-          <div class="show-creator">Kauffman &amp; Crane</div>
-          <div class="show-meta">NBC · 1994–2004</div>
+          <span class="show-title">Friends</span>
+          <span class="show-creator">Kauffman &amp;amp; Crane</span>
+          <span class="show-meta">NBC · 1994–2004</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="drama" data-title="Succession">
-        
-        <div class="show-rank">21</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="drama" data-title="Succession">
+        <div class="show-rank">#21</div>
         <div class="show-info">
-          <div class="show-title">Succession</div>
-          <div class="show-creator">Jesse Armstrong</div>
-          <div class="show-meta">HBO · 2018–2023</div>
+          <span class="show-title">Succession</span>
+          <span class="show-creator">Jesse Armstrong</span>
+          <span class="show-meta">HBO · 2018–2023</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="True Detective">
-        
-        <div class="show-rank">22</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="True Detective">
+        <div class="show-rank">#22</div>
         <div class="show-info">
-          <div class="show-title">True Detective</div>
-          <div class="show-creator">Nic Pizzolatto</div>
-          <div class="show-meta">HBO · 2014</div>
+          <span class="show-title">True Detective</span>
+          <span class="show-creator">Nic Pizzolatto</span>
+          <span class="show-meta">HBO · 2014</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="Brass Eye">
-        
-        <div class="show-rank">23</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="comedy" data-title="Brass Eye">
+        <div class="show-rank">#23</div>
         <div class="show-info">
-          <div class="show-title">Brass Eye</div>
-          <div class="show-creator">Chris Morris</div>
-          <div class="show-meta">Channel 4 · 1997–2001</div>
+          <span class="show-title">Brass Eye</span>
+          <span class="show-creator">Chris Morris</span>
+          <span class="show-meta">Channel 4 · 1997–2001</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Day Today">
-        
-        <div class="show-rank">24</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="comedy" data-title="The Day Today">
+        <div class="show-rank">#24</div>
         <div class="show-info">
-          <div class="show-title">The Day Today</div>
-          <div class="show-creator">Morris &amp; Iannucci</div>
-          <div class="show-meta">BBC Two · 1994</div>
+          <span class="show-title">The Day Today</span>
+          <span class="show-creator">Morris &amp;amp; Iannucci</span>
+          <span class="show-meta">BBC Two · 1994</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="My So-Called Life">
-        
-        <div class="show-rank">25</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="My So-Called Life">
+        <div class="show-rank">#25</div>
         <div class="show-info">
-          <div class="show-title">My So-Called Life</div>
-          <div class="show-creator">Winnie Holzman</div>
-          <div class="show-meta">ABC · 1994–1995</div>
+          <span class="show-title">My So-Called Life</span>
+          <span class="show-creator">Winnie Holzman</span>
+          <span class="show-meta">ABC · 1994–1995</span>
         </div>
-      </div>      <div class="show-card" data-country="uk" data-genre="comedy" data-title="I&#x27;m Alan Partridge">
-        
-        <div class="show-rank">26</div>
+      </div>
+      </div>            <div class="show-card" data-country="uk" data-genre="comedy" data-title="I&#x27;m Alan Partridge">
+        <div class="show-rank">#26</div>
         <div class="show-info">
-          <div class="show-title">I&#x27;m Alan Partridge</div>
-          <div class="show-creator">Coogan &amp; Iannucci</div>
-          <div class="show-meta">BBC Two · 1997–2002</div>
+          <span class="show-title">I&amp;#x27;m Alan Partridge</span>
+          <span class="show-creator">Coogan &amp;amp; Iannucci</span>
+          <span class="show-meta">BBC Two · 1997–2002</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="drama" data-title="Columbo">
-        
-        <div class="show-rank">27</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="drama" data-title="Columbo">
+        <div class="show-rank">#27</div>
         <div class="show-info">
-          <div class="show-title">Columbo</div>
-          <div class="show-creator">Levinson &amp; Link</div>
-          <div class="show-meta">NBC · 1968–2003</div>
+          <span class="show-title">Columbo</span>
+          <span class="show-creator">Levinson &amp;amp; Link</span>
+          <span class="show-meta">NBC · 1968–2003</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="comedy" data-title="Late Night with David Letterman">
-        
-        <div class="show-rank">28</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="comedy" data-title="Late Night with David Letterman">
+        <div class="show-rank">#28</div>
         <div class="show-info">
-          <div class="show-title">Late Night with David Letterman</div>
-          <div class="show-creator">David Letterman</div>
-          <div class="show-meta">NBC · 1982–1993</div>
+          <span class="show-title">Late Night with David Letterman</span>
+          <span class="show-creator">David Letterman</span>
+          <span class="show-meta">NBC · 1982–1993</span>
         </div>
-      </div>      <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Battlestar Galactica">
-        
-        <div class="show-rank">29</div>
+      </div>
+      </div>            <div class="show-card" data-country="usa" data-genre="sci-fi" data-title="Battlestar Galactica">
+        <div class="show-rank">#29</div>
         <div class="show-info">
-          <div class="show-title">Battlestar Galactica</div>
-          <div class="show-creator">Ronald D. Moore</div>
-          <div class="show-meta">Sci Fi Channel · 2004–2009</div>
+          <span class="show-title">Battlestar Galactica</span>
+          <span class="show-creator">Ronald D. Moore</span>
+          <span class="show-meta">Sci Fi Channel · 2004–2009</span>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -2984,6 +3079,19 @@ tabBtns.forEach(btn => {
     if (target === 'albums' && !artLoaded) { artLoaded = true; loadAlbumArt(); }
     if (target === 'books'  && !coversLoaded) { coversLoaded = true; loadBookCovers(); }
     });
+});
+
+// ── Poet filter ───────────────────────────────────────────────
+document.getElementById('poem-filters').addEventListener('click', e => {
+  const btn = e.target.closest('.poet-filter');
+  if (!btn) return;
+  const poet = btn.dataset.poet;
+  document.querySelectorAll('.poet-filter').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.poem-card').forEach(card => {
+    const show = poet === 'all' || card.dataset.poet === poet;
+    card.classList.toggle('hidden', !show);
+    if (!show) card.classList.remove('open');
+  });
 });
 
 // ── Poem toggle ────────────────────────────────────────────────
@@ -3048,7 +3156,7 @@ function initSortable() {
   const albumGrid = document.getElementById('album-grid');
   Sortable.create(albumGrid, {
     animation: 150, ghostClass: 'sortable-ghost', dragClass: 'sortable-drag',
-    onEnd: () => albumGrid.querySelectorAll('.album-rank').forEach((r, i) => r.textContent = i + 1)
+    onEnd: () => albumGrid.querySelectorAll('.album-rank-inline').forEach((r, i) => r.textContent = (i + 1) + '.')
   });
   const booksList = document.getElementById('books-list');
   Sortable.create(booksList, {
